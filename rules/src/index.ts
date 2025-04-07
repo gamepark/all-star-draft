@@ -1,3 +1,3 @@
-export { GameTemplateRules } from './GameTemplateRules'
-export { GameTemplateOptionsSpec } from './GameTemplateOptions'
-export { GameTemplateSetup } from './GameTemplateSetup'
+export { AllStarDraftRules } from './AllStarDraftRules'
+export { AllStarDraftOptionsSpec } from './AllStarDraftOptions'
+export { AllStarDraftSetup } from './AllStarDraftSetup'
