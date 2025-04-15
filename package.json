@@ -30,7 +30,10 @@
     "deploy": "yarn workspace @gamepark/all-star-draft-app run deploy",
     "cwebp-osx": "rm -f ./node_modules/cwebp-bin/vendor/cwebp && ln -s /opt/homebrew/bin/cwebp ./node_modules/cwebp-bin/vendor/cwebp",
     "publish": "lerna publish",
-    "lint": "yarn workspace @gamepark/all-star-draft run lint && yarn workspace @gamepark/all-star-draft-app run lint"
+    "lint": "yarn workspace @gamepark/all-star-draft run lint && yarn workspace @gamepark/all-star-draft-app run lint",
+    "ci-lint": "yarn workspace @gamepark/all-star-draft run ci-lint && yarn workspace @gamepark/all-star-draft run ci-lint",
+    "ci-format-check": "yarn workspace @gamepark/all-star-draft run ci-format-check && yarn workspace @gamepark/all-star-draft run ci-format-check",
+    "ci-build": "yarn workspace @gamepark/all-star-draft run build && yarn workspace @gamepark/all-star-draft-app run build"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

@@ -42,7 +42,9 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject",
     "deploy": "yarn build && rclone sync build all-star-draft:all-star-draft.game-park.com --progress --s3-acl=public-read",
-    "lint": "eslint --fix"
+    "lint": "eslint --fix",
+    "ci-lint": "eslint",
+    "ci-format-check": "prettier --check **/*.{js,ts,tsx}"
   },
   "browserslist": {
     "production": [

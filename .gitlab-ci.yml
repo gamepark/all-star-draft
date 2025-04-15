@@ -21,8 +21,7 @@ format-check-job:
   script:
     - echo "Running prettier format check... This may take a while."
     - yarn install
-    - yarn workspace @gamepark/${CI_PROJECT_NAME} run prettier --check **/*.{js,ts,tsx}
-    - yarn workspace @gamepark/${CI_PROJECT_NAME}-app run prettier --check **/*.{js,ts,tsx}
+    - yarn run ci-format-check
 
 
 lint-job:
@@ -36,7 +35,7 @@ lint-job:
   script:
     - echo "Running linter... This may take a while."
     - yarn install
-    - yarn run lint
+    - yarn run ci-lint
 
 test-job:
   rules:
@@ -62,5 +61,4 @@ build:
   script:
     - echo "Build app and rules... This may take a while."
     - yarn install
-    - yarn workspace @gamepark/${CI_PROJECT_NAME} run build
-    - yarn workspace @gamepark/${CI_PROJECT_NAME}-app run build
+    - yarn run ci-build
