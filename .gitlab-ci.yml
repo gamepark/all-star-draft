@@ -1,0 +1,64 @@
+.default_rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "push"
+      when: never
+
+stages:
+  - format-check
+  - lint
+  - test
+  - build
+
+format-check-job:
+  rules:
+    - !reference [.default_rules, rules]
+  stage: format-check
+  tags:
+    - docker
+    - shared
+  image: node:23-alpine
+  script:
+    - echo "Running prettier format check... This may take a while."
+    - yarn install
+    - yarn run ci-format-check
+
+
+lint-job:
+  rules:
+    - !reference [.default_rules, rules]
+  stage: lint
+  tags:
+    - docker
+    - shared
+  image: node:23-alpine
+  script:
+    - echo "Running linter... This may take a while."
+    - yarn install
+    - yarn run ci-lint
+
+test-job:
+  rules:
+    - !reference [.default_rules, rules]
+  stage: test
+  tags:
+    - docker
+    - shared
+  image: node:23-alpine
+  script:
+    - echo "Running tests... This may take a while."
+    - yarn install
+    - yarn workspace @gamepark/${CI_PROJECT_NAME} test
+
+build:
+  rules:
+    - !reference [.default_rules, rules]
+  stage: build
+  tags:
+    - docker
+    - shared
+  image: node:23-alpine
+  script:
+    - echo "Build app and rules... This may take a while."
+    - yarn install
+    - yarn run ci-build

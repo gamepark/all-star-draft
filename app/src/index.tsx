@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { GameTemplateOptionsSpec } from '@gamepark/game-template/GameTemplateOptions'
-import { GameTemplateRules } from '@gamepark/game-template/GameTemplateRules'
-import { GameTemplateSetup } from '@gamepark/game-template/GameTemplateSetup'
+import { AllStarDraftOptionsSpec } from '@gamepark/all-star-draft/AllStarDraftOptions'
+import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
+import { AllStarDraftSetup } from '@gamepark/all-star-draft/AllStarDraftSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
@@ -16,10 +16,10 @@ setupTranslation(translations, { debug: false })
 ReactDOM.render(
   <StrictMode>
     <GameProvider
-      game="game-template"
-      Rules={GameTemplateRules}
-      optionsSpec={GameTemplateOptionsSpec}
-      GameSetup={GameTemplateSetup}
+      game="all-star-draft"
+      Rules={AllStarDraftRules}
+      optionsSpec={AllStarDraftOptionsSpec}
+      GameSetup={AllStarDraftSetup}
       material={Material}
       locators={Locators}
       animations={gameAnimations}

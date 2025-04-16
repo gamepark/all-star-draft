@@ -1,7 +1,7 @@
 {
-  "name": "@gamepark/game-template",
+  "name": "@gamepark/all-star-draft",
   "version": "0.0.0",
-  "description": "The rules of Game Template adapted for Game Park",
+  "description": "The rules of All-Star Draft adapted for Game Park",
   "sideEffects": false,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,10 @@
     "build": "tsc",
     "prepublishOnly": "tsc",
     "publish": "lerna publish",
-    "lint": "eslint --fix"
+    "lint": "eslint --fix",
+    "ci-lint": "eslint",
+    "ci-format-check": "prettier --check **/*.{js,ts,tsx}",
+    "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
     "@gamepark/rules-api": ">=6.28",
