@@ -1,9 +1,11 @@
 import { getEnumValues } from '@gamepark/rules-api'
 
 export enum PlayerColor {
-  Blue = 1,
-  Red,
+  Black = 1,
+  Blue,
   Green,
+  Red,
+  Purple,
   Yellow
 }
 
