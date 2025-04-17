@@ -28,8 +28,10 @@ const panelPosition = (index: number) => css`
 `
 
 export const playerColorCode: Record<PlayerColor, string> = {
-  [PlayerColor.Red]: 'red',
+  [PlayerColor.Yellow]: 'yellow',
+  [PlayerColor.Purple]: 'purple',
   [PlayerColor.Blue]: 'blue',
   [PlayerColor.Green]: 'green',
-  [PlayerColor.Yellow]: 'yellow'
+  [PlayerColor.Black]: 'black',
+  [PlayerColor.Red]: 'red'
 }
