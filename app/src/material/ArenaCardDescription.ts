@@ -19,7 +19,7 @@ import StadiumFall2 from '../images/Cards/Arena/StadiumFall2.jpg'
 import StadiumFall3 from '../images/Cards/Arena/StadiumFall3.jpg'
 import ArenaCardBack from '../images/Cards/Arena/ArenaCardBack.jpg'
 
-class ArenaCardDrescription extends CardDescription<number, MaterialType, LocationType, ArenaCard> {
+class ArenaCardDescription extends CardDescription<number, MaterialType, LocationType, ArenaCard> {
   height = 9
   width = 16
   images = {
@@ -42,4 +42,4 @@ class ArenaCardDrescription extends CardDescription<number, MaterialType, Locati
   backImage = ArenaCardBack
 }
 
-export const arenaCardDrescription = new ArenaCardDrescription()
+export const arenaCardDrescription = new ArenaCardDescription()
