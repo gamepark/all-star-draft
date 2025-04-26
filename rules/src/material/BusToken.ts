@@ -1,4 +1,5 @@
-import { PlayerColor } from '../PlayerColor'
+import { getEnumValues } from '@gamepark/rules-api'
+import { PlayerColor, playerColors } from '../PlayerColor'
 
 export enum BusToken {
   Black1 = 1,
@@ -27,3 +28,10 @@ export type BusTokenId = {
 }
 
 export type KnownBusTokenId = Required<BusTokenId>
+
+export const busTokens = getEnumValues(BusToken)
+
+export const busTokensByPlayerColor = playerColors.reduce(
+  (previousRecord, currentColor) => ({ ...previousRecord, [currentColor]: busTokens.slice((currentColor - 1) * 3, currentColor * 3) }),
+  {}
+)

@@ -1,3 +1,5 @@
+import { getEnumValues } from '@gamepark/rules-api'
+
 export enum ArenaCard {
   ComboStadium1 = 1,
   ComboStadium2,
@@ -16,4 +18,8 @@ export enum ArenaCard {
   StadiumFall3
 }
 
+export const arenaCards = getEnumValues(ArenaCard)
+
 export const isArenaForTwoPlayer = (cardId: ArenaCard): boolean => cardId !== ArenaCard.StadiumFall1 && cardId !== ArenaCard.Polarena3
+
+export const arenaCardsForTwoPlayers = arenaCards.filter((id) => isArenaForTwoPlayer(id))

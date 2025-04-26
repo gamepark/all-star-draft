@@ -1,3 +1,5 @@
+import { getEnumValues } from '@gamepark/rules-api'
+
 export enum HockeyPlayerCard {
   Beaver1 = 112,
   Beaver2 = 126,
@@ -133,8 +135,17 @@ export enum HockeyPlayerCardIconsType {
   Skate
 }
 
+export const hockeyPlayerCards = getEnumValues(HockeyPlayerCard)
+
+export const hockeyPlayerCardSpeciesTypes = getEnumValues(HockeyPlayerCardSpeciesType)
+
 export const getHockeyPlayerCardSpecie = (cardId: HockeyPlayerCard): HockeyPlayerCardSpeciesType => Math.floor(cardId / 100)
 
 export const getHockeyPlayerCardValue = (cardId: HockeyPlayerCard): number => Math.floor(cardId / 10) % 10
 
 export const getHockeyPlayerCardIcon = (cardId: HockeyPlayerCard): HockeyPlayerCardIconsType => cardId % 10
+
+export const hockeyPlayerCardsBySpecies = hockeyPlayerCardSpeciesTypes.reduce(
+  (previousRecord, currentType) => ({ ...previousRecord, [currentType]: hockeyPlayerCards.slice((currentType - 1) * 10, 10 * currentType) }),
+  {}
+)
