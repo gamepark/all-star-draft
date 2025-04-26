@@ -15,4 +15,4 @@ class PlayoffPointCardDescription extends BoardDescription<PlayerColor, Material
   }
 }
 
-export const playoffPointCard = new PlayoffPointCardDescription()
+export const playoffPointCardDescription = new PlayoffPointCardDescription()
