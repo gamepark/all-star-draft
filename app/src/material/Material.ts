@@ -6,6 +6,7 @@ import { busTokenDrescription } from './BusTokenDescription'
 import { busStationBoardDescription } from './BusStationBoardDescription'
 import { playoffPointCardDescription } from './PlayoffPointCardDescription'
 import { tieBreakerCardDrescription } from './TieBreakerCardDescription'
+import { playoffTicketTokenDescription } from './PlayoffTicketTokenDescription'
 
 export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.ArenaCard]: arenaCardDrescription,
@@ -13,5 +14,6 @@ export const Material: Partial<Record<MaterialType, MaterialDescription>> = {
   [MaterialType.BusStationBoard]: busStationBoardDescription,
   [MaterialType.HockeyPlayerCard]: hockeyPlayerCardDrescription,
   [MaterialType.PlayoffPointsCard]: playoffPointCardDescription,
+  [MaterialType.PlayoffTicketToken]: playoffTicketTokenDescription,
   [MaterialType.TieBreakerCard]: tieBreakerCardDrescription
 }

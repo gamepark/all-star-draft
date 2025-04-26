@@ -2,7 +2,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { BusToken, BusTokenId } from '@gamepark/all-star-draft/material/BusToken'
-import { CardDescription } from '@gamepark/react-game'
+import { CardDescription, TokenDescription } from '@gamepark/react-game'
 import Black1 from '../images/Tokens/Bus/Black1.png'
 import Black2 from '../images/Tokens/Bus/Black2.png'
 import Black3 from '../images/Tokens/Bus/Black3.png'
@@ -28,7 +28,7 @@ import PurpleBack from '../images/Tokens/Bus/PurpleBack.png'
 import RedBack from '../images/Tokens/Bus/RedBack.png'
 import YellowBack from '../images/Tokens/Bus/YellowBack.png'
 
-class BusTokenDescription extends CardDescription<PlayerColor, MaterialType, LocationType, BusTokenId> {
+class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, BusTokenId> {
   height = 2.2
   width = 3
   images = {
