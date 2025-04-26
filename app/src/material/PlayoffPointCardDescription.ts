@@ -2,7 +2,7 @@ import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { BoardDescription, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
-import PlayoffPointCard from '../images/Boards/PlayoffPointCard.jpg'
+import PlayoffPointCard from '../images/Cards/PlayoffPointCard.jpg'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 
 class PlayoffPointCardDescription extends BoardDescription<PlayerColor, MaterialType, LocationType> {

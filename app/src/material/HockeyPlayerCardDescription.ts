@@ -1,3 +1,4 @@
+import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
