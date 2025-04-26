@@ -16,7 +16,12 @@ class TieBreakerCardDescription extends CardDescription<PlayerColor, MaterialTyp
   }
 
   getStaticItems(_context: MaterialContext<PlayerColor, MaterialType, LocationType>): MaterialItem<number, LocationType>[] {
-    return [{ location: { type: LocationType.TieBreakerCardSpot } }]
+    return [
+      {
+        id: _context.rules.players.length < 5 ? TieBreakerCard.PlayerNumber_2_4 : TieBreakerCard.PlayerNumber_5_6,
+        location: { type: LocationType.TieBreakerCardSpot }
+      }
+    ]
   }
 }
 
