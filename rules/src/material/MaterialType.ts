@@ -4,6 +4,6 @@ export enum MaterialType {
   BusStationBoard,
   HockeyPlayerCard,
   PlayoffPointsCard,
-  PlayoffTicket,
+  PlayoffTicketToken,
   TieBreakerCard
 }
