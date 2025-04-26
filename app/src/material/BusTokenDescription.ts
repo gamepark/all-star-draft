@@ -28,7 +28,7 @@ import PurpleBack from '../images/Tokens/PurpleBack.png'
 import RedBack from '../images/Tokens/RedBack.png'
 import YellowBack from '../images/Tokens/YellowBack.png'
 
-class BusTokenDescription extends CardDescription<number, MaterialType, LocationType, BusTokenId> {
+class BusTokenDescription extends CardDescription<PlayerColor, MaterialType, LocationType, BusTokenId> {
   height = 2.2
   width = 3
   images = {

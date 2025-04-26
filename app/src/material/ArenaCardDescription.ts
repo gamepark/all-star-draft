@@ -18,8 +18,9 @@ import StadiumFall1 from '../images/Cards/Arena/StadiumFall1.jpg'
 import StadiumFall2 from '../images/Cards/Arena/StadiumFall2.jpg'
 import StadiumFall3 from '../images/Cards/Arena/StadiumFall3.jpg'
 import ArenaCardBack from '../images/Cards/Arena/ArenaCardBack.jpg'
+import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 
-class ArenaCardDescription extends CardDescription<number, MaterialType, LocationType, ArenaCard> {
+class ArenaCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, ArenaCard> {
   height = 9
   width = 16
   images = {

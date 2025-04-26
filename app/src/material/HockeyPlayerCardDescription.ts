@@ -112,7 +112,7 @@ import Wolf8 from '../images/Cards/Hockeyer/Wolf8.jpg'
 import Wolf9 from '../images/Cards/Hockeyer/Wolf9.jpg'
 import HockeyPlayerCardBack from '../images/Cards/Hockeyer/HockeyPlayerCardBack.jpg'
 
-class HockeyPlayerCardDescription extends CardDescription<number, MaterialType, LocationType, HockeyPlayerCard> {
+class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, HockeyPlayerCard> {
   height = 8.7
   width = 5.6
   images = {
