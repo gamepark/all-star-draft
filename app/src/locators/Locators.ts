@@ -3,11 +3,11 @@ import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { Locator } from '@gamepark/react-game'
 import { arenaDeckSpotLocator } from './ArenaDeckSpotLocator'
+import { arenaDiscardSpotLocator } from './ArenaDiscardSpotLocator'
 import { busStationBoardSpotLocator } from './BusStationBoardSpotLocatorf'
 import { busTokenSpotBelowBusStationBoardLocator } from './BusTokenSpotBelowBusStationBoardLocator'
-import { currentArenaRowSpotLocator } from './CurrentArenaRowSpotLocator'
+import { currentArenasRowSpotLocator } from './CurrentArenasRowSpotLocator'
 import { hockeyPlayerDeckSpotLocator } from './HockeyPlayerDeckSpotLocator'
-import { hockeyPlayerDiscardSpotLocator } from './HockeyPlayerDiscardSpotLocator'
 import { hockeyPlayerDraftSpotLocator } from './HockeyPlayerDraftSpotLocator'
 import { playerBusTokenReserveSpotLocator } from './PlayerBusTokenReserveSpotLocator'
 import { playerHockeyPlayerHandSpotLocator } from './PlayerHockeyPlayerHandSpotLocator'
@@ -18,11 +18,11 @@ import { tieBreakerCardSpotLocator } from './TieBreakerCardSpotLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<PlayerColor, MaterialType, LocationType>>> = {
   [LocationType.ArenaDeckSpot]: arenaDeckSpotLocator,
+  [LocationType.ArenaDiscardSpot]: arenaDiscardSpotLocator,
   [LocationType.BusStationBoardSpot]: busStationBoardSpotLocator,
   [LocationType.BusTokenSpotBelowBusStationBoard]: busTokenSpotBelowBusStationBoardLocator,
-  [LocationType.CurrentArenasRowSpot]: currentArenaRowSpotLocator,
+  [LocationType.CurrentArenasRowSpot]: currentArenasRowSpotLocator,
   [LocationType.HockeyPlayerDeckSpot]: hockeyPlayerDeckSpotLocator,
-  [LocationType.HockeyPlayerDiscardSpot]: hockeyPlayerDiscardSpotLocator,
   [LocationType.HockeyPlayerDraftSpot]: hockeyPlayerDraftSpotLocator,
   [LocationType.PlayerBusTokenReserveSpot]: playerBusTokenReserveSpotLocator,
   [LocationType.PlayerHockeyPlayerHandSpot]: playerHockeyPlayerHandSpotLocator,

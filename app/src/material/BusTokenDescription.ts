@@ -61,4 +61,4 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
   }
 }
 
-export const busTokenDrescription = new BusTokenDescription()
+export const busTokenDescription = new BusTokenDescription()
