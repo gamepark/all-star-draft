@@ -42,7 +42,8 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
     ]
   }
 
-  return coordinatesMap[playerCount][index]
+  const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3]
+  return coordArray[index]
 }
 
 class PlayerHockeyPlayerTeamSpotLocator extends PileLocator<PlayerColor, MaterialType, LocationType> {
@@ -51,7 +52,8 @@ class PlayerHockeyPlayerTeamSpotLocator extends PileLocator<PlayerColor, Materia
 
   getRotateZ(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
-    const angleArray = teamRotationMap[context.rules.players.length]
+    const playerCount = context.rules.players.length
+    const angleArray = teamRotationMap[playerCount] ?? teamRotationMap[3]
     return angleArray[index]
   }
 

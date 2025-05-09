@@ -50,12 +50,16 @@ const coordinatesMap: Record<number, { x: number; y: number }[]> = {
 class PlayerPlayoffTicketTokenSpotLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
   getRotateZ(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
-    return rotationMap[context.rules.players.length][index]
+    const playerCount = context.rules.players.length
+    const rotationArray = rotationMap[playerCount] ?? rotationMap[3]
+    return rotationArray[index]
   }
 
   getGap(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
-    return gapMap[context.rules.players.length][index]
+    const playerCount = context.rules.players.length
+    const gapArray = gapMap[playerCount] ?? gapMap[3] 
+    return gapArray[index]
   }
 
   getCoordinates(
@@ -63,7 +67,9 @@ class PlayerPlayoffTicketTokenSpotLocator extends ListLocator<PlayerColor, Mater
     context: MaterialContext<number, MaterialType, LocationType>
   ): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
-    return coordinatesMap[context.rules.players.length][index]
+    const playerCount = context.rules.players.length
+    const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3] 
+    return coordArray[index]
   }
 }
 

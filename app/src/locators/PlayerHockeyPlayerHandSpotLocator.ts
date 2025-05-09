@@ -48,13 +48,15 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
 
   getBaseAngle(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
-    const angleArray = baseAngleMap[context.rules.players.length]
+    const playerCount = context.rules.players.length
+    const angleArray = baseAngleMap[playerCount] ?? baseAngleMap[3]
     return angleArray[index]
   }
 
   getCoordinates(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
-    const coordArray = coordinatesMap[context.rules.players.length]
+    const playerCount = context.rules.players.length
+    const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3]
     return coordArray[index]
   }
 }

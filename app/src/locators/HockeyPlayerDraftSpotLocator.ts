@@ -46,7 +46,8 @@ class HockeyPlayerDraftSpotLocator extends PileLocator<PlayerColor, MaterialType
 
   getRotateZ(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
-    const rotationArray = rotationMap[context.rules.players.length]
+    const playerCount = context.rules.players.length
+    const rotationArray = rotationMap[playerCount] ?? rotationMap[3]
     return rotationArray[index]
   }
 
@@ -55,7 +56,8 @@ class HockeyPlayerDraftSpotLocator extends PileLocator<PlayerColor, MaterialType
     context: MaterialContext<number, MaterialType, LocationType>
   ): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
-    const coordArray = coordinatesMap[context.rules.players.length]
+    const playerCount = context.rules.players.length
+    const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3]
     return coordArray[index]
   }
 }
