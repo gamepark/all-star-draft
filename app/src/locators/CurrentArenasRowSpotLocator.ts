@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { ListLocator } from '@gamepark/react-game'
 
 class CurrentArenasRowSpotLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: 6, y: -11 }
+  coordinates = { x: 12, y: -11 }
   gap = { y: 10 }
 }
 

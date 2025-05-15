@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { DeckLocator } from '@gamepark/react-game'
 
 class ArenaDeckSpotLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: -28, y: -11 }
+  coordinates = { x: -22, y: -11 }
 }
 
 export const arenaDeckSpotLocator = new ArenaDeckSpotLocator()

@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { Locator } from '@gamepark/react-game'
 
 class PlayoffPointCardSpotLocator extends Locator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: 35, y: -2 }
+  coordinates = { x: 29, y: 12 }
 }
 
 export const playoffPointCardSpotLocator = new PlayoffPointCardSpotLocator()
