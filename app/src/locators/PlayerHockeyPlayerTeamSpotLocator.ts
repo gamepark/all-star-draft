@@ -20,8 +20,8 @@ const gapMap: Record<number, Partial<Coordinates>[]> = {
 
 const getTeamCoordinates = (playerCount: number, index: number, teamNumber: number): Partial<Coordinates> => {
   const teamSpread = 6 // Total width of a team
-  const teamGap = 4 // Gap between teams
-  const locatorOffset = (3 * teamSpread + 3 * teamGap) / 2 // Used to center the teams on the player hand
+  const teamGap = 6 // Gap between teams
+  const locatorOffset = (3 * teamSpread + 2 * teamGap) / 2 // Used to center the teams on the player hand
   const teamCoordinates = (teamNumber: number) => -locatorOffset + teamNumber * (teamGap + teamSpread)
   const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     6: [

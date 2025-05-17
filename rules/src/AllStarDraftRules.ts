@@ -7,6 +7,7 @@ import {
   MaterialMove,
   PositiveSequenceStrategy,
   SecretMaterialRules,
+  StackingStrategy,
   TimeLimit
 } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
@@ -45,12 +46,14 @@ export class AllStarDraftRules
       [LocationType.CurrentArenasRowSpot]: new FillGapStrategy()
     },
     [MaterialType.BusToken]: {
+      [LocationType.BusTokenSpotBelowBusStationBoard]: new StackingStrategy(),
       [LocationType.PlayerBusTokenReserveSpot]: new PositiveSequenceStrategy()
     },
     [MaterialType.HockeyPlayerCard]: {
       [LocationType.HockeyPlayerDeckSpot]: new PositiveSequenceStrategy(),
       [LocationType.HockeyPlayerDraftSpot]: new PositiveSequenceStrategy(),
-      [LocationType.PlayerHockeyPlayerHandSpot]: new PositiveSequenceStrategy()
+      [LocationType.PlayerHockeyPlayerHandSpot]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerHockeyPlayerTeamSpot]: new PositiveSequenceStrategy()
     },
     [MaterialType.PlayoffTicketToken]: {
       [LocationType.PlayerPlayoffTicketTokenSpot]: new PositiveSequenceStrategy()
