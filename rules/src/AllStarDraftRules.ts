@@ -1,4 +1,15 @@
-import { MaterialGame, MaterialMove, MaterialRules, TimeLimit } from '@gamepark/rules-api'
+import {
+  FillGapStrategy,
+  hideFrontToOthers,
+  hideItemId,
+  hideItemIdToOthers,
+  MaterialGame,
+  MaterialMove,
+  PositiveSequenceStrategy,
+  SecretMaterialRules,
+  StackingStrategy,
+  TimeLimit
+} from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -10,9 +21,45 @@ import { RuleId } from './rules/RuleId'
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
 export class AllStarDraftRules
-  extends MaterialRules<PlayerColor, MaterialType, LocationType>
+  extends SecretMaterialRules<PlayerColor, MaterialType, LocationType>
   implements TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
 {
+  hidingStrategies = {
+    [MaterialType.ArenaCard]: {
+      [LocationType.ArenaDeckSpot]: hideItemId
+    },
+    [MaterialType.BusToken]: {
+      [LocationType.PlayerBusTokenReserveSpot]: hideFrontToOthers
+    },
+    [MaterialType.HockeyPlayerCard]: {
+      [LocationType.HockeyPlayerDeckSpot]: hideItemId,
+      [LocationType.HockeyPlayerDraftSpot]: hideItemIdToOthers,
+      [LocationType.PlayerHockeyPlayerHandSpot]: hideItemIdToOthers,
+      [LocationType.PlayerHockeyPlayerTeamSpot]: hideItemIdToOthers
+    }
+  }
+
+  locationsStrategies = {
+    [MaterialType.ArenaCard]: {
+      [LocationType.ArenaDeckSpot]: new PositiveSequenceStrategy(),
+      [LocationType.ArenaDiscardSpot]: new PositiveSequenceStrategy(),
+      [LocationType.CurrentArenasRowSpot]: new FillGapStrategy()
+    },
+    [MaterialType.BusToken]: {
+      [LocationType.BusTokenSpotBelowBusStationBoard]: new StackingStrategy(),
+      [LocationType.PlayerBusTokenReserveSpot]: new PositiveSequenceStrategy()
+    },
+    [MaterialType.HockeyPlayerCard]: {
+      [LocationType.HockeyPlayerDeckSpot]: new PositiveSequenceStrategy(),
+      [LocationType.HockeyPlayerDraftSpot]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerHockeyPlayerHandSpot]: new PositiveSequenceStrategy(),
+      [LocationType.PlayerHockeyPlayerTeamSpot]: new PositiveSequenceStrategy()
+    },
+    [MaterialType.PlayoffTicketToken]: {
+      [LocationType.PlayerPlayoffTicketTokenSpot]: new PositiveSequenceStrategy()
+    }
+  }
+
   rules = {
     [RuleId.TheFirstStep]: TheFirstStepRule
   }
