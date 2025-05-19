@@ -147,5 +147,15 @@ export const getHockeyPlayerCardIcon = (cardId: HockeyPlayerCard): HockeyPlayerC
 
 export const hockeyPlayerCardsBySpecies = hockeyPlayerCardSpeciesTypes.reduce(
   (previousRecord, currentType) => ({ ...previousRecord, [currentType]: hockeyPlayerCards.slice((currentType - 1) * 10, 10 * currentType) }),
-  {}
+  {} as Record<HockeyPlayerCardSpeciesType, HockeyPlayerCard[]>
 )
+
+export const selectHockeyPlayerCardsForRandomSpecies = (quantity: number): HockeyPlayerCard[] => {
+  const selectedSpecies = []
+  for (let i = 0; i < quantity; i++) {
+    const randomIndex = Math.floor(Math.random() * hockeyPlayerCardSpeciesTypes.length)
+    const species = hockeyPlayerCardSpeciesTypes.splice(randomIndex, 1)[0]
+    selectedSpecies.push(species)
+  }
+  return selectedSpecies.flatMap((specie) => hockeyPlayerCardsBySpecies[specie])
+}
