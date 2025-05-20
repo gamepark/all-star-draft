@@ -1,4 +1,5 @@
 import { getEnumValues } from '@gamepark/rules-api'
+import { sampleSize } from 'lodash'
 
 export enum HockeyPlayerCard {
   Beaver1 = 112,
@@ -151,11 +152,5 @@ export const hockeyPlayerCardsBySpecies = hockeyPlayerCardSpeciesTypes.reduce(
 )
 
 export const selectHockeyPlayerCardsForRandomSpecies = (quantity: number): HockeyPlayerCard[] => {
-  const selectedSpecies = []
-  for (let i = 0; i < quantity; i++) {
-    const randomIndex = Math.floor(Math.random() * hockeyPlayerCardSpeciesTypes.length)
-    const species = hockeyPlayerCardSpeciesTypes.splice(randomIndex, 1)[0]
-    selectedSpecies.push(species)
-  }
-  return selectedSpecies.flatMap((specie) => hockeyPlayerCardsBySpecies[specie])
+  return sampleSize(hockeyPlayerCardSpeciesTypes, quantity).flatMap((specie) => hockeyPlayerCardsBySpecies[specie])
 }

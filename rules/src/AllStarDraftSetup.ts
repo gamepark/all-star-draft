@@ -17,11 +17,11 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
 
   setupMaterial(_options: AllStarDraftOptions) {
     console.log('Setting up')
-    this.SetupCards()
-    this.SetupTokens()
+    this.setupCards()
+    this.setupTokens()
   }
 
-  SetupCards() {
+  setupCards() {
     const availableArenaCards = this.rules.players.length === 2 ? arenaCardsForTwoPlayers : arenaCards
     this.material(MaterialType.ArenaCard).createItemsAtOnce(
       availableArenaCards.map((card) => ({
@@ -43,7 +43,7 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
     this.material(MaterialType.ArenaCard).location(LocationType.ArenaDeckSpot).shuffle()
   }
 
-  SetupTokens() {
+  setupTokens() {
     this.rules.players.forEach((playerColor) => {
       this.material(MaterialType.BusToken).createItems(
         busTokensByPlayerColor[playerColor].map((bus) => ({
