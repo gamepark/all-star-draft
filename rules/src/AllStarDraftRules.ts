@@ -13,7 +13,7 @@ import {
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
-import { DraftRoundSetupDrawArenaCardsRule } from './rules/DraftRoundSetupDrawCardsRule'
+import { DraftRoundSetupDrawCardsRule } from './rules/DraftRoundSetupDrawCardsRule'
 import { RuleId } from './rules/RuleId'
 
 /**
@@ -25,7 +25,7 @@ export class AllStarDraftRules
   implements TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
 {
   rules = {
-    [RuleId.DraftRoundSetupDrawArenaCards]: DraftRoundSetupDrawArenaCardsRule
+    [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsRule
   }
 
   hidingStrategies = {

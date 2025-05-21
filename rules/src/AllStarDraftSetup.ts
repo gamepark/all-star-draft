@@ -22,7 +22,7 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   }
 
   start() {
-    this.startPlayerTurn(RuleId.DraftRoundSetupDrawArenaCards)
+    this.startPlayerTurn(RuleId.DraftRoundSetupDrawCards)
   }
 
   setupCards() {

@@ -58,7 +58,7 @@ class PlayerPlayoffTicketTokenSpotLocator extends ListLocator<PlayerColor, Mater
   getGap(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
-    const gapArray = gapMap[playerCount] ?? gapMap[3] 
+    const gapArray = gapMap[playerCount] ?? gapMap[3]
     return gapArray[index]
   }
 
@@ -68,7 +68,7 @@ class PlayerPlayoffTicketTokenSpotLocator extends ListLocator<PlayerColor, Mater
   ): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
-    const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3] 
+    const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3]
     return coordArray[index]
   }
 }

@@ -48,7 +48,7 @@ class HockeyPlayerDraftSpotLocator extends HandLocator<PlayerColor, MaterialType
 
   getMaxAngle(location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
-    return index === 0 ? 10 : 3 
+    return index === 0 ? 10 : 3
   }
 
   getBaseAngle(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
