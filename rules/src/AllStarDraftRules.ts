@@ -15,6 +15,7 @@ import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
 import { DraftRoundSetupDrawCardsRule } from './rules/DraftRoundSetupDrawCardsRule'
 import { RuleId } from './rules/RuleId'
+import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
 
 /**
  * This class implements the rules of the board game.
@@ -25,7 +26,8 @@ export class AllStarDraftRules
   implements TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
 {
   rules = {
-    [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsRule
+    [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsRule,
+    [RuleId.DraftRoundPhaseCardSelection]: DraftRoundPhaseCardSelectionRule
   }
 
   hidingStrategies = {

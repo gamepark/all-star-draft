@@ -147,7 +147,7 @@ export const getHockeyPlayerCardValue = (cardId: HockeyPlayerCard): number => Ma
 export const getHockeyPlayerCardIcon = (cardId: HockeyPlayerCard): HockeyPlayerCardIconsType => cardId % 10
 
 export const hockeyPlayerCardsBySpecies = hockeyPlayerCardSpeciesTypes.reduce(
-  (previousRecord, currentType) => ({ ...previousRecord, [currentType]: hockeyPlayerCards.slice((currentType - 1) * 10, 10 * currentType) }),
+  (previousRecord, currentType) => ({ ...previousRecord, [currentType]: hockeyPlayerCards.slice((currentType - 1) * 9, 9 * currentType) }),
   {} as Record<HockeyPlayerCardSpeciesType, HockeyPlayerCard[]>
 )
 

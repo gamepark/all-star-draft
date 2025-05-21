@@ -13,7 +13,7 @@ const baseAngleMap: Record<number, number[]> = {
 
 const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
   6: [
-    { x: 24, y: 39 },
+    { x: 30, y: 39 },
     { x: -69, y: 38 },
     { x: -69, y: -8 },
     { x: -24, y: -39 },
@@ -21,34 +21,33 @@ const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
     { x: 69, y: 8 }
   ],
   5: [
-    { x: 24, y: 39 },
+    { x: 30, y: 39 },
     { x: -69, y: 24 },
     { x: -24, y: -39 },
     { x: 69, y: -38 },
     { x: 69, y: 8 }
   ],
   4: [
-    { x: 24, y: 39 },
+    { x: 30, y: 39 },
     { x: -69, y: 24 },
     { x: -24, y: -39 },
     { x: 69, y: -24 }
   ],
   3: [
-    { x: 24, y: 39 },
+    { x: 30, y: 39 },
     { x: -24, y: -39 },
     { x: 69, y: -24 }
   ]
 }
 
 class HockeyPlayerDraftSpotLocator extends HandLocator<PlayerColor, MaterialType, LocationType> {
-  radius = 50
-  maxAngle = 10
-  gapMaxAngle = 2
+  radius = 75
+  gapMaxAngle = 3
   clockwise = true
 
   getMaxAngle(location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
-    return index === 0 ? 10 : 3
+    return index === 0 ? 18 : 3 
   }
 
   getBaseAngle(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
