@@ -12,6 +12,7 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     const currentArenasNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).getItems().length
+    const hockeyCardsDeck = this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDeckSpot).deck()
     moves.push(
       this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).moveItemsAtOnce({
         type: LocationType.ArenaDiscardSpot
@@ -29,12 +30,13 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
         .fill(1)
         .flatMap((_) =>
           this.game.players.map((player) =>
-            this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDeckSpot).deck().dealOne({
+            hockeyCardsDeck.dealOne({
               type: LocationType.HockeyPlayerDraftSpot,
               player: player
             })
           )
-        )
+        ),
+      this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseCardSelection)
     )
     return moves
   }

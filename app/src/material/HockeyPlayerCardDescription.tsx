@@ -2,7 +2,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
-import { CardDescription } from '@gamepark/react-game'
+import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
 import Beaver1 from '../images/Cards/Hockeyer/Beaver1.jpg'
 import Beaver2 from '../images/Cards/Hockeyer/Beaver2.jpg'
 import Beaver3 from '../images/Cards/Hockeyer/Beaver3.jpg'
@@ -112,6 +112,11 @@ import Wolf7 from '../images/Cards/Hockeyer/Wolf7.jpg'
 import Wolf8 from '../images/Cards/Hockeyer/Wolf8.jpg'
 import Wolf9 from '../images/Cards/Hockeyer/Wolf9.jpg'
 import HockeyPlayerCardBack from '../images/Cards/Hockeyer/HockeyPlayerCardBack.jpg'
+import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { ReactNode } from 'react'
+import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
 
 class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, HockeyPlayerCard> {
   height = 8.7
@@ -227,6 +232,50 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     [HockeyPlayerCard.Wolf9]: Wolf9
   }
   backImage = HockeyPlayerCardBack
+
+  getItemMenu(
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ): ReactNode {
+    if (
+      context.rules.game.rule?.id === RuleId.DraftRoundPhaseCardSelection &&
+      context.player !== undefined &&
+      item.location.player === context.player &&
+      item.location.type === LocationType.HockeyPlayerDraftSpot
+    ) {
+      const currentItemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
+      // const totalNumberOfCardInDraft = context.rules.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).length
+      const currentItemLocation = item.location.x ?? 0
+      const movesForThisItem = legalMoves
+        .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+        .filter((move) => move.itemIndex === currentItemIndex)
+      if (movesForThisItem.length > 0) {
+        return (
+          <>
+            {movesForThisItem.map((move, moveIndex) => (
+              <ItemMenuButton key={`draft-card-move-${moveIndex}`} move={move} angle={-60 + 3 * currentItemLocation} radius={2}>
+                <FontAwesomeIcon icon={faHandPointer} size="lg" />
+              </ItemMenuButton>
+            ))}
+            {this.getHelpButton(item, context, { angle: -130 + 3 * currentItemLocation, radius: 2, label: <></> })}
+          </>
+        )
+      }
+    }
+    return undefined
+  }
+
+  isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (
+      context.rules.game.rule?.id === RuleId.DraftRoundPhaseCardSelection &&
+      context.player !== undefined &&
+      item.location.type === LocationType.HockeyPlayerDraftSpot
+    ) {
+      return item.location.player === context.player
+    }
+    return false
+  }
 }
 
 export const hockeyPlayerCardDrescription = new HockeyPlayerCardDescription()

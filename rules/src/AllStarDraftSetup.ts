@@ -8,6 +8,7 @@ import { RuleId } from './rules/RuleId'
 import { arenaCards, arenaCardsForTwoPlayers } from './material/ArenaCard'
 import { selectHockeyPlayerCardsForRandomSpecies } from './material/HockeyPlayerCard'
 import { busTokensByPlayerColor } from './material/BusToken'
+import { Memorize } from './Memorize'
 
 /**
  * This class creates a new Game based on the game options
@@ -19,6 +20,7 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
     console.log('Setting up')
     this.setupCards()
     this.setupTokens()
+    this.game.players.forEach((player) => this.memorize<number>(Memorize.Score, 0, player))
   }
 
   start() {
