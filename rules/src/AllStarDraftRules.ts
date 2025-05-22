@@ -13,7 +13,7 @@ import {
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
-import { TheFirstStepRule } from './rules/TheFirstStepRule'
+import { DraftRoundSetupDrawCardsRule } from './rules/DraftRoundSetupDrawCardsRule'
 import { RuleId } from './rules/RuleId'
 
 /**
@@ -24,6 +24,10 @@ export class AllStarDraftRules
   extends SecretMaterialRules<PlayerColor, MaterialType, LocationType>
   implements TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
 {
+  rules = {
+    [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsRule
+  }
+
   hidingStrategies = {
     [MaterialType.ArenaCard]: {
       [LocationType.ArenaDeckSpot]: hideItemId
@@ -58,10 +62,6 @@ export class AllStarDraftRules
     [MaterialType.PlayoffTicketToken]: {
       [LocationType.PlayerPlayoffTicketTokenSpot]: new PositiveSequenceStrategy()
     }
-  }
-
-  rules = {
-    [RuleId.TheFirstStep]: TheFirstStepRule
   }
 
   giveTime(): number {

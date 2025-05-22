@@ -21,6 +21,10 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
     this.setupTokens()
   }
 
+  start() {
+    this.startPlayerTurn(RuleId.DraftRoundSetupDrawCards)
+  }
+
   setupCards() {
     const availableArenaCards = this.rules.players.length === 2 ? arenaCardsForTwoPlayers : arenaCards
     this.material(MaterialType.ArenaCard).createItemsAtOnce(
@@ -62,9 +66,5 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
         })
       }
     })
-  }
-
-  start() {
-    this.startPlayerTurn(RuleId.TheFirstStep, this.players[0])
   }
 }
