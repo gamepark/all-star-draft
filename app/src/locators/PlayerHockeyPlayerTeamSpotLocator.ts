@@ -22,7 +22,7 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
   const teamSpread = 6 // Total width of a team
   const teamGap = 6 // Gap between teams
   const locatorOffset = (3 * teamSpread + 2 * teamGap) / 2 // Used to center the teams on the player hand
-  const teamCoordinates = (teamNumber: number) => -locatorOffset + teamNumber * (teamGap + teamSpread)
+  const teamCoordinates = (teamNumber: number) => -locatorOffset + (teamNumber - 1) * (teamGap + teamSpread)
   const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     6: [
       { x: teamCoordinates(teamNumber), y: 28 },
@@ -74,7 +74,7 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
   getCoordinates(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
-    const teamNumber = location.id ?? 0
+    const teamNumber = location.id ?? 1
     return getTeamCoordinates(playerCount, index, teamNumber)
   }
 }

@@ -42,7 +42,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
         this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseCardSelection)
       ]
     } else {
-      return [this.endGame()]
+      return [this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamExchange)]
     }
   }
 }

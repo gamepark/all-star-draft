@@ -3,6 +3,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { RuleId } from './RuleId'
 import { PlayerColor } from '../PlayerColor'
+import { Memorize } from '../Memorize'
 
 export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   public onRuleStart(
@@ -11,21 +12,17 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
-    const currentArenasNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).getItems().length
     const hockeyCardsDeck = this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDeckSpot).deck()
     moves.push(
       this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).moveItemsAtOnce({
         type: LocationType.ArenaDiscardSpot
       }),
-      ...this.material(MaterialType.ArenaCard)
-        .location(LocationType.ArenaDeckSpot)
-        .deck()
-        .deal(
-          {
-            type: LocationType.CurrentArenasRowSpot
-          },
-          currentArenasNumber + 1
-        ),
+      ...this.material(MaterialType.ArenaCard).location(LocationType.ArenaDeckSpot).deck().deal(
+        {
+          type: LocationType.CurrentArenasRowSpot
+        },
+        this.remind<number>(Memorize.RoundNumber)
+      ),
       ...Array(6)
         .fill(1)
         .flatMap((_) =>
