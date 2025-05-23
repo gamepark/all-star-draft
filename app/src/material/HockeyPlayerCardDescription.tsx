@@ -2,7 +2,8 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
-import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { HockeyPlayerCardRotation } from '@gamepark/all-star-draft/material/HockeyPlayerCardRotation'
+import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
 import Beaver1 from '../images/Cards/Hockeyer/Beaver1.jpg'
 import Beaver2 from '../images/Cards/Hockeyer/Beaver2.jpg'
 import Beaver3 from '../images/Cards/Hockeyer/Beaver3.jpg'
@@ -238,43 +239,54 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode {
-    if (
-      context.rules.game.rule?.id === RuleId.DraftRoundPhaseCardSelection &&
-      context.player !== undefined &&
-      item.location.player === context.player &&
-      item.location.type === LocationType.HockeyPlayerDraftSpot
-    ) {
-      const currentItemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
-      // const totalNumberOfCardInDraft = context.rules.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).length
-      const currentItemLocation = item.location.x ?? 0
-      const movesForThisItem = legalMoves
-        .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
-        .filter((move) => move.itemIndex === currentItemIndex)
-      if (movesForThisItem.length > 0) {
-        return (
-          <>
-            {movesForThisItem.map((move, moveIndex) => (
-              <ItemMenuButton key={`draft-card-move-${moveIndex}`} move={move} angle={-60 + 3 * currentItemLocation} radius={2}>
-                <FontAwesomeIcon icon={faHandPointer} size="lg" />
-              </ItemMenuButton>
-            ))}
-            {this.getHelpButton(item, context, { angle: -130 + 3 * currentItemLocation, radius: 2, label: <></> })}
-          </>
-        )
+    if (context.player !== undefined && item.location.player === context.player) {
+      const ruleId = context.rules.game.rule?.id
+      const locationType = item.location.type
+      if (
+        (ruleId === RuleId.DraftRoundPhaseCardSelection && locationType === LocationType.HockeyPlayerDraftSpot) ||
+        (ruleId === RuleId.DraftRoundPhaseTeamCreation && locationType === LocationType.PlayerHockeyPlayerHandSpot)
+      ) {
+        const currentItemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
+        const currentItemLocation = item.location.x ?? 0
+        const movesForThisItem = legalMoves
+          .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+          .filter((move) => move.itemIndex === currentItemIndex)
+        if (movesForThisItem.length > 0) {
+          return (
+            <>
+              {movesForThisItem.map((move, moveIndex) => (
+                <ItemMenuButton key={`draft-card-move-${moveIndex}`} move={move} angle={-60 + 3 * currentItemLocation} radius={2}>
+                  <FontAwesomeIcon icon={faHandPointer} size="lg" />
+                </ItemMenuButton>
+              ))}
+              {this.getHelpButton(item, context, { angle: -130 + 3 * currentItemLocation, radius: 2, label: <></> })}
+            </>
+          )
+        }
       }
     }
     return undefined
   }
 
   isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
-    if (
-      context.rules.game.rule?.id === RuleId.DraftRoundPhaseCardSelection &&
-      context.player !== undefined &&
-      item.location.type === LocationType.HockeyPlayerDraftSpot
-    ) {
-      return item.location.player === context.player
+    if (context.player !== undefined) {
+      const ruleId = context.rules.game.rule?.id
+      const locationType = item.location.type
+      if (
+        (ruleId === RuleId.DraftRoundPhaseCardSelection && locationType === LocationType.HockeyPlayerDraftSpot) ||
+        (ruleId === RuleId.DraftRoundPhaseTeamCreation && locationType === LocationType.PlayerHockeyPlayerHandSpot)
+      ) {
+        return item.location.player === context.player
+      }
     }
     return false
+  }
+
+  isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (context.player !== undefined && item.location?.rotation === HockeyPlayerCardRotation.FaceDown) {
+      return true
+    }
+    return super.isFlippedOnTable(item, context)
   }
 }
 

@@ -17,10 +17,12 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   Rules = AllStarDraftRules
 
   setupMaterial(_options: AllStarDraftOptions) {
-    console.log('Setting up')
     this.setupCards()
     this.setupTokens()
-    this.game.players.forEach((player) => this.memorize<number>(Memorize.Score, 0, player))
+    this.memorize<number>(Memorize.RoundNumber, 1)
+    this.game.players.forEach((player) => {
+      this.memorize<number>(Memorize.Score, 0, player)
+    })
   }
 
   start() {
