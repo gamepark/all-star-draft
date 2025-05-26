@@ -12,20 +12,21 @@ const teamRotationMap: Record<number, number[]> = {
 }
 
 const gapMap: Record<number, Partial<Coordinates>[]> = {
-  6: [{ x: 1.2 }, { y: 1.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
-  5: [{ x: 1.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
-  4: [{ x: 1.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }],
-  3: [{ x: 1.2 }, { x: -1.2 }, { y: -1.2 }]
+  6: [{ x: 2.2 }, { y: 1.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
+  5: [{ x: 2.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
+  4: [{ x: 2.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }],
+  3: [{ x: 2.2 }, { x: -1.2 }, { y: -1.2 }]
 }
 
 const getTeamCoordinates = (playerCount: number, index: number, teamNumber: number): Partial<Coordinates> => {
-  const teamSpread = 6 // Total width of a team
+  const teamSpread = (gapMap[playerCount] ?? gapMap[3])[index].x! * 5 // Total width of a team
   const teamGap = 6 // Gap between teams
   const locatorOffset = (3 * teamSpread + 2 * teamGap) / 2 // Used to center the teams on the player hand
   const teamCoordinates = (teamNumber: number) => -locatorOffset + (teamNumber - 1) * (teamGap + teamSpread)
+  const teamCoordinatesForUser = (teamNumber: number) => -locatorOffset + (teamNumber - 1) * (teamGap + teamSpread)
   const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     6: [
-      { x: teamCoordinates(teamNumber), y: 28 },
+      { x: teamCoordinatesForUser(teamNumber), y: 28 },
       { x: -58, y: 20 + teamCoordinates(teamNumber) },
       { x: -58, y: -26 + teamCoordinates(teamNumber) },
       { x: -teamCoordinates(teamNumber), y: -28 },
@@ -33,20 +34,20 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
       { x: 58, y: 26 - teamCoordinates(teamNumber) }
     ],
     5: [
-      { x: teamCoordinates(teamNumber), y: 28 },
+      { x: teamCoordinatesForUser(teamNumber), y: 28 },
       { x: -58, y: teamCoordinates(teamNumber) },
       { x: -teamCoordinates(teamNumber), y: -28 },
       { x: 58, y: -20 - teamCoordinates(teamNumber) },
       { x: 58, y: 26 - teamCoordinates(teamNumber) }
     ],
     4: [
-      { x: teamCoordinates(teamNumber), y: 28 },
+      { x: teamCoordinatesForUser(teamNumber), y: 28 },
       { x: -58, y: teamCoordinates(teamNumber) },
       { x: -teamCoordinates(teamNumber), y: -28 },
       { x: 58, y: -teamCoordinates(teamNumber) }
     ],
     3: [
-      { x: teamCoordinates(teamNumber), y: 28 },
+      { x: teamCoordinatesForUser(teamNumber), y: 28 },
       { x: -teamCoordinates(teamNumber), y: -28 },
       { x: 58, y: -teamCoordinates(teamNumber) }
     ]

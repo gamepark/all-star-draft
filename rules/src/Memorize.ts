@@ -1,4 +1,5 @@
 export enum Memorize {
   Score = 1,
-  RoundNumber
+  RoundNumber,
+  CurrentTeamNumber
 }
