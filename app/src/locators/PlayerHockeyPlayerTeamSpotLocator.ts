@@ -18,38 +18,44 @@ const gapMap: Record<number, Partial<Coordinates>[]> = {
   3: [{ x: 2.2 }, { x: -1.2 }, { y: -1.2 }]
 }
 
+const teamGapMap: Record<number, number[]> = {
+  6: [6, 6, 6, -6, -6, -6],
+  5: [6, 6, -6, -6, -6],
+  4: [6, 6, -6, -6],
+  3: [6, -6, -6]
+}
+
 const getTeamCoordinates = (playerCount: number, index: number, teamNumber: number): Partial<Coordinates> => {
-  const teamSpread = (gapMap[playerCount] ?? gapMap[3])[index].x! * 5 // Total width of a team
-  const teamGap = 6 // Gap between teams
+  const teamSpread = ((gapMap[playerCount] ?? gapMap[3])[index].x ?? (gapMap[playerCount] ?? gapMap[3])[index].y)! * 5 // Total width of a team
+  const teamGap = (teamGapMap[playerCount] ?? teamGapMap[3])[index] // Gap between teams
   const locatorOffset = (3 * teamSpread + 2 * teamGap) / 2 // Used to center the teams on the player hand
   const teamCoordinates = (teamNumber: number) => -locatorOffset + (teamNumber - 1) * (teamGap + teamSpread)
-  const teamCoordinatesForUser = (teamNumber: number) => -locatorOffset + (teamNumber - 1) * (teamGap + teamSpread)
   const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     6: [
-      { x: teamCoordinatesForUser(teamNumber), y: 28 },
+      { x: teamCoordinates(teamNumber), y: 28 },
       { x: -58, y: 20 + teamCoordinates(teamNumber) },
       { x: -58, y: -26 + teamCoordinates(teamNumber) },
-      { x: -teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: -20 - teamCoordinates(teamNumber) },
-      { x: 58, y: 26 - teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber), y: -28 },
+      { x: 58, y: -20 + teamCoordinates(teamNumber) },
+      { x: 58, y: 26 + teamCoordinates(teamNumber) }
     ],
     5: [
-      { x: teamCoordinatesForUser(teamNumber), y: 28 },
+      { x: teamCoordinates(teamNumber), y: 28 },
       { x: -58, y: teamCoordinates(teamNumber) },
-      { x: -teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: -20 - teamCoordinates(teamNumber) },
-      { x: 58, y: 26 - teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber), y: -28 },
+      { x: 58, y: -20 + teamCoordinates(teamNumber) },
+      { x: 58, y: 26 + teamCoordinates(teamNumber) }
     ],
     4: [
-      { x: teamCoordinatesForUser(teamNumber), y: 28 },
+      { x: teamCoordinates(teamNumber), y: 28 },
       { x: -58, y: teamCoordinates(teamNumber) },
-      { x: -teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: -teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber), y: -28 },
+      { x: 58, y: teamCoordinates(teamNumber) }
     ],
     3: [
-      { x: teamCoordinatesForUser(teamNumber), y: 28 },
-      { x: -teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: -teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber), y: 28 },
+      { x: teamCoordinates(teamNumber), y: -28 },
+      { x: 58, y: teamCoordinates(teamNumber) }
     ]
   }
 
