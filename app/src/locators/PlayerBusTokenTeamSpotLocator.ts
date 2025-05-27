@@ -28,7 +28,7 @@ const teamGapMap: Record<number, number[]> = {
 const getTeamCoordinates = (playerCount: number, index: number, teamNumber: number): Partial<Coordinates> => {
   const teamSpread = ((gapMap[playerCount] ?? gapMap[3])[index].x ?? (gapMap[playerCount] ?? gapMap[3])[index].y)! * 5 // Total width of a team
   const teamGap = (teamGapMap[playerCount] ?? teamGapMap[3])[index] // Gap between teams
-  const locatorOffset = (3 * teamSpread + 2 * teamGap) / 2 // Used to center the teams on the player hand
+  const locatorOffset = (3 * teamSpread + 2 * teamGap) / 2 - (teamSpread / 5) * 4 // Used to center the bus on the front card of the team
   const teamCoordinates = (teamNumber: number) => -locatorOffset + (teamNumber - 1) * (teamGap + teamSpread)
   const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     6: [
