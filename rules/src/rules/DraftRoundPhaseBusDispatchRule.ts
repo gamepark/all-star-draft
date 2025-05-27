@@ -22,10 +22,9 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
         return busTokenValue((bus.id as KnownBusTokenId).front) <= this.remind(Memorize.RoundNumber)
       })
       .moveItems({
-        type: LocationType.PlayerHockeyPlayerTeamSpot,
+        type: LocationType.PlayerBusTokenTeamSpotLocator,
         player: player,
         id: currentTeamNumber,
-        z: 5
       })
   }
 
