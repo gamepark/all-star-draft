@@ -28,6 +28,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
       this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(move.location.player).locationId(move.location.id)
         .length === 5
     ) {
+      this.memorize(Memorize.CurrentTeamNumber, 1, move.location.player)
       return [this.endPlayerTurn<PlayerColor>(move.location.player)]
     }
     return []
@@ -35,10 +36,6 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
 
   // Todo : Rework when next rule is created
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (this.remind(Memorize.RoundNumber) < 3) {
-      this.memorize<number>(Memorize.RoundNumber, (roundNumber) => roundNumber + 1)
-      return [this.startSimultaneousRule(RuleId.DraftRoundSetupDrawCards)]
-    }
-    return [this.endGame()]
+    return [this.startSimultaneousRule(RuleId.DraftRoundPhaseBusDispatch)]
   }
 }

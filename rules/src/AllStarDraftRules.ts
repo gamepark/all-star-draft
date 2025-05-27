@@ -19,6 +19,7 @@ import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSel
 import { DraftRoundPhaseTeamExchangeRule } from './rules/DraftRoundPhaseTeamExchangeRule'
 import { DraftRoundPhaseTeamCreationRule } from './rules/DraftRoundPhaseTeamCreationRule'
 import { hideToOthersWhenRotatedFaceDown } from './material/HideToOthersWhenRotatedFaceDown'
+import { DraftRoundPhaseBusDispatchRule } from './rules/DraftRoundPhaseBusDispatchRule'
 
 /**
  * This class implements the rules of the board game.
@@ -32,7 +33,8 @@ export class AllStarDraftRules
     [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsRule,
     [RuleId.DraftRoundPhaseCardSelection]: DraftRoundPhaseCardSelectionRule,
     [RuleId.DraftRoundPhaseTeamExchange]: DraftRoundPhaseTeamExchangeRule,
-    [RuleId.DraftRoundPhaseTeamCreation]: DraftRoundPhaseTeamCreationRule
+    [RuleId.DraftRoundPhaseTeamCreation]: DraftRoundPhaseTeamCreationRule,
+    [RuleId.DraftRoundPhaseBusDispatch]: DraftRoundPhaseBusDispatchRule
   }
 
   hidingStrategies = {
