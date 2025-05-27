@@ -7,7 +7,7 @@ export enum LocationType {
   HockeyPlayerDeckSpot,
   HockeyPlayerDraftSpot,
   PlayerBusTokenReserveSpot,
-  PlayerBusTokenTeamSpotLocator,
+  PlayerBusTokenTeamSpot,
   PlayerHockeyPlayerHandSpot,
   PlayerHockeyPlayerTeamSpot,
   PlayerPlayoffTicketTokenSpot,

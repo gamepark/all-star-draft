@@ -42,7 +42,8 @@ export class AllStarDraftRules
       [LocationType.ArenaDeckSpot]: hideItemId
     },
     [MaterialType.BusToken]: {
-      [LocationType.PlayerBusTokenReserveSpot]: hideFrontToOthers
+      [LocationType.PlayerBusTokenReserveSpot]: hideFrontToOthers,
+      [LocationType.PlayerBusTokenTeamSpot]: hideToOthersWhenRotatedFaceDown
     },
     [MaterialType.HockeyPlayerCard]: {
       [LocationType.HockeyPlayerDeckSpot]: hideItemId,

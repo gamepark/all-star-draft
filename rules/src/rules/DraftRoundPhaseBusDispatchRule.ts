@@ -22,7 +22,7 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
         return busTokenValue((bus.id as KnownBusTokenId).front) <= this.remind(Memorize.RoundNumber)
       })
       .moveItems({
-        type: LocationType.PlayerBusTokenTeamSpotLocator,
+        type: LocationType.PlayerBusTokenTeamSpot,
         player: player,
         id: currentTeamNumber,
       })
@@ -33,9 +33,9 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
       const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, _move.location.player)
       const isBusOnTeam =
         this.material(MaterialType.BusToken)
-          .location((location) => location.type === LocationType.PlayerHockeyPlayerTeamSpot && location.id === currentTeamNumber)
-          .player(_move.location.player).length > 0
-      if (_move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && isBusOnTeam) {
+          .location((location) => location.type === LocationType.PlayerBusTokenTeamSpot && location.id === currentTeamNumber)
+          .player(_move.location.player).length === 1
+      if (_move.location.type === LocationType.PlayerBusTokenTeamSpot && isBusOnTeam) {
         if (currentTeamNumber < this.remind<number>(Memorize.RoundNumber)) {
           this.memorize<number>(Memorize.CurrentTeamNumber, (number) => number + 1, _move.location.player)
         } else {

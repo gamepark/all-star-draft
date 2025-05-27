@@ -26,7 +26,7 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.HockeyPlayerDeckSpot]: hockeyPlayerDeckSpotLocator,
   [LocationType.HockeyPlayerDraftSpot]: hockeyPlayerDraftSpotLocator,
   [LocationType.PlayerBusTokenReserveSpot]: playerBusTokenReserveSpotLocator,
-  [LocationType.PlayerBusTokenTeamSpotLocator]: playerBusTokenTeamSpotLocator,
+  [LocationType.PlayerBusTokenTeamSpot]: playerBusTokenTeamSpotLocator,
   [LocationType.PlayerHockeyPlayerHandSpot]: playerHockeyPlayerHandSpotLocator,
   [LocationType.PlayerHockeyPlayerTeamSpot]: playerHockeyPlayerTeamSpotLocator,
   [LocationType.PlayerPlayoffTicketTokenSpot]: playerPlayoffTicketTokenSpotLocator,
