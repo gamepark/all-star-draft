@@ -278,7 +278,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
-    if (context.player !== undefined && item.location?.rotation === HockeyPlayerCardRotation.FaceDown) {
+    if (item.location?.rotation === HockeyPlayerCardRotation.FaceDown) {
       return true
     }
     return super.isFlippedOnTable(item, context)

@@ -5,7 +5,7 @@ import { PlayerColor } from '../PlayerColor'
 import { Memorize } from '../Memorize'
 import { HockeyPlayerCardRotation } from '../material/HockeyPlayerCardRotation'
 import { RuleId } from './RuleId'
-import { CustomMoveType, PassMoveDataType } from '../material/CustomMoveType'
+import { CustomMoveType, isPassCustomMove } from '../material/CustomMoveType'
 
 export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -59,10 +59,9 @@ export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColo
 
   onCustomMove(_move: MaterialMove, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (isCustomMoveType(CustomMoveType.Pass)(_move) && (_move.data as PassMoveDataType).player !== undefined) {
-      const { player } = _move.data as PassMoveDataType
+    if (isPassCustomMove(_move) && _move.data.player !== undefined) {
+      const { player } = _move.data
       const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, player)
-      console.log('Player: ', player, ' and team: ', currentTeamNumber, ' with ', currentTeamNumber < this.remind<number>(Memorize.RoundNumber) - 1)
       if (currentTeamNumber < this.remind<number>(Memorize.RoundNumber) - 1) {
         this.memorize<number>(Memorize.CurrentTeamNumber, (number) => number + 1, player)
       } else {
