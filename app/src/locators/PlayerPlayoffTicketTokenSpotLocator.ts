@@ -20,7 +20,7 @@ const gapMap: Record<number, Partial<Coordinates>[]> = {
 
 const coordinatesMap: Record<number, { x: number; y: number }[]> = {
   6: [
-    { x: 28, y: 25 },
+    { x: 32, y: 25 },
     { x: -55, y: 43 },
     { x: -55, y: -3 },
     { x: -25, y: -25 },
@@ -28,20 +28,20 @@ const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     { x: 55, y: 3 }
   ],
   5: [
-    { x: 28, y: 25 },
+    { x: 32, y: 25 },
     { x: -55, y: 25 },
     { x: -25, y: -25 },
     { x: 55, y: -43 },
     { x: 55, y: 3 }
   ],
   4: [
-    { x: 28, y: 25 },
+    { x: 32, y: 25 },
     { x: -55, y: 25 },
     { x: -25, y: -25 },
     { x: 55, y: -25 }
   ],
   3: [
-    { x: 28, y: 25 },
+    { x: 32, y: 25 },
     { x: -25, y: -25 },
     { x: 55, y: -25 }
   ]
