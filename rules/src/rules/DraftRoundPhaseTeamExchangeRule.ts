@@ -10,7 +10,9 @@ import { CustomMoveType, isPassCustomMove } from '../material/CustomMoveType'
 export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, _player)
-    if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).id(currentTeamNumber).player(_player).length < 5) {
+    if (
+      this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(currentTeamNumber).player(_player).length < 5
+    ) {
       return this.material(MaterialType.HockeyPlayerCard)
         .location((location) => location.type === LocationType.PlayerHockeyPlayerHandSpot)
         .player(_player)
@@ -23,10 +25,14 @@ export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColo
     }
     return [
       this.customMove(CustomMoveType.Pass, { player: _player }),
-      ...this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).id(currentTeamNumber).player(_player).moveItems({
-        type: LocationType.PlayerHockeyPlayerHandSpot,
-        player: _player
-      })
+      ...this.material(MaterialType.HockeyPlayerCard)
+        .location(LocationType.PlayerHockeyPlayerTeamSpot)
+        .locationId(currentTeamNumber)
+        .player(_player)
+        .moveItems({
+          type: LocationType.PlayerHockeyPlayerHandSpot,
+          player: _player
+        })
     ]
   }
 
@@ -35,7 +41,7 @@ export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColo
       const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, _move.location.player)
       const currentCardInTeam = this.material(MaterialType.HockeyPlayerCard)
         .location(LocationType.PlayerHockeyPlayerTeamSpot)
-        .id(currentTeamNumber)
+        .locationId(currentTeamNumber)
         .player(_move.location.player).length
       if (_move.location.type === LocationType.PlayerHockeyPlayerHandSpot && currentCardInTeam < 5) {
         return [this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(_move.location.player).deck().shuffle()]
