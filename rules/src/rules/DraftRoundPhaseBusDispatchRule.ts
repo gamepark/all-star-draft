@@ -24,7 +24,7 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
       .moveItems({
         type: LocationType.PlayerBusTokenTeamSpot,
         player: player,
-        id: currentTeamNumber,
+        id: currentTeamNumber
       })
   }
 
