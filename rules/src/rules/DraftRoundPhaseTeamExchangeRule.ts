@@ -1,4 +1,4 @@
-import { isCustomMoveType, isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
@@ -10,11 +10,7 @@ import { CustomMoveType, isPassCustomMove } from '../material/CustomMoveType'
 export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, _player)
-    if (
-      this.material(MaterialType.HockeyPlayerCard)
-        .location((location) => location.type === LocationType.PlayerHockeyPlayerTeamSpot && location.id === currentTeamNumber)
-        .player(_player).length < 5
-    ) {
+    if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).id(currentTeamNumber).player(_player).length < 5) {
       return this.material(MaterialType.HockeyPlayerCard)
         .location((location) => location.type === LocationType.PlayerHockeyPlayerHandSpot)
         .player(_player)
@@ -27,13 +23,10 @@ export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColo
     }
     return [
       this.customMove(CustomMoveType.Pass, { player: _player }),
-      ...this.material(MaterialType.HockeyPlayerCard)
-        .location((location) => location.type === LocationType.PlayerHockeyPlayerTeamSpot && location.id === currentTeamNumber)
-        .player(_player)
-        .moveItems({
-          type: LocationType.PlayerHockeyPlayerHandSpot,
-          player: _player
-        })
+      ...this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).id(currentTeamNumber).player(_player).moveItems({
+        type: LocationType.PlayerHockeyPlayerHandSpot,
+        player: _player
+      })
     ]
   }
 
@@ -41,7 +34,8 @@ export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColo
     if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(_move) && _move.location.player !== undefined) {
       const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, _move.location.player)
       const currentCardInTeam = this.material(MaterialType.HockeyPlayerCard)
-        .location((location) => location.type === LocationType.PlayerHockeyPlayerTeamSpot && location.id === currentTeamNumber)
+        .location(LocationType.PlayerHockeyPlayerTeamSpot)
+        .id(currentTeamNumber)
         .player(_move.location.player).length
       if (_move.location.type === LocationType.PlayerHockeyPlayerHandSpot && currentCardInTeam < 5) {
         return [this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(_move.location.player).deck().shuffle()]
@@ -58,8 +52,7 @@ export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColo
   }
 
   onCustomMove(_move: MaterialMove, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (isPassCustomMove(_move) && _move.data.player !== undefined) {
+    if (isPassCustomMove(_move)) {
       const { player } = _move.data
       const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, player)
       if (currentTeamNumber < this.remind<number>(Memorize.RoundNumber) - 1) {

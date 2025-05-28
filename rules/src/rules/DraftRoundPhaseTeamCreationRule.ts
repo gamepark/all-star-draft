@@ -25,9 +25,8 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
       move.location.id === this.remind<number>(Memorize.RoundNumber) &&
       move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
       move.location.player !== undefined &&
-      this.material(MaterialType.HockeyPlayerCard).location(
-        (location) => location.player === move.location.player && location.id === move.location.id && location.type === LocationType.PlayerHockeyPlayerTeamSpot
-      ).length === 5
+      this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(move.location.player).id(move.location.id)
+        .length === 5
     ) {
       return [this.endPlayerTurn<PlayerColor>(move.location.player)]
     }
