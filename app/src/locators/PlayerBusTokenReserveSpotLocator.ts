@@ -12,15 +12,15 @@ const rotationMap: Record<number, number[]> = {
 }
 
 const gapMap: Record<number, Partial<Coordinates>[]> = {
-  6: [{ y: 3 }, { x: -3 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
-  5: [{ y: 3 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
-  4: [{ y: 3 }, { x: -3 }, { y: -3 }, { x: 3 }],
-  3: [{ y: 3 }, { y: -3 }, { x: 3 }]
+  6: [{ y: 4 }, { x: -3 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
+  5: [{ y: 4 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
+  4: [{ y: 4 }, { x: -3 }, { y: -3 }, { x: 3 }],
+  3: [{ y: 4 }, { y: -3 }, { x: 3 }]
 }
 
 const coordinatesMap: Record<number, { x: number; y: number }[]> = {
   6: [
-    { x: 28, y: 25 },
+    { x: 28, y: 24 },
     { x: -55, y: 40 },
     { x: -55, y: -6 },
     { x: -22, y: -25 },
@@ -28,20 +28,20 @@ const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     { x: 55, y: 6 }
   ],
   5: [
-    { x: 28, y: 25 },
+    { x: 28, y: 24 },
     { x: -55, y: 22 },
     { x: -22, y: -25 },
     { x: 55, y: -40 },
     { x: 55, y: 6 }
   ],
   4: [
-    { x: 28, y: 25 },
+    { x: 28, y: 24 },
     { x: -55, y: 22 },
     { x: -22, y: -25 },
     { x: 55, y: -22 }
   ],
   3: [
-    { x: 28, y: 25 },
+    { x: 28, y: 24 },
     { x: -22, y: -25 },
     { x: 55, y: -22 }
   ]

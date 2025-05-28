@@ -51,7 +51,7 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
       this.memorize<number>(Memorize.RoundNumber, (roundNumber) => roundNumber + 1)
       return [
         ...this.game.players.map((player) => {
-          return this.material(MaterialType.BusToken).location(LocationType.PlayerHockeyPlayerTeamSpot).player(player).moveItemsAtOnce({
+          return this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenTeamSpot).player(player).moveItemsAtOnce({
             type: LocationType.PlayerBusTokenReserveSpot,
             player: player
           })
