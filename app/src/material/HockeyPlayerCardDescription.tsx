@@ -2,7 +2,8 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
-import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { HockeyPlayerCardRotation } from '@gamepark/all-star-draft/material/HockeyPlayerCardRotation'
+import { CardDescription, ItemButtonProps, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
 import Beaver1 from '../images/Cards/Hockeyer/Beaver1.jpg'
 import Beaver2 from '../images/Cards/Hockeyer/Beaver2.jpg'
 import Beaver3 from '../images/Cards/Hockeyer/Beaver3.jpg'
@@ -238,27 +239,26 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode {
-    if (
-      context.rules.game.rule?.id === RuleId.DraftRoundPhaseCardSelection &&
-      context.player !== undefined &&
-      item.location.player === context.player &&
-      item.location.type === LocationType.HockeyPlayerDraftSpot
-    ) {
+    if (context.player !== undefined && item.location.player === context.player && context.rules.game.rule !== undefined) {
+      const ruleId = context.rules.game.rule.id
+      const locationType = item.location.type
       const currentItemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
-      // const totalNumberOfCardInDraft = context.rules.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).length
       const currentItemLocation = item.location.x ?? 0
       const movesForThisItem = legalMoves
         .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
         .filter((move) => move.itemIndex === currentItemIndex)
-      if (movesForThisItem.length > 0) {
+
+      const props = getMoveButtonPropsIfAny(ruleId, locationType)
+
+      if (movesForThisItem.length > 0 && props !== undefined) {
         return (
           <>
             {movesForThisItem.map((move, moveIndex) => (
-              <ItemMenuButton key={`draft-card-move-${moveIndex}`} move={move} angle={-60 + 3 * currentItemLocation} radius={2}>
+              <ItemMenuButton key={`draft-card-move-${moveIndex}`} move={move} {...props(currentItemLocation).moveButton}>
                 <FontAwesomeIcon icon={faHandPointer} size="lg" />
               </ItemMenuButton>
             ))}
-            {this.getHelpButton(item, context, { angle: -130 + 3 * currentItemLocation, radius: 2, label: <></> })}
+            {this.getHelpButton(item, context, props(currentItemLocation).helpButton)}
           </>
         )
       }
@@ -267,15 +267,54 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
-    if (
-      context.rules.game.rule?.id === RuleId.DraftRoundPhaseCardSelection &&
-      context.player !== undefined &&
-      item.location.type === LocationType.HockeyPlayerDraftSpot
-    ) {
-      return item.location.player === context.player
+    if (context.player !== undefined && context.rules.game.rule !== undefined) {
+      const ruleId = context.rules.game.rule.id
+      const locationType = item.location.type
+      if (getMoveButtonPropsIfAny(ruleId, locationType) !== undefined) {
+        return item.location.player === context.player
+      }
     }
     return false
   }
+
+  isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (item.location?.rotation === HockeyPlayerCardRotation.FaceDown) {
+      return true
+    }
+    return super.isFlippedOnTable(item, context)
+  }
+}
+
+const getMoveButtonPropsIfAny = (
+  ruleId: RuleId,
+  locationType: LocationType
+): ((currentItemLocation: number) => { moveButton: Partial<ItemButtonProps>; helpButton: Partial<ItemButtonProps> }) | undefined => {
+  switch (locationType) {
+    case LocationType.HockeyPlayerDraftSpot:
+      if (RuleId.DraftRoundPhaseCardSelection === ruleId)
+        return (currentItemLocation) => ({
+          moveButton: { angle: -60 + 3 * currentItemLocation, radius: 2 },
+          helpButton: { angle: -130 + 3 * currentItemLocation, radius: 2, label: <></> }
+        })
+      break
+    case LocationType.PlayerHockeyPlayerHandSpot:
+      if ([RuleId.DraftRoundPhaseTeamCreation, RuleId.DraftRoundPhaseTeamExchange].includes(ruleId))
+        return (currentItemLocation) => ({
+          moveButton: { angle: -60 + 3 * currentItemLocation, radius: 2 },
+          helpButton: { angle: -130 + 3 * currentItemLocation, radius: 2, label: <></> }
+        })
+      break
+    case LocationType.PlayerHockeyPlayerTeamSpot:
+      if (ruleId === RuleId.DraftRoundPhaseTeamExchange)
+        return (_currentItemLocation) => ({
+          moveButton: { x: -1.7, y: -1.4 },
+          helpButton: { x: -1.7, y: 1, label: <></> }
+        })
+      break
+    default:
+      return
+  }
+  return
 }
 
 export const hockeyPlayerCardDrescription = new HockeyPlayerCardDescription()

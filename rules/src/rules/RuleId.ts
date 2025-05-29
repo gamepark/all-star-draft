@@ -1,4 +1,6 @@
 export enum RuleId {
   DraftRoundSetupDrawCards = 1,
-  DraftRoundPhaseCardSelection
+  DraftRoundPhaseCardSelection,
+  DraftRoundPhaseTeamExchange,
+  DraftRoundPhaseTeamCreation
 }

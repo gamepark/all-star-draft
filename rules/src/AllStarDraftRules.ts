@@ -16,6 +16,9 @@ import { PlayerColor } from './PlayerColor'
 import { DraftRoundSetupDrawCardsRule } from './rules/DraftRoundSetupDrawCardsRule'
 import { RuleId } from './rules/RuleId'
 import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
+import { DraftRoundPhaseTeamExchangeRule } from './rules/DraftRoundPhaseTeamExchangeRule'
+import { DraftRoundPhaseTeamCreationRule } from './rules/DraftRoundPhaseTeamCreationRule'
+import { hideToOthersWhenRotatedFaceDown } from './material/HideToOthersWhenRotatedFaceDown'
 
 /**
  * This class implements the rules of the board game.
@@ -27,7 +30,9 @@ export class AllStarDraftRules
 {
   rules = {
     [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsRule,
-    [RuleId.DraftRoundPhaseCardSelection]: DraftRoundPhaseCardSelectionRule
+    [RuleId.DraftRoundPhaseCardSelection]: DraftRoundPhaseCardSelectionRule,
+    [RuleId.DraftRoundPhaseTeamExchange]: DraftRoundPhaseTeamExchangeRule,
+    [RuleId.DraftRoundPhaseTeamCreation]: DraftRoundPhaseTeamCreationRule
   }
 
   hidingStrategies = {
@@ -41,7 +46,7 @@ export class AllStarDraftRules
       [LocationType.HockeyPlayerDeckSpot]: hideItemId,
       [LocationType.HockeyPlayerDraftSpot]: hideItemIdToOthers,
       [LocationType.PlayerHockeyPlayerHandSpot]: hideItemIdToOthers,
-      [LocationType.PlayerHockeyPlayerTeamSpot]: hideItemIdToOthers
+      [LocationType.PlayerHockeyPlayerTeamSpot]: hideToOthersWhenRotatedFaceDown
     }
   }
 

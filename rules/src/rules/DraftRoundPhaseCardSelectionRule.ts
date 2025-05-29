@@ -3,6 +3,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
+import { Memorize } from '../Memorize'
 
 export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -24,6 +25,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
       move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
       move.location.player !== undefined
     ) {
+      this.memorize(Memorize.CurrentTeamNumber, 1, move.location.player)
       return [this.endPlayerTurn<PlayerColor>(move.location.player)]
     }
     return []
@@ -41,8 +43,10 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
         }),
         this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseCardSelection)
       ]
-    } else {
-      return [this.endGame()]
     }
+    if (this.remind(Memorize.RoundNumber) > 1) {
+      return [this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamExchange)]
+    }
+    return [this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation)]
   }
 }
