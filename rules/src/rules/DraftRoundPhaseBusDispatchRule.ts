@@ -14,18 +14,26 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
   }
 
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, player)
-    return this.material(MaterialType.BusToken)
-      .location(LocationType.PlayerBusTokenReserveSpot)
-      .player(player)
-      .filter((bus) => {
-        return busTokenValue((bus.id as KnownBusTokenId).front) <= this.remind(Memorize.RoundNumber)
-      })
-      .moveItems({
-        type: LocationType.PlayerBusTokenTeamSpot,
-        player: player,
-        id: currentTeamNumber
-      })
+    return Array(this.remind(Memorize.RoundNumber))
+      .fill(1)
+      .flatMap((_, index) =>
+        this.material(MaterialType.BusToken)
+          .location(LocationType.PlayerBusTokenTeamSpot)
+          .locationId(index + 1)
+          .getItems().length === 0
+          ? this.material(MaterialType.BusToken)
+              .location(LocationType.PlayerBusTokenReserveSpot)
+              .player(player)
+              .filter((bus) => {
+                return busTokenValue((bus.id as KnownBusTokenId).front) <= this.remind(Memorize.RoundNumber)
+              })
+              .moveItems({
+                type: LocationType.PlayerBusTokenTeamSpot,
+                player: player,
+                id: index + 1
+              })
+          : []
+      )
   }
 
   afterItemMove(_move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
