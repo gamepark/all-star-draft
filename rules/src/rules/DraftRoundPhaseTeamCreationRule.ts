@@ -4,7 +4,7 @@ import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
 import { Memorize } from '../Memorize'
 import { RuleId } from './RuleId'
-import { HockeyPlayerCardRotation } from '../material/HockeyPlayerCardRotation'
+import { MaterialRotation } from '../material/MaterialRotation'
 
 export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -15,7 +15,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
         type: LocationType.PlayerHockeyPlayerTeamSpot,
         id: this.remind<number>(Memorize.RoundNumber),
         player: player,
-        rotation: HockeyPlayerCardRotation.FaceDown
+        rotation: MaterialRotation.FaceDown
       })
   }
 

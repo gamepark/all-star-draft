@@ -2,7 +2,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
-import { HockeyPlayerCardRotation } from '@gamepark/all-star-draft/material/HockeyPlayerCardRotation'
+import { MaterialRotation } from '@gamepark/all-star-draft/material/MaterialRotation'
 import { CardDescription, ItemButtonProps, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
 import Beaver1 from '../images/Cards/Hockeyer/Beaver1.jpg'
 import Beaver2 from '../images/Cards/Hockeyer/Beaver2.jpg'
@@ -278,7 +278,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
-    if (item.location?.rotation === HockeyPlayerCardRotation.FaceDown) {
+    if (item.location?.rotation === MaterialRotation.FaceDown) {
       return true
     }
     return super.isFlippedOnTable(item, context)

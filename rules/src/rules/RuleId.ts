@@ -3,5 +3,6 @@ export enum RuleId {
   DraftRoundPhaseCardSelection,
   DraftRoundPhaseTeamExchange,
   DraftRoundPhaseTeamCreation,
-  DraftRoundPhaseBusDispatch
+  DraftRoundPhaseBusDispatch,
+  DraftRoundPhaseTeamReveal,
 }
