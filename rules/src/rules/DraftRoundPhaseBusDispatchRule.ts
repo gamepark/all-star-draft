@@ -5,6 +5,7 @@ import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 import { Memorize } from '../Memorize'
 import { busTokenValue, KnownBusTokenId } from '../material/BusToken'
+import { MaterialRotation } from '../material/MaterialRotation'
 
 export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -20,6 +21,7 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
         this.material(MaterialType.BusToken)
           .location(LocationType.PlayerBusTokenTeamSpot)
           .locationId(index + 1)
+          .player(player)
           .getItems().length === 0
           ? this.material(MaterialType.BusToken)
               .location(LocationType.PlayerBusTokenReserveSpot)
@@ -30,7 +32,8 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
               .moveItems({
                 type: LocationType.PlayerBusTokenTeamSpot,
                 player: player,
-                id: index + 1
+                id: index + 1,
+                rotation: MaterialRotation.FaceDown
               })
           : []
       )
@@ -55,18 +58,6 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
   }
 
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (this.remind(Memorize.RoundNumber) < 3) {
-      this.memorize<number>(Memorize.RoundNumber, (roundNumber) => roundNumber + 1)
-      return [
-        ...this.game.players.map((player) => {
-          return this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenTeamSpot).player(player).moveItemsAtOnce({
-            type: LocationType.PlayerBusTokenReserveSpot,
-            player: player
-          })
-        }), // Todo : Remove when next rule is implemented
-        this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundSetupDrawCards)
-      ]
-    }
-    return [this.endGame()]
+    return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseTeamReveal)]
   }
 }
