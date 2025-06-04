@@ -1,6 +1,5 @@
 import {
   FillGapStrategy,
-  hideFrontToOthers,
   hideItemId,
   hideItemIdToOthers,
   MaterialGame,
@@ -44,7 +43,7 @@ export class AllStarDraftRules
       [LocationType.ArenaDeckSpot]: hideItemId
     },
     [MaterialType.BusToken]: {
-      [LocationType.PlayerBusTokenReserveSpot]: hideFrontToOthers,
+      [LocationType.PlayerBusTokenReserveSpot]: hideToOthersWhenRotatedFaceDown,
       [LocationType.PlayerBusTokenTeamSpot]: hideToOthersWhenRotatedFaceDown
     },
     [MaterialType.HockeyPlayerCard]: {

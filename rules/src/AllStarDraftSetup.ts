@@ -9,6 +9,7 @@ import { arenaCards, arenaCardsForTwoPlayers } from './material/ArenaCard'
 import { selectHockeyPlayerCardsForRandomSpecies } from './material/HockeyPlayerCard'
 import { busTokensByPlayerColor } from './material/BusToken'
 import { Memorize } from './Memorize'
+import { MaterialRotation } from './material/MaterialRotation'
 
 /**
  * This class creates a new Game based on the game options
@@ -19,7 +20,7 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   setupMaterial(_options: AllStarDraftOptions) {
     this.setupCards()
     this.setupTokens()
-    this.memorize<number>(Memorize.RoundNumber, 1)
+    this.memorize<number>(Memorize.RoundNumber, 0)
     this.game.players.forEach((player) => {
       this.memorize<number>(Memorize.Score, 0, player)
     })
@@ -58,7 +59,8 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
           id: { back: playerColor, front: bus },
           location: {
             player: playerColor,
-            type: LocationType.PlayerBusTokenReserveSpot
+            type: LocationType.PlayerBusTokenReserveSpot,
+            rotation: MaterialRotation.FaceDown
           }
         }))
       )
