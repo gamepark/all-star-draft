@@ -20,6 +20,7 @@ import { DraftRoundPhaseTeamCreationRule } from './rules/DraftRoundPhaseTeamCrea
 import { hideToOthersWhenRotatedFaceDown } from './material/HideToOthersWhenRotatedFaceDown'
 import { DraftRoundPhaseBusDispatchRule } from './rules/DraftRoundPhaseBusDispatchRule'
 import { DraftRoundPhaseTeamRevealRule } from './rules/DraftRoundPhaseTeamRevealRule'
+import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScoreRule'
 
 /**
  * This class implements the rules of the board game.
@@ -35,7 +36,8 @@ export class AllStarDraftRules
     [RuleId.DraftRoundPhaseTeamExchange]: DraftRoundPhaseTeamExchangeRule,
     [RuleId.DraftRoundPhaseTeamCreation]: DraftRoundPhaseTeamCreationRule,
     [RuleId.DraftRoundPhaseBusDispatch]: DraftRoundPhaseBusDispatchRule,
-    [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundPhaseTeamRevealRule
+    [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundPhaseTeamRevealRule,
+    [RuleId.DraftRoundPhaseMatchScore]: DraftRoundPhaseMatchScoreRule
   }
 
   hidingStrategies = {
