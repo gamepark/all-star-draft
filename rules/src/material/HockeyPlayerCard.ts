@@ -127,7 +127,7 @@ export enum HockeyPlayerCardSpeciesType {
   Wolf
 }
 
-export enum HockeyPlayerCardIconsType {
+export enum HockeyPlayerCardSymbolsType {
   None = 1,
   Fist,
   Helmet,
@@ -144,7 +144,7 @@ export const getHockeyPlayerCardSpecie = (cardId: HockeyPlayerCard): HockeyPlaye
 
 export const getHockeyPlayerCardValue = (cardId: HockeyPlayerCard): number => Math.floor(cardId / 10) % 10
 
-export const getHockeyPlayerCardIcon = (cardId: HockeyPlayerCard): HockeyPlayerCardIconsType => cardId % 10
+export const getHockeyPlayerCardSymbol = (cardId: HockeyPlayerCard): HockeyPlayerCardSymbolsType => cardId % 10
 
 export const hockeyPlayerCardsBySpecies = hockeyPlayerCardSpeciesTypes.reduce(
   (previousRecord, currentType) => ({ ...previousRecord, [currentType]: hockeyPlayerCards.slice((currentType - 1) * 9, 9 * currentType) }),
