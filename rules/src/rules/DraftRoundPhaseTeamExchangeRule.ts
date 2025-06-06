@@ -3,7 +3,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
 import { Memorize } from '../Memorize'
-import { HockeyPlayerCardRotation } from '../material/HockeyPlayerCardRotation'
+import { MaterialRotation } from '../material/MaterialRotation'
 import { RuleId } from './RuleId'
 import { CustomMoveType, isPassCustomMove } from '../material/CustomMoveType'
 
@@ -20,7 +20,7 @@ export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColo
           type: LocationType.PlayerHockeyPlayerTeamSpot,
           id: currentTeamNumber,
           player: _player,
-          rotation: HockeyPlayerCardRotation.FaceDown
+          rotation: MaterialRotation.FaceDown
         })
     }
     return [

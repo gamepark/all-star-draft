@@ -1,13 +1,18 @@
 import { HidingSecretsStrategy, MaterialItem } from '@gamepark/rules-api'
 import { LocationType } from './LocationType'
-import { HockeyPlayerCardRotation } from './HockeyPlayerCardRotation'
+import { MaterialRotation } from './MaterialRotation'
+import { has, isObject } from 'lodash'
 
 export const hideToOthersWhenRotatedFaceDown: HidingSecretsStrategy<number, LocationType> = (
   item: MaterialItem<number, LocationType>,
   player?: number
 ): string[] => {
-  if (item.location.rotation === HockeyPlayerCardRotation.FaceUp) {
+  if (item.location.rotation !== MaterialRotation.FaceDown) {
     return []
   }
-  return player !== item.location.player ? ['id'] : []
+  if (player !== item.location.player) {
+    if (isObject(item.id) && has(item.id, 'front')) return ['id.front']
+    return ['id']
+  }
+  return []
 }

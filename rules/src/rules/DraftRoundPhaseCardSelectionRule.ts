@@ -7,9 +7,13 @@ import { Memorize } from '../Memorize'
 
 export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return this.game.players.map((player) =>
-      this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).player(player).deck().shuffle()
-    )
+    return this.game.players.flatMap((player) => [
+      this.material(MaterialType.HockeyPlayerCard)
+        .location(LocationType.HockeyPlayerDraftSpot)
+        .player(player)
+        .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerHandSpot, player: player }),
+      this.endPlayerTurn(player)
+    ])
   }
 
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
