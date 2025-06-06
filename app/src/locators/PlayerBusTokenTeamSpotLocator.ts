@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { getRelativePlayerIndex, MaterialContext, ListLocator } from '@gamepark/react-game'
+import { getRelativePlayerIndex, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location } from '@gamepark/rules-api'
 
 const teamRotationMap: Record<number, number[]> = {
@@ -28,34 +28,34 @@ const teamGapMap: Record<number, number[]> = {
 const getTeamCoordinates = (playerCount: number, index: number, teamNumber: number): Partial<Coordinates> => {
   const teamSpread = ((gapMap[playerCount] ?? gapMap[3])[index].x ?? (gapMap[playerCount] ?? gapMap[3])[index].y)! * 5 // Total width of a team
   const teamGap = (teamGapMap[playerCount] ?? teamGapMap[3])[index] // Gap between teams
-  const locatorOffset = (3 * teamSpread + 2 * teamGap) / 2 // Used to center the teams on the player hand
+  const locatorOffset = (3 * teamSpread + 2 * teamGap) / 2 - (teamSpread / 5) * 4 // Used to center the bus on the front card of the team
   const teamCoordinates = (teamNumber: number) => -locatorOffset + (teamNumber - 1) * (teamGap + teamSpread)
   const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     6: [
-      { x: teamCoordinates(teamNumber), y: 28 },
-      { x: -58, y: 20 + teamCoordinates(teamNumber) },
-      { x: -58, y: -26 + teamCoordinates(teamNumber) },
-      { x: teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: -20 + teamCoordinates(teamNumber) },
-      { x: 58, y: 26 + teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber), y: 22 },
+      { x: -52, y: 20 + teamCoordinates(teamNumber) },
+      { x: -52, y: -26 + teamCoordinates(teamNumber) },
+      { x: teamCoordinates(teamNumber), y: -22 },
+      { x: 52, y: -20 + teamCoordinates(teamNumber) },
+      { x: 52, y: 26 + teamCoordinates(teamNumber) }
     ],
     5: [
-      { x: teamCoordinates(teamNumber), y: 28 },
-      { x: -58, y: teamCoordinates(teamNumber) },
-      { x: teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: -20 + teamCoordinates(teamNumber) },
-      { x: 58, y: 26 + teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber), y: 22 },
+      { x: -52, y: teamCoordinates(teamNumber) },
+      { x: teamCoordinates(teamNumber), y: -22 },
+      { x: 52, y: -20 + teamCoordinates(teamNumber) },
+      { x: 52, y: 26 + teamCoordinates(teamNumber) }
     ],
     4: [
-      { x: teamCoordinates(teamNumber), y: 28 },
-      { x: -58, y: teamCoordinates(teamNumber) },
-      { x: teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber), y: 22 },
+      { x: -52, y: teamCoordinates(teamNumber) },
+      { x: teamCoordinates(teamNumber), y: -22 },
+      { x: 52, y: teamCoordinates(teamNumber) }
     ],
     3: [
-      { x: teamCoordinates(teamNumber), y: 28 },
-      { x: teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber), y: 22 },
+      { x: teamCoordinates(teamNumber), y: -22 },
+      { x: 52, y: teamCoordinates(teamNumber) }
     ]
   }
 
@@ -63,7 +63,7 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
   return coordArray[index]
 }
 
-class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
+class PlayerBusTokenTeamSpotLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
   getRotateZ(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
@@ -86,4 +86,4 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
   }
 }
 
-export const playerHockeyPlayerTeamSpotLocator = new PlayerHockeyPlayerTeamSpotLocator()
+export const playerBusTokenTeamSpotLocator = new PlayerBusTokenTeamSpotLocator()

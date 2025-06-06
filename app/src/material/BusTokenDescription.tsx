@@ -2,7 +2,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { BusToken, BusTokenId } from '@gamepark/all-star-draft/material/BusToken'
-import { TokenDescription } from '@gamepark/react-game'
+import { ItemButtonProps, ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
 import Black1 from '../images/Tokens/Bus/Black1.png'
 import Black2 from '../images/Tokens/Bus/Black2.png'
 import Black3 from '../images/Tokens/Bus/Black3.png'
@@ -27,6 +27,17 @@ import GreenBack from '../images/Tokens/Bus/GreenBack.png'
 import PurpleBack from '../images/Tokens/Bus/PurpleBack.png'
 import RedBack from '../images/Tokens/Bus/RedBack.png'
 import YellowBack from '../images/Tokens/Bus/YellowBack.png'
+import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { fa1, fa2, fa3 } from '@fortawesome/free-solid-svg-icons'
+import { ReactNode } from 'react'
+import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
+import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
+
+const dispatchButtonProps: { coordinates: Partial<ItemButtonProps>; icon: FontAwesomeIconProps['icon'] }[] = [
+  { coordinates: { x: 1, y: -1 }, icon: fa1 },
+  { coordinates: { x: 3.4, y: -1 }, icon: fa2 },
+  { coordinates: { x: 2.2, y: 1 }, icon: fa3 }
+]
 
 class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, BusTokenId> {
   height = 2.2
@@ -58,6 +69,47 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
     [PlayerColor.Purple]: PurpleBack,
     [PlayerColor.Red]: RedBack,
     [PlayerColor.Yellow]: YellowBack
+  }
+
+  getItemMenu(
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ): ReactNode {
+    if (context.player !== undefined && item.location.player === context.player && context.rules.game.rule !== undefined) {
+      const ruleId = context.rules.game.rule.id
+      const locationType = item.location.type
+      const currentItemIndex = context.rules.material(MaterialType.BusToken).id(item.id).getIndex()
+      const movesForThisItem = legalMoves
+        .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken))
+        .filter((move) => move.itemIndex === currentItemIndex)
+      if (ruleId === RuleId.DraftRoundPhaseBusDispatch && locationType === LocationType.PlayerBusTokenReserveSpot && movesForThisItem.length > 0) {
+        return (
+          <>
+            {movesForThisItem.map((move) => {
+              const moveLocationIndex: number = move.location.id - 1
+              return (
+                <ItemMenuButton key={`draft-card-move-${moveLocationIndex}`} move={move} {...dispatchButtonProps[moveLocationIndex].coordinates}>
+                  <FontAwesomeIcon icon={dispatchButtonProps[moveLocationIndex].icon} size="lg" />
+                </ItemMenuButton>
+              )
+            })}
+          </>
+        )
+      }
+    }
+    return undefined
+  }
+
+  isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (
+      context.rules.game.rule?.id === RuleId.DraftRoundPhaseBusDispatch &&
+      context.player !== undefined &&
+      item.location.type === LocationType.PlayerBusTokenReserveSpot
+    ) {
+      return item.location.player === context.player
+    }
+    return false
   }
 }
 

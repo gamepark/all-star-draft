@@ -15,6 +15,7 @@ import { playerHockeyPlayerTeamSpotLocator } from './PlayerHockeyPlayerTeamSpotL
 import { playerPlayoffTicketTokenSpotLocator } from './PlayerPlayoffTicketTokenSpotLocator'
 import { playoffPointCardSpotLocator } from './PlayoffPointCardSpotLocator'
 import { tieBreakerCardSpotLocator } from './TieBreakerCardSpotLocator'
+import { playerBusTokenTeamSpotLocator } from './PlayerBusTokenTeamSpotLocator'
 
 export const Locators: Partial<Record<LocationType, Locator<PlayerColor, MaterialType, LocationType>>> = {
   [LocationType.ArenaDeckSpot]: arenaDeckSpotLocator,
@@ -25,6 +26,7 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.HockeyPlayerDeckSpot]: hockeyPlayerDeckSpotLocator,
   [LocationType.HockeyPlayerDraftSpot]: hockeyPlayerDraftSpotLocator,
   [LocationType.PlayerBusTokenReserveSpot]: playerBusTokenReserveSpotLocator,
+  [LocationType.PlayerBusTokenTeamSpot]: playerBusTokenTeamSpotLocator,
   [LocationType.PlayerHockeyPlayerHandSpot]: playerHockeyPlayerHandSpotLocator,
   [LocationType.PlayerHockeyPlayerTeamSpot]: playerHockeyPlayerTeamSpotLocator,
   [LocationType.PlayerPlayoffTicketTokenSpot]: playerPlayoffTicketTokenSpotLocator,
