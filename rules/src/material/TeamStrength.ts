@@ -29,13 +29,13 @@ type Attribute =
       value: HockeyPlayerCardSymbolsType
     }
 
-enum AttributeKind {
+export enum AttributeKind {
   Species = 1,
   Number,
   Symbol
 }
 
-enum IrregularAttribute {
+export enum IrregularAttribute {
   Straight = 1,
   FullHouse,
   OneOfEach
