@@ -6,7 +6,7 @@ export const hideCardToOthersWhenRotatedFaceDown: HidingSecretsStrategy<number, 
   item: MaterialItem<number, LocationType>,
   player?: number
 ): string[] => {
-  if (player !== item.location.player || item.location.rotation === MaterialRotation.FaceDown) {
+  if (player !== item.location.player && item.location.rotation === MaterialRotation.FaceDown) {
     return ['id']
   }
   return []
