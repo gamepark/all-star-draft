@@ -1,4 +1,5 @@
 import { getEnumValues } from '@gamepark/rules-api'
+import { IrregularAttribute } from './TeamStrength'
 
 export enum ArenaCard {
   ComboStadium1 = 1,
@@ -40,4 +41,10 @@ export const arenasFanPoints: Record<ArenaCard, number[]> = {
   [ArenaCard.StadiumFall1]: [17, 12, 8, 5, 3, 2],
   [ArenaCard.StadiumFall2]: [19, 18, 16, 13, 9, 4],
   [ArenaCard.StadiumFall3]: [13, 10, 7, 5, 3, 1]
+}
+
+export const arenaIrregularAttribute: Partial<Record<ArenaCard, IrregularAttribute>> = {
+  [ArenaCard.ComboStadium1]: IrregularAttribute.OneOfEach,
+  [ArenaCard.ComboStadium2]: IrregularAttribute.Straight,
+  [ArenaCard.ComboStadium3]: IrregularAttribute.FullHouse
 }

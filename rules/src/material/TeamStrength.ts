@@ -60,7 +60,7 @@ const getTeamStrengthFromCharacteristics = (
     numbers: Map<number, HockeyPlayerCard[]>
   },
   attributeKind: AttributeKind
-) => {
+): TeamStrength => {
   const iterable =
     attributeKind === AttributeKind.Species
       ? teamCharacteristics.teams.entries()
@@ -147,9 +147,13 @@ export const getTeamStrength = (team: HockeyPlayerCard[], playersCount: number):
 }
 
 // Basic comparison. No special rules
-export function compareTeam(t1: TeamStrength, t2: TeamStrength, playerCount: number): number {
-  if (t1.strength < t2.strength) return -1
-  if (t1.strength > t2.strength) return 1
+export function compareTeam(t1: TeamStrength, t2: TeamStrength, playerCount: number, irregularAttribute?: IrregularAttribute): number {
+  if (irregularAttribute !== undefined) {
+    const t1HasAttributeValue = t1.irregularsAttributes?.includes(irregularAttribute) ? 1 : 0
+    const t2HasAttributeValue = t2.irregularsAttributes?.includes(irregularAttribute) ? 1 : 0
+    if (t1HasAttributeValue + t2HasAttributeValue > 0) return t1HasAttributeValue - t2HasAttributeValue
+  }
+  if (t1.strength - t2.strength !== 0) return t1.strength - t2.strength
   if (t1.attribute.kind !== t2.attribute.kind)
     return (
       getAttributeKindPriority(playerCount).findIndex((attribute) => attribute === t1.attribute.kind) -
