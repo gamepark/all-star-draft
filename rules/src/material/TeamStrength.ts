@@ -1,3 +1,4 @@
+import { union, maxBy } from 'lodash'
 import {
   getHockeyPlayerCardSpecie,
   getHockeyPlayerCardSymbol,
@@ -39,37 +40,111 @@ export enum IrregularAttribute {
   OneOfEach
 }
 
-export function getTeamStrength(team: HockeyPlayerCard[], playersCount: number): TeamStrength {
-  let teamStrength: TeamStrength = { strength: 0, attribute: { kind: AttributeKind.Number, value: 0 } }
-  getAttributeKindPriority(playersCount).forEach((kind) => {
-    let tempTeam = team
-    let fetchValueFunction: (value: HockeyPlayerCard) => number
-    switch (kind) {
-      case AttributeKind.Species:
-        fetchValueFunction = getHockeyPlayerCardSpecie
-        break
-      case AttributeKind.Symbol:
-        fetchValueFunction = getHockeyPlayerCardSymbol
-        break
-      default:
-        fetchValueFunction = getHockeyPlayerCardValue
-        break
-    }
-    while ((tempTeam.length > 0, tempTeam.length >= teamStrength.strength)) {
-      const hockeyPlayersToEvaluate = tempTeam.filter((hockeyPlayer) => fetchValueFunction(hockeyPlayer) === fetchValueFunction(tempTeam[0]))
-      const newTeamStrength: TeamStrength = {
-        strength: hockeyPlayersToEvaluate.length,
-        attribute: { kind, value: fetchValueFunction(tempTeam[0]) }
+const getCombinationsOfLength = (
+  teamCharacteristics: {
+    teams: Map<HockeyPlayerCardSpeciesType, HockeyPlayerCard[]>
+    symbols: Map<HockeyPlayerCardSymbolsType, HockeyPlayerCard[]>
+    numbers: Map<number, HockeyPlayerCard[]>
+  },
+  length: number
+) => {
+  return [teamCharacteristics.teams, teamCharacteristics.symbols, teamCharacteristics.numbers].flatMap((map) =>
+    Array.from(map.values()).filter((cardArray) => cardArray.length === length)
+  )
+}
+
+const getTeamStrengthFromCharacteristics = (
+  teamCharacteristics: {
+    teams: Map<HockeyPlayerCardSpeciesType, HockeyPlayerCard[]>
+    symbols: Map<HockeyPlayerCardSymbolsType, HockeyPlayerCard[]>
+    numbers: Map<number, HockeyPlayerCard[]>
+  },
+  attributeKind: AttributeKind
+) => {
+  const iterable =
+    attributeKind === AttributeKind.Species
+      ? teamCharacteristics.teams.entries()
+      : attributeKind === AttributeKind.Symbol
+        ? teamCharacteristics.symbols
+        : teamCharacteristics.numbers
+  const teamStrength = Array.from(iterable).reduce<TeamStrength>(
+    (maxObject, currentEntry): TeamStrength => {
+      const value = currentEntry[0]
+      const strength = currentEntry[1].length
+      if (strength > maxObject.strength) {
+        maxObject.strength = strength
+        maxObject.attribute.value = value
+      } else if (strength == maxObject.strength && value > maxObject.attribute.value) {
+        maxObject.attribute.value = value
       }
-      tempTeam = tempTeam.filter((hockeyPlayer) => !hockeyPlayersToEvaluate.includes(hockeyPlayer))
-      if (
-        (newTeamStrength.attribute.kind !== AttributeKind.Symbol || newTeamStrength.attribute.value !== HockeyPlayerCardSymbolsType.None) &&
-        compareTeam(newTeamStrength, teamStrength, playersCount) > 0
-      )
-        teamStrength = newTeamStrength
+      return maxObject
+    },
+    { strength: 0, attribute: { kind: attributeKind, value: 0 } }
+  )
+  if (Array.from(teamCharacteristics.symbols.keys()).length === 5) {
+    teamStrength.irregularsAttributes = [IrregularAttribute.OneOfEach]
+  }
+  const cardValues = Array.from(teamCharacteristics.numbers.keys())
+  if (cardValues.length === 5 && cardValues.slice(0, 4).every((value, index) => value === cardValues[index + 1] - 1)) {
+    if (teamStrength.irregularsAttributes !== undefined) {
+      teamStrength.irregularsAttributes.push(IrregularAttribute.Straight)
+    } else {
+      teamStrength.irregularsAttributes = [IrregularAttribute.Straight]
+    }
+  }
+  const fourOfAKind = getCombinationsOfLength(teamCharacteristics, 4)
+  const threeOfAKind = getCombinationsOfLength(teamCharacteristics, 3)
+  const pairs = getCombinationsOfLength(teamCharacteristics, 2)
+  const ones = getCombinationsOfLength(teamCharacteristics, 1)
+  if (
+    threeOfAKind.some((threeOfAKindArray) => pairs.some((pairArray) => union(threeOfAKindArray, pairArray).length === 5)) ||
+    fourOfAKind.some((fourOfAKindArray) => ones.some((oneArray) => union(fourOfAKindArray, oneArray).length === 5))
+  ) {
+    if (teamStrength.irregularsAttributes !== undefined) {
+      teamStrength.irregularsAttributes.push(IrregularAttribute.FullHouse)
+    } else {
+      teamStrength.irregularsAttributes = [IrregularAttribute.FullHouse]
+    }
+  }
+  return teamStrength
+}
+
+export const getTeamStrength = (team: HockeyPlayerCard[], playersCount: number): TeamStrength => {
+  const teamCharacteristics = {
+    teams: new Map<HockeyPlayerCardSpeciesType, HockeyPlayerCard[]>(),
+    symbols: new Map<HockeyPlayerCardSymbolsType, HockeyPlayerCard[]>(),
+    numbers: new Map<number, HockeyPlayerCard[]>()
+  }
+  team.forEach((currentCardId) => {
+    const cardSpecies = getHockeyPlayerCardSpecie(currentCardId)
+    const cardSymbol = getHockeyPlayerCardSymbol(currentCardId)
+    const cardValue = getHockeyPlayerCardValue(currentCardId)
+    if (teamCharacteristics.teams.has(cardSpecies)) {
+      teamCharacteristics.teams.get(cardSpecies)?.push(currentCardId)
+    } else {
+      teamCharacteristics.teams.set(cardSpecies, [currentCardId])
+    }
+    if (teamCharacteristics.numbers.has(cardValue)) {
+      teamCharacteristics.numbers.get(cardValue)?.push(currentCardId)
+    } else {
+      teamCharacteristics.numbers.set(cardValue, [currentCardId])
+    }
+    if (cardSymbol !== HockeyPlayerCardSymbolsType.None) {
+      if (teamCharacteristics.symbols.has(cardSymbol)) {
+        teamCharacteristics.symbols.get(cardSymbol)?.push(currentCardId)
+      } else {
+        teamCharacteristics.symbols.set(cardSymbol, [currentCardId])
+      }
     }
   })
-  return teamStrength
+  return (
+    maxBy(
+      getAttributeKindPriority(playersCount)
+        .reverse() // Needed as maxBy will return last max instead of first
+        .map((attribute) => getTeamStrengthFromCharacteristics(teamCharacteristics, attribute)),
+      'strength'
+    ) ?? { strength: 0, attribute: { kind: AttributeKind.Number, value: 0 } }
+  )
 }
 
 // Basic comparison. No special rules
@@ -81,40 +156,11 @@ export function compareTeam(t1: TeamStrength, t2: TeamStrength, playerCount: num
       getAttributeKindPriority(playerCount).findIndex((attribute) => attribute === t1.attribute.kind) -
       getAttributeKindPriority(playerCount).findIndex((attribute) => attribute === t2.attribute.kind)
     )
-  switch (t1.attribute.kind) {
-    case AttributeKind.Species:
-      return speciesPriority.findIndex((specie) => specie === t1.attribute.value) - speciesPriority.findIndex((specie) => specie === t2.attribute.value)
-    case AttributeKind.Symbol:
-      return symbolPriority.findIndex((symbol) => symbol === t1.attribute.value) - symbolPriority.findIndex((symbol) => symbol === t2.attribute.value)
-    default:
-      return t1.attribute.value - t2.attribute.value
-  }
+  return t1.attribute.value - t2.attribute.value
+  
 }
 
 function getAttributeKindPriority(playerCount: number): AttributeKind[] {
   if (playerCount > 4) return [AttributeKind.Number, AttributeKind.Species, AttributeKind.Symbol]
   return [AttributeKind.Species, AttributeKind.Number, AttributeKind.Symbol]
 }
-
-const speciesPriority = [
-  HockeyPlayerCardSpeciesType.Rabbit,
-  HockeyPlayerCardSpeciesType.Duck,
-  HockeyPlayerCardSpeciesType.Beaver,
-  HockeyPlayerCardSpeciesType.Eagle,
-  HockeyPlayerCardSpeciesType.Penguin,
-  HockeyPlayerCardSpeciesType.Panda,
-  HockeyPlayerCardSpeciesType.Wolf,
-  HockeyPlayerCardSpeciesType.Shark,
-  HockeyPlayerCardSpeciesType.Tiger,
-  HockeyPlayerCardSpeciesType.Horse,
-  HockeyPlayerCardSpeciesType.Reindeer,
-  HockeyPlayerCardSpeciesType.PolarBear
-]
-
-const symbolPriority = [
-  HockeyPlayerCardSymbolsType.Skate,
-  HockeyPlayerCardSymbolsType.Fist,
-  HockeyPlayerCardSymbolsType.Helmet,
-  HockeyPlayerCardSymbolsType.Puck,
-  HockeyPlayerCardSymbolsType.Rock
-]

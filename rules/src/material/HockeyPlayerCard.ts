@@ -113,27 +113,27 @@ export enum HockeyPlayerCard {
 }
 
 export enum HockeyPlayerCardSpeciesType {
-  Beaver = 1,
+  Rabbit = 1,
   Duck,
+  Beaver,
   Eagle,
-  Horse,
-  Reindeer,
-  Panda,
   Penguin,
-  PolarBear,
-  Rabbit,
+  Panda,
+  Wolf,
   Shark,
   Tiger,
-  Wolf
+  Horse,
+  Reindeer,
+  PolarBear
 }
 
 export enum HockeyPlayerCardSymbolsType {
   None = 1,
+  Skate,
   Fist,
   Helmet,
   Puck,
-  Rock,
-  Skate
+  Rock
 }
 
 export const hockeyPlayerCards = getEnumValues(HockeyPlayerCard)
