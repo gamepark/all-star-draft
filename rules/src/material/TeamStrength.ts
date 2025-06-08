@@ -95,10 +95,9 @@ const getTeamStrengthFromCharacteristics = (
   const fourOfAKind = getCombinationsOfLength(teamCharacteristics, 4)
   const threeOfAKind = getCombinationsOfLength(teamCharacteristics, 3)
   const pairs = getCombinationsOfLength(teamCharacteristics, 2)
-  const ones = getCombinationsOfLength(teamCharacteristics, 1)
   if (
     threeOfAKind.some((threeOfAKindArray) => pairs.some((pairArray) => union(threeOfAKindArray, pairArray).length === 5)) ||
-    fourOfAKind.some((fourOfAKindArray) => ones.some((oneArray) => union(fourOfAKindArray, oneArray).length === 5))
+    fourOfAKind.some((fourOfAKindArray) => pairs.some((pairsArray) => union(fourOfAKindArray, pairsArray).length === 5))
   ) {
     if (teamStrength.irregularsAttributes !== undefined) {
       teamStrength.irregularsAttributes.push(IrregularAttribute.FullHouse)
@@ -157,7 +156,6 @@ export function compareTeam(t1: TeamStrength, t2: TeamStrength, playerCount: num
       getAttributeKindPriority(playerCount).findIndex((attribute) => attribute === t2.attribute.kind)
     )
   return t1.attribute.value - t2.attribute.value
-  
 }
 
 function getAttributeKindPriority(playerCount: number): AttributeKind[] {

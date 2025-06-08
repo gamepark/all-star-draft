@@ -12,7 +12,7 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (this.remind(Memorize.RoundNumber) >= 3) {
-      this.endGame() 
+      this.endGame()
       return []
     }
     this.memorize<number>(Memorize.RoundNumber, (roundNumber) => roundNumber + 1)
