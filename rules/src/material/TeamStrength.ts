@@ -1,4 +1,4 @@
-import { union, maxBy } from 'lodash'
+import { union, maxBy, intersection } from 'lodash'
 import {
   getHockeyPlayerCardSpecie,
   getHockeyPlayerCardSymbol,
@@ -97,7 +97,9 @@ const getTeamStrengthFromCharacteristics = (
   const pairs = getCombinationsOfLength(teamCharacteristics, 2)
   if (
     threeOfAKind.some((threeOfAKindArray) => pairs.some((pairArray) => union(threeOfAKindArray, pairArray).length === 5)) ||
-    fourOfAKind.some((fourOfAKindArray) => pairs.some((pairsArray) => union(fourOfAKindArray, pairsArray).length === 5))
+    fourOfAKind.some((fourOfAKindArray) =>
+      pairs.some((pairsArray) => union(fourOfAKindArray, pairsArray).length === 5 && intersection(fourOfAKindArray, pairsArray).length === 1)
+    )
   ) {
     if (teamStrength.irregularsAttributes !== undefined) {
       teamStrength.irregularsAttributes.push(IrregularAttribute.FullHouse)
