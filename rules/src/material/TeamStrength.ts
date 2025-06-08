@@ -1,5 +1,3 @@
-import { PlayerColor, playerColors } from '../PlayerColor'
-import { ArenaCard, arenasFanPoints } from './ArenaCard'
 import {
   getHockeyPlayerCardSpecie,
   getHockeyPlayerCardSymbol,
@@ -64,7 +62,11 @@ export function getTeamStrength(team: HockeyPlayerCard[], playersCount: number):
         attribute: { kind, value: fetchValueFunction(tempTeam[0]) }
       }
       tempTeam = tempTeam.filter((hockeyPlayer) => !hockeyPlayersToEvaluate.includes(hockeyPlayer))
-      if (compareTeam(newTeamStrength, teamStrength, playersCount) > 0) teamStrength = newTeamStrength
+      if (
+        (newTeamStrength.attribute.kind !== AttributeKind.Symbol || newTeamStrength.attribute.value !== HockeyPlayerCardSymbolsType.None) &&
+        compareTeam(newTeamStrength, teamStrength, playersCount) > 0
+      )
+        teamStrength = newTeamStrength
     }
   })
   return teamStrength

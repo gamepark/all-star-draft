@@ -1,11 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
+import { Memorize } from '@gamepark/all-star-draft/Memorize'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { StyledPlayerPanel, usePlayers } from '@gamepark/react-game'
+import { StyledPlayerPanel, usePlayers, useRules } from '@gamepark/react-game'
 import { createPortal } from 'react-dom'
 
 export const PlayerPanels = () => {
   const players = usePlayers<PlayerColor>({ sortFromMe: true })
+  const rules = useRules<AllStarDraftRules>()
   const root = document.getElementById('root')
   if (!root) {
     return null
@@ -14,7 +17,13 @@ export const PlayerPanels = () => {
   return createPortal(
     <>
       {players.map((player, index) => (
-        <StyledPlayerPanel key={player.id} player={player} color={playerColorCode[player.id]} css={panelPosition(index)} />
+        <StyledPlayerPanel
+          mainCounter={{ image: '', value: rules?.remind<number>(Memorize.Score, player.id) ?? 0 }}
+          key={player.id}
+          player={player}
+          color={playerColorCode[player.id]}
+          css={panelPosition(index)}
+        />
       ))}
     </>,
     root

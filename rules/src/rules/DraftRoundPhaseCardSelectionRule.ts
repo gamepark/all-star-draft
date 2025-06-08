@@ -6,6 +6,7 @@ import { RuleId } from './RuleId'
 import { Memorize } from '../Memorize'
 
 export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
+  // Todo Remove once test are done
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return this.game.players.flatMap((player) => [
       this.material(MaterialType.HockeyPlayerCard)

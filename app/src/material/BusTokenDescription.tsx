@@ -2,7 +2,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { BusToken, BusTokenId } from '@gamepark/all-star-draft/material/BusToken'
-import { ItemButtonProps, ItemContext, ItemMenuButton, MaterialContext, TokenDescription } from '@gamepark/react-game'
+import { ItemButtonProps, ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
 import Black1 from '../images/Tokens/Bus/Black1.png'
 import Black2 from '../images/Tokens/Bus/Black2.png'
 import Black3 from '../images/Tokens/Bus/Black3.png'
@@ -32,7 +32,6 @@ import { fa1, fa2, fa3 } from '@fortawesome/free-solid-svg-icons'
 import { ReactNode } from 'react'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
-import { MaterialRotation } from '@gamepark/all-star-draft/material/MaterialRotation'
 
 const dispatchButtonProps: { coordinates: Partial<ItemButtonProps>; icon: FontAwesomeIconProps['icon'] }[] = [
   { coordinates: { x: 1, y: -1 }, icon: fa1 },
@@ -111,13 +110,6 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
       return item.location.player === context.player
     }
     return false
-  }
-
-  isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
-    if (item.location?.rotation === MaterialRotation.FaceDown) {
-      return true
-    }
-    return super.isFlippedOnTable(item, context)
   }
 }
 

@@ -13,7 +13,7 @@ export function getPlayersNewFans(match: MatchState): Partial<Record<PlayerColor
   const arenaFanPoints = arenasFanPoints[match.arena]
   const ranking = getPlayerRanking(match.teams)
   for (const player of Object.keys(ranking) as unknown as PlayerColor[]) {
-    newFans[player] = arenaFanPoints[ranking[player] ?? 1 - 1]
+    newFans[player] = arenaFanPoints[(ranking[player] ?? 1) - 1]
   }
   return newFans
 }
