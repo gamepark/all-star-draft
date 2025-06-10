@@ -9,6 +9,7 @@ import { DraftRoundPhaseBusDispatchHeader } from './DraftRoundPhaseBusDispatchHe
 import { DraftRoundTeamRevealHeader } from './DraftRoundTeamRevealHeader'
 import { DraftRoundPhaseMatchScoreHeader } from './DraftRoundPhaseMatchScoreHeader'
 import { DraftRoundPhaseMatchMoveToStadiumHeader } from './DraftRoundPhaseMatchMoveToStadiumHeader'
+import { PlayoffRoundSetupPhaseHeader } from './PLayoffRoundSetupPhaseHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsHeader,
@@ -18,5 +19,6 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DraftRoundPhaseBusDispatch]: DraftRoundPhaseBusDispatchHeader,
   [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundTeamRevealHeader,
   [RuleId.DraftRoundPhaseMatchScore]: DraftRoundPhaseMatchScoreHeader,
-  [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumHeader
+  [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumHeader,
+  [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupPhaseHeader
 }
