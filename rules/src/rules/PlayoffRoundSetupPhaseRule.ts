@@ -10,6 +10,16 @@ export class PlayoffRoundSetupPhaseRule extends PlayerTurnRule<PlayerColor, Mate
     _previousRule?: RuleStep,
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return []
+    return [
+      this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).moveItemsAtOnce({
+        type: LocationType.ArenaDiscardSpot
+      }),
+      ...this.game.players.flatMap((player) =>
+        this.material(MaterialType.HockeyPlayerCard)
+          .location(LocationType.PlayerHockeyPlayerTeamSpot)
+          .player(player)
+          .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerHandSpot, player: player })
+      )
+    ]
   }
 }
