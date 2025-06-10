@@ -12,12 +12,11 @@ import { MaterialRotation } from '../material/MaterialRotation'
 export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const arenaIndex = busTokenValue(
-      (this.material(MaterialType.BusToken).location(LocationType.BusTokenSpotBelowBusStationBoard).getItem()?.id as KnownBusTokenId).front
+      this.material(MaterialType.BusToken).location(LocationType.BusTokenSpotBelowBusStationBoard).getItem<KnownBusTokenId>()!.id.front
     )
     const currentArena = this.material(MaterialType.ArenaCard)
-      .location(LocationType.CurrentArenasRowSpot)
-      .getItems()
-      .find((arena) => arena.location.x === arenaIndex - 1)
+      .location((location) => location.x === arenaIndex && location.type === LocationType.CurrentArenasRowSpot)
+      .getItem()
     const currentTeams: [PlayerColor, HockeyPlayerCard[]][] = this.game.players.map((player) => [player, this.remind(Memorize.TeamLineup, player)])
     const match: MatchState = {
       arena: currentArena?.id,

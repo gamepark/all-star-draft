@@ -63,7 +63,7 @@ describe('TeamStrength tests', () => {
         ],
         expectedTeamStrength: 5,
         expectedAttributeKind: AttributeKind.Symbol,
-        expectedAttributeValue: HockeyPlayerCardSymbolsType.Fist
+        expectedAttributeValue: HockeyPlayerCardSymbolsType.Glove
       }
     ])('getTeamStrength should return a team strength wth a strength of 5 and relevant attribute kind and value', actualTest)
   })
@@ -125,7 +125,7 @@ describe('TeamStrength tests', () => {
         ],
         expectedTeamStrength: 3,
         expectedAttributeKind: AttributeKind.Symbol,
-        expectedAttributeValue: HockeyPlayerCardSymbolsType.Rock
+        expectedAttributeValue: HockeyPlayerCardSymbolsType.Goal
       },
       {
         playerCount: 5,
@@ -138,7 +138,7 @@ describe('TeamStrength tests', () => {
         ],
         expectedTeamStrength: 3,
         expectedAttributeKind: AttributeKind.Symbol,
-        expectedAttributeValue: HockeyPlayerCardSymbolsType.Rock
+        expectedAttributeValue: HockeyPlayerCardSymbolsType.Goal
       },
       {
         playerCount: 2,
@@ -400,7 +400,7 @@ describe('TeamStrength tests', () => {
           HockeyPlayerCard.Duck5,
           HockeyPlayerCard.Duck6,
           HockeyPlayerCard.Reindeer2,
-        ], // 3 ducks and 2 rocks
+        ], // 3 ducks and 2 goals
         expectedIrregularCombination: IrregularAttribute.FullHouse
       }
     ])('getTeamStrength should return an irregular combination of FullHouse', ({playerCount, cards, expectedIrregularCombination}) => {

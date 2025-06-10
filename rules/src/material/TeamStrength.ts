@@ -97,6 +97,12 @@ const getTeamStrengthFromCharacteristics = (
   const pairs = getCombinationsOfLength(teamCharacteristics, 2)
   if (
     threeOfAKind.some((threeOfAKindArray) => pairs.some((pairArray) => union(threeOfAKindArray, pairArray).length === 5)) ||
+    threeOfAKind.some((threeOfAKindArray) =>
+      threeOfAKind.some(
+        (secondThreeOfAKindArray) =>
+          union(threeOfAKindArray, secondThreeOfAKindArray).length === 5 && intersection(threeOfAKindArray, secondThreeOfAKindArray).length === 1
+      )
+    ) ||
     fourOfAKind.some((fourOfAKindArray) =>
       pairs.some((pairsArray) => union(fourOfAKindArray, pairsArray).length === 5 && intersection(fourOfAKindArray, pairsArray).length === 1)
     )

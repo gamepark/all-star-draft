@@ -15,13 +15,12 @@ export class DraftRoundPhaseMatchMoveToStadiumRule extends PlayerTurnRule<Player
       const arenaIndex = this.material(MaterialType.BusToken)
         .location(LocationType.PlayerBusTokenTeamSpot)
         .player(player)
-        .getItems()
-        .map((bus) => busTokenValue((bus.id as KnownBusTokenId).front))
-        .sort()[0]
+        .minBy((item) => (item.id as KnownBusTokenId).front)
+        .getItem<KnownBusTokenId>()?.id.front
       const busToken = this.material(MaterialType.BusToken)
         .location(LocationType.PlayerBusTokenTeamSpot)
         .player(player)
-        .id((busId) => busTokenValue((busId as KnownBusTokenId).front) === arenaIndex)
+        .id<KnownBusTokenId>((busId) => busTokenValue(busId.front) === arenaIndex)
       const teamIndex = busToken.getItem()?.location.id as number
       const teamLineup = this.material(MaterialType.HockeyPlayerCard)
         .location(LocationType.PlayerHockeyPlayerTeamSpot)

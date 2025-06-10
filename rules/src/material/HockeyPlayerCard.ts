@@ -141,10 +141,10 @@ export enum HockeyPlayerCardSpeciesType {
 export enum HockeyPlayerCardSymbolsType {
   None = 1,
   Skate,
-  Fist,
+  Glove,
   Helmet,
   Puck,
-  Rock
+  Goal
 }
 
 export const hockeyPlayerCards = getEnumValues(HockeyPlayerCard)

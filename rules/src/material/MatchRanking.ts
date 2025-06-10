@@ -18,7 +18,7 @@ export function getPlayersNewFans(match: MatchState): Partial<Record<PlayerColor
   return newFans
 }
 
-function getPlayerRanking(teams: [PlayerColor, HockeyPlayerCard[]][], irregularAttribute?: IrregularAttribute): Partial<Record<PlayerColor, number>> {
+export function getPlayerRanking(teams: [PlayerColor, HockeyPlayerCard[]][], irregularAttribute?: IrregularAttribute): Partial<Record<PlayerColor, number>> {
   const ranking: [PlayerColor, number][] = teams.map((team) => [team[0], 1])
   const playerCount = teams.length
   teams.forEach((mainTeam, index) => {
