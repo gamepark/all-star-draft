@@ -5,7 +5,7 @@ import { RuleId } from './RuleId'
 import { PlayerColor } from '../PlayerColor'
 import { MaterialRotation } from '../material/MaterialRotation'
 
-export class PlayoffRoundSetupPhaseRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
+export class PlayoffRoundSetupRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   public onRuleStart(
     _move: RuleMove<PlayerColor, RuleId>,
     _previousRule?: RuleStep,

@@ -23,7 +23,7 @@ import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScore
 import { DraftRoundPhaseMatchMoveToStadiumRule } from './rules/DraftRoundPhaseMatchMoveToStadiumRule'
 import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthersWhenRotatedFaceDown'
 import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
-import { PlayoffRoundSetupPhaseRule } from './rules/PlayOffRoundSetupPhaseRule'
+import { PlayoffRoundSetupRule } from './rules/PlayoffRoundSetupRule'
 
 /**
  * This class implements the rules of the board game.
@@ -42,7 +42,7 @@ export class AllStarDraftRules
     [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundPhaseTeamRevealRule,
     [RuleId.DraftRoundPhaseMatchScore]: DraftRoundPhaseMatchScoreRule,
     [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumRule,
-    [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupPhaseRule
+    [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupRule
   }
 
   hidingStrategies = {

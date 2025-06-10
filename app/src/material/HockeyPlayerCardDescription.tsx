@@ -290,7 +290,7 @@ const getMoveButtonPropsIfAny = (
         })
       break
     case LocationType.PlayerHockeyPlayerHandSpot:
-      if ([RuleId.DraftRoundPhaseTeamCreation, RuleId.DraftRoundPhaseTeamExchange].includes(ruleId))
+      if ([RuleId.DraftRoundPhaseTeamCreation, RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffRoundSetupPhase].includes(ruleId))
         return (currentItemLocation) => ({
           moveButton: { angle: -60 + 3 * currentItemLocation, radius: 2 },
           helpButton: { angle: -130 + 3 * currentItemLocation, radius: 2, label: <></> }
