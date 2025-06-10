@@ -1,10 +1,11 @@
-import { MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { RuleId } from './RuleId'
 import { PlayerColor } from '../PlayerColor'
+import { MaterialRotation } from '../material/MaterialRotation'
 
-export class PlayoffRoundSetupPhaseRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
+export class PlayoffRoundSetupPhaseRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   public onRuleStart(
     _move: RuleMove<PlayerColor, RuleId>,
     _previousRule?: RuleStep,
@@ -21,5 +22,32 @@ export class PlayoffRoundSetupPhaseRule extends PlayerTurnRule<PlayerColor, Mate
           .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerHandSpot, player: player })
       )
     ]
+  }
+
+  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).moveItems({
+      type: LocationType.PlayerHockeyPlayerTeamSpot,
+      id: 2,
+      player: player,
+      rotation: MaterialRotation.FaceDown
+    })
+  }
+
+  afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    if (
+      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      move.location.id === 2 &&
+      move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+      move.location.player !== undefined &&
+      this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(move.location.player).locationId(move.location.id)
+        .length === 5
+    ) {
+      return [this.endPlayerTurn<PlayerColor>(move.location.player)]
+    }
+    return []
+  }
+
+  getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return [this.endGame()]
   }
 }
