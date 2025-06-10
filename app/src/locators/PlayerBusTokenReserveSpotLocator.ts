@@ -1,8 +1,10 @@
+import { busTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { getRelativePlayerIndex, ListLocator, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location } from '@gamepark/rules-api'
+import { getRelativePlayerIndex, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { orderBy } from 'lodash'
 
 const rotationMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
@@ -70,6 +72,16 @@ class PlayerBusTokenReserveSpotLocator extends ListLocator<PlayerColor, Material
     const playerCount = context.rules.players.length
     const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3]
     return coordArray[index]
+  }
+
+  getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
+    const { player, rules, index } = context
+    if (item.location.player === player) {
+      const busTokens = rules.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenReserveSpot).player(player)
+      const sorted = orderBy(busTokens.getIndexes(), (index) => busTokenValue((busTokens.getItem(index).id as KnownBusTokenId).front))
+      return sorted.indexOf(index)
+    }
+    return item.location.x!
   }
 }
 

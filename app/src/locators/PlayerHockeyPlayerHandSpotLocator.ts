@@ -1,8 +1,9 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { getRelativePlayerIndex, HandLocator, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location } from '@gamepark/rules-api'
+import { getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { orderBy } from 'lodash'
 
 const baseAngleMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
@@ -57,6 +58,16 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     const playerCount = context.rules.players.length
     const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3]
     return coordArray[index]
+  }
+
+  getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
+    const { player, rules, index } = context
+    if (item.location.player === player) {
+      const hockeyPlayerCards = rules.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player)
+      const sorted = orderBy(hockeyPlayerCards.getIndexes(), (index) => hockeyPlayerCards.getItem(index).id)
+      return sorted.indexOf(index)
+    }
+    return item.location.x!
   }
 }
 

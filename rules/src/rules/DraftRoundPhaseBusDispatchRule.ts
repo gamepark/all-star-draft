@@ -40,18 +40,16 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
   }
 
   afterItemMove(_move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(_move) && _move.location.player !== undefined) {
-      const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, _move.location.player)
-      const isBusOnTeam =
-        this.material(MaterialType.BusToken)
-          .location((location) => location.type === LocationType.PlayerBusTokenTeamSpot && location.id === currentTeamNumber)
-          .player(_move.location.player).length === 1
-      if (_move.location.type === LocationType.PlayerBusTokenTeamSpot && isBusOnTeam) {
-        if (currentTeamNumber < this.remind<number>(Memorize.RoundNumber)) {
-          this.memorize<number>(Memorize.CurrentTeamNumber, (number) => number + 1, _move.location.player)
-        } else {
-          return [this.endPlayerTurn(_move.location.player)]
-        }
+    if (
+      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(_move) &&
+      _move.location.type === LocationType.PlayerBusTokenTeamSpot &&
+      _move.location.player !== undefined
+    ) {
+      if (
+        this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenReserveSpot).player(_move.location.player).getItems().length ===
+        3 - this.remind(Memorize.RoundNumber)
+      ) {
+        return [this.endPlayerTurn(_move.location.player)]
       }
     }
     return []

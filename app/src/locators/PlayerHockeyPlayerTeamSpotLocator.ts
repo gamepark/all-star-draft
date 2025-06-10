@@ -1,8 +1,9 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { getRelativePlayerIndex, MaterialContext, ListLocator } from '@gamepark/react-game'
-import { Coordinates, Location } from '@gamepark/rules-api'
+import { getRelativePlayerIndex, MaterialContext, ListLocator, ItemContext } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { orderBy } from 'lodash'
 
 const teamRotationMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
@@ -83,6 +84,20 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
     const playerCount = context.rules.players.length
     const teamNumber = location.id ?? 1
     return getTeamCoordinates(playerCount, index, teamNumber)
+  }
+
+  getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
+    const { rules, index } = context
+    if (item.id !== undefined) {
+      const hockeyPlayerCards = rules
+        .material(MaterialType.HockeyPlayerCard)
+        .location(LocationType.PlayerHockeyPlayerTeamSpot)
+        .locationId(item.location.id)
+        .player(item.location.player)
+      const sorted = orderBy(hockeyPlayerCards.getIndexes(), (index) => hockeyPlayerCards.getItem(index).id)
+      return sorted.indexOf(index)
+    }
+    return item.location.x!
   }
 }
 

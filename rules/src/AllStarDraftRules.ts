@@ -17,9 +17,12 @@ import { RuleId } from './rules/RuleId'
 import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
 import { DraftRoundPhaseTeamExchangeRule } from './rules/DraftRoundPhaseTeamExchangeRule'
 import { DraftRoundPhaseTeamCreationRule } from './rules/DraftRoundPhaseTeamCreationRule'
-import { hideToOthersWhenRotatedFaceDown } from './material/HideToOthersWhenRotatedFaceDown'
 import { DraftRoundPhaseBusDispatchRule } from './rules/DraftRoundPhaseBusDispatchRule'
 import { DraftRoundPhaseTeamRevealRule } from './rules/DraftRoundPhaseTeamRevealRule'
+import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScoreRule'
+import { DraftRoundPhaseMatchMoveToStadiumRule } from './rules/DraftRoundPhaseMatchMoveToStadiumRule'
+import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthersWhenRotatedFaceDown'
+import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
 
 /**
  * This class implements the rules of the board game.
@@ -35,7 +38,9 @@ export class AllStarDraftRules
     [RuleId.DraftRoundPhaseTeamExchange]: DraftRoundPhaseTeamExchangeRule,
     [RuleId.DraftRoundPhaseTeamCreation]: DraftRoundPhaseTeamCreationRule,
     [RuleId.DraftRoundPhaseBusDispatch]: DraftRoundPhaseBusDispatchRule,
-    [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundPhaseTeamRevealRule
+    [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundPhaseTeamRevealRule,
+    [RuleId.DraftRoundPhaseMatchScore]: DraftRoundPhaseMatchScoreRule,
+    [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumRule
   }
 
   hidingStrategies = {
@@ -43,14 +48,14 @@ export class AllStarDraftRules
       [LocationType.ArenaDeckSpot]: hideItemId
     },
     [MaterialType.BusToken]: {
-      [LocationType.PlayerBusTokenReserveSpot]: hideToOthersWhenRotatedFaceDown,
-      [LocationType.PlayerBusTokenTeamSpot]: hideToOthersWhenRotatedFaceDown
+      [LocationType.PlayerBusTokenReserveSpot]: hideTokenToOthersWhenRotatedFaceDown,
+      [LocationType.PlayerBusTokenTeamSpot]: hideTokenToOthersWhenRotatedFaceDown
     },
     [MaterialType.HockeyPlayerCard]: {
       [LocationType.HockeyPlayerDeckSpot]: hideItemId,
       [LocationType.HockeyPlayerDraftSpot]: hideItemIdToOthers,
       [LocationType.PlayerHockeyPlayerHandSpot]: hideItemIdToOthers,
-      [LocationType.PlayerHockeyPlayerTeamSpot]: hideToOthersWhenRotatedFaceDown
+      [LocationType.PlayerHockeyPlayerTeamSpot]: hideCardToOthersWhenRotatedFaceDown
     }
   }
 
@@ -62,7 +67,7 @@ export class AllStarDraftRules
     },
     [MaterialType.BusToken]: {
       [LocationType.BusTokenSpotBelowBusStationBoard]: new StackingStrategy(),
-      [LocationType.PlayerBusTokenReserveSpot]: new PositiveSequenceStrategy()
+      [LocationType.PlayerBusTokenReserveSpot]: new FillGapStrategy()
     },
     [MaterialType.HockeyPlayerCard]: {
       [LocationType.HockeyPlayerDeckSpot]: new PositiveSequenceStrategy(),

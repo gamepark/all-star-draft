@@ -5,7 +5,6 @@ import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 import { Memorize } from '../Memorize'
 import { MaterialRotation } from '../material/MaterialRotation'
-import { BusTokenId } from '../material/BusToken'
 
 export class DraftRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -19,21 +18,16 @@ export class DraftRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor, M
               .player(player)
               .locationId(teamNumber)
               .rotateItem(MaterialRotation.FaceUp),
-            ...this.material(MaterialType.HockeyPlayerCard)
+            this.material(MaterialType.HockeyPlayerCard)
               .location(LocationType.PlayerHockeyPlayerTeamSpot)
               .player(player)
               .locationId(teamNumber)
-              .rotateItems(MaterialRotation.FaceUp)
+              .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, id: teamNumber, player: player, rotation: MaterialRotation.FaceUp })
           ]
         })
       )
     }
-    moves.push(
-      ...this.material(MaterialType.BusToken)
-        .location(LocationType.PlayerBusTokenTeamSpot)
-        .moveItems((item) => ({ type: LocationType.PlayerBusTokenReserveSpot, player: (item.id as BusTokenId).back, rotation: MaterialRotation.FaceDown })),
-      this.startSimultaneousRule(RuleId.DraftRoundSetupDrawCards)
-    ) // Todo : change when implementing next rule
+    moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseMatchMoveToStadium))
     return moves
   }
 }
