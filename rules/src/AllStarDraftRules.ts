@@ -25,8 +25,11 @@ import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthe
 import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
 import { PlayoffRoundSetupRule } from './rules/PlayoffRoundSetupRule'
 import { PlayoffRoundPhaseTeamRevealRule } from './rules/PlayoffRoundPhaseTeamRevealRule'
-import { PlayoffRoundPhaseMatchScoreRule } from './rules/PlayoffRoundPhaseMatchScoreRule'
-import { PlayoffRoundPhaseInterMatchRule } from './rules/PlayoffRoundPhaseInterMatchRule'
+import { PlayoffRoundPhaseMainMatchRule } from './rules/PlayoffRoundPhaseMainMatchRule'
+import { PlayoffRoundPhaseTieMatchRule } from './rules/PlayoffRoundPhaseTieMatchRule'
+import { PlayoffRoundPhaseScoreRule } from './rules/PlayoffRoundPhaseScoreRule'
+import { PlayoffRoundPhaseInterMatchDiscardPlayersRule } from './rules/PlayoffRoundPhaseInterMatchDiscardPlayersRule'
+import { PlayoffRoundPhaseInterMatchAddPlayersRule } from './rules/PlayoffRoundPhaseInterMatchAddPlayersRule'
 
 /**
  * This class implements the rules of the board game.
@@ -47,8 +50,11 @@ export class AllStarDraftRules
     [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumRule,
     [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupRule,
     [RuleId.PlayoffRoundPhaseTeamReveal]: PlayoffRoundPhaseTeamRevealRule,
-    [RuleId.PlayoffRoundPhaseMatchScore]: PlayoffRoundPhaseMatchScoreRule,
-    [RuleId.PlayoffRoundPhaseInterMatch]: PlayoffRoundPhaseInterMatchRule
+    [RuleId.PlayoffRoundPhaseMainMatch]: PlayoffRoundPhaseMainMatchRule,
+    [RuleId.PlayoffRoundPhaseInterMatchAddPlayers]: PlayoffRoundPhaseInterMatchAddPlayersRule,
+    [RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers]: PlayoffRoundPhaseInterMatchDiscardPlayersRule,
+    [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchRule,
+    [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule
   }
 
   hidingStrategies = {

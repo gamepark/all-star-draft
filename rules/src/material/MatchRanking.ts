@@ -1,7 +1,7 @@
 import { PlayerColor } from '../PlayerColor'
 import { ArenaCard, arenaIrregularAttribute, arenasFanPoints } from './ArenaCard'
 import { HockeyPlayerCard } from './HockeyPlayerCard'
-import { compareTeam, getTeamStrength, IrregularAttribute } from './TeamStrength'
+import { compareCards, compareTeam, getTeamStrength, IrregularAttribute } from './TeamStrength'
 
 export type MatchState = {
   arena: ArenaCard
@@ -40,4 +40,40 @@ export function getPlayerRanking(teams: [PlayerColor, HockeyPlayerCard[]][], irr
     }
   })
   return Object.fromEntries(ranking) as Partial<Record<PlayerColor, number>>
+}
+
+export function getWeakestPlayersFromTeams(teams: [PlayerColor, HockeyPlayerCard[]][], playerCount: number): PlayerColor[] {
+  let weakestPlayers: PlayerColor[] = teams.map((team) => team[0])
+  teams.forEach((mainTeam, index) => {
+    for (let i = index + 1; i < playerCount; i++) {
+      const concurrentTeam = teams[i]
+      const matchResult = compareTeam(getTeamStrength(mainTeam[1], playerCount), getTeamStrength(concurrentTeam[1], playerCount), playerCount)
+      if (matchResult > 0) {
+        // main team win and can't be last
+        weakestPlayers = weakestPlayers.filter((player) => player !== mainTeam[0])
+      } else if (matchResult < 0) {
+        // concurrent team win and can't be last
+        weakestPlayers = weakestPlayers.filter((player) => player !== mainTeam[0])
+      }
+    }
+  })
+  return weakestPlayers
+}
+
+export function getWeakestPlayerFromCards(cards: [PlayerColor, HockeyPlayerCard][], playerCount: number): PlayerColor {
+  let weakestPlayers: PlayerColor[] = cards.map((card) => card[0])
+  cards.forEach((mainCard, index) => {
+    for (let i = index + 1; i < playerCount; i++) {
+      const concurrentCard = cards[i]
+      const matchResult = compareCards(mainCard[1], concurrentCard[1], playerCount)
+      if (matchResult > 0) {
+        // main team win and can't be last
+        weakestPlayers = weakestPlayers.filter((player) => player !== mainCard[0])
+      } else if (matchResult < 0) {
+        // concurrent team win and can't be last
+        weakestPlayers = weakestPlayers.filter((player) => player !== mainCard[0])
+      }
+    }
+  })
+  return weakestPlayers[0]
 }

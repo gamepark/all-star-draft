@@ -2,7 +2,7 @@
 
 import { useTranslation } from 'react-i18next'
 
-export const PlayoffRoundPhaseInterMatchHeader = () => {
+export const PlayoffRoundPhaseScoreHeader = () => {
   const { t } = useTranslation()
-  return <>{t('header.PlayoffRoundPhaseInterMatch')}</>
+  return <>{t('header.PlayoffRoundPhaseScore')}</>
 }

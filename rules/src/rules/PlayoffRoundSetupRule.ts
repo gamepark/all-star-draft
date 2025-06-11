@@ -50,6 +50,6 @@ export class PlayoffRoundSetupRule extends SimultaneousRule<PlayerColor, Materia
   }
 
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return [this.endGame()]
+    return [this.startSimultaneousRule(RuleId.PlayoffRoundPhaseTeamReveal)]
   }
 }

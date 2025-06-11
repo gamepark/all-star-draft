@@ -27,7 +27,7 @@ export class PlayoffRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor,
           .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, id: 2, player: player, rotation: MaterialRotation.FaceUp })
       ])
     )
-    moves.push(this.startSimultaneousRule(RuleId.PlayoffRoundPhaseTeamReveal))
+    moves.push(this.startSimultaneousRule(RuleId.PlayoffRoundPhaseMainMatch))
     return moves
   }
 }

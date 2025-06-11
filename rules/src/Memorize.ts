@@ -3,5 +3,6 @@ export enum Memorize {
   RoundNumber,
   CurrentTeamNumber,
   TeamLineup,
-  ActivePlayers
+  ActivePlayers,
+  LastPlayers
 }

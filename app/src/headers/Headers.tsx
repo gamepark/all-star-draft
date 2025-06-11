@@ -10,9 +10,12 @@ import { DraftRoundTeamRevealHeader } from './DraftRoundTeamRevealHeader'
 import { DraftRoundPhaseMatchScoreHeader } from './DraftRoundPhaseMatchScoreHeader'
 import { DraftRoundPhaseMatchMoveToStadiumHeader } from './DraftRoundPhaseMatchMoveToStadiumHeader'
 import { PlayoffRoundSetupPhaseHeader } from './PlayoffRoundSetupPhaseHeader'
-import { PlayoffRoundPhaseInterMatchHeader } from './PlayoffRoundPhaseInterMatchHeader'
-import { PlayoffRoundPhaseMatchScoreHeader } from './PlayoffRoundPhaseMatchScoreHeader'
+import { PlayoffRoundPhaseMainMatchHeader } from './PlayoffRoundPhaseMainMatchHeader'
 import { PlayoffRoundPhaseTeamRevealHeader } from './PlayoffRoundPhaseTeamRevealHeader'
+import { PlayoffRoundPhaseScoreHeader } from './PlayoffRoundPhaseScoreHeader'
+import { PlayoffRoundPhaseTieMatchHeader } from './PlayoffRoundPhaseTieMatchHeader'
+import { PlayoffRoundPhaseInterMatchAddPlayerHeader } from './PlayoffRoundPhaseInterMatchAddPlayerHeader'
+import { PlayoffRoundPhaseInterMatchDiscardPlayerHeader } from './PlayoffRoundPhaseInterMatchDiscardPlayerHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsHeader,
@@ -25,6 +28,9 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumHeader,
   [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupPhaseHeader,
   [RuleId.PlayoffRoundPhaseTeamReveal]: PlayoffRoundPhaseTeamRevealHeader,
-  [RuleId.PlayoffRoundPhaseMatchScore]: PlayoffRoundPhaseMatchScoreHeader,
-  [RuleId.PlayoffRoundPhaseInterMatch]: PlayoffRoundPhaseInterMatchHeader
+  [RuleId.PlayoffRoundPhaseMainMatch]: PlayoffRoundPhaseMainMatchHeader,
+  [RuleId.PlayoffRoundPhaseInterMatchAddPlayers]: PlayoffRoundPhaseInterMatchAddPlayerHeader,
+  [RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers]: PlayoffRoundPhaseInterMatchDiscardPlayerHeader,
+  [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchHeader,
+  [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreHeader
 }
