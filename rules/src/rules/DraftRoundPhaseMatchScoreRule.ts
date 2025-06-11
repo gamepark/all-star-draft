@@ -15,7 +15,7 @@ export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, M
       this.material(MaterialType.BusToken).location(LocationType.BusTokenSpotBelowBusStationBoard).getItem<KnownBusTokenId>()!.id.front
     )
     const currentArena = this.material(MaterialType.ArenaCard)
-      .location((location) => location.x === arenaIndex && location.type === LocationType.CurrentArenasRowSpot)
+      .location((location) => location.x === arenaIndex - 1 && location.type === LocationType.CurrentArenasRowSpot)
       .getItem()
     const currentTeams: [PlayerColor, HockeyPlayerCard[]][] = this.game.players.map((player) => [player, this.remind(Memorize.TeamLineup, player)])
     const match: MatchState = {

@@ -12,11 +12,13 @@ export class DraftRoundPhaseMatchMoveToStadiumRule extends PlayerTurnRule<Player
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const playerCount = this.game.players.length
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.game.players.flatMap((player) => {
-      const arenaIndex = this.material(MaterialType.BusToken)
-        .location(LocationType.PlayerBusTokenTeamSpot)
-        .player(player)
-        .minBy((item) => (item.id as KnownBusTokenId).front)
-        .getItem<KnownBusTokenId>()?.id.front
+      const arenaIndex = busTokenValue(
+        this.material(MaterialType.BusToken)
+          .location(LocationType.PlayerBusTokenTeamSpot)
+          .player(player)
+          .minBy((item) => (item.id as KnownBusTokenId).front)
+          .getItem<KnownBusTokenId>()!.id.front
+      )
       const busToken = this.material(MaterialType.BusToken)
         .location(LocationType.PlayerBusTokenTeamSpot)
         .player(player)
