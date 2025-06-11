@@ -12,8 +12,7 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (this.remind(Memorize.RoundNumber) >= 3) {
-      this.endGame()
-      return []
+      return [this.startSimultaneousRule(RuleId.PlayoffRoundSetupPhase)]
     }
     this.memorize<number>(Memorize.RoundNumber, (roundNumber) => roundNumber + 1)
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []

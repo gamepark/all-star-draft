@@ -42,8 +42,9 @@ const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
 }
 
 class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, MaterialType, LocationType> {
-  radius = 75
-  gapMaxAngle = 3
+  radius = 150
+  maxAngle = 5
+  gapMaxAngle = 1
   clockwise = true
 
   getBaseAngle(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
