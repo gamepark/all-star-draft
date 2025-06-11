@@ -9,7 +9,10 @@ import { DraftRoundPhaseBusDispatchHeader } from './DraftRoundPhaseBusDispatchHe
 import { DraftRoundTeamRevealHeader } from './DraftRoundTeamRevealHeader'
 import { DraftRoundPhaseMatchScoreHeader } from './DraftRoundPhaseMatchScoreHeader'
 import { DraftRoundPhaseMatchMoveToStadiumHeader } from './DraftRoundPhaseMatchMoveToStadiumHeader'
-import { PlayoffRoundSetupPhaseHeader } from './PLayoffRoundSetupPhaseHeader'
+import { PlayoffRoundSetupPhaseHeader } from './PlayoffRoundSetupPhaseHeader'
+import { PlayoffRoundPhaseInterMatchHeader } from './PlayoffRoundPhaseInterMatchHeader'
+import { PlayoffRoundPhaseMatchScoreHeader } from './PlayoffRoundPhaseMatchScoreHeader'
+import { PlayoffRoundPhaseTeamRevealHeader } from './PlayoffRoundPhaseTeamRevealHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsHeader,
@@ -20,5 +23,8 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundTeamRevealHeader,
   [RuleId.DraftRoundPhaseMatchScore]: DraftRoundPhaseMatchScoreHeader,
   [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumHeader,
-  [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupPhaseHeader
+  [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupPhaseHeader,
+  [RuleId.PlayoffRoundPhaseTeamReveal]: PlayoffRoundPhaseTeamRevealHeader,
+  [RuleId.PlayoffRoundPhaseMatchScore]: PlayoffRoundPhaseMatchScoreHeader,
+  [RuleId.PlayoffRoundPhaseInterMatch]: PlayoffRoundPhaseInterMatchHeader
 }

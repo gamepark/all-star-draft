@@ -7,5 +7,8 @@ export enum RuleId {
   DraftRoundPhaseTeamReveal,
   DraftRoundPhaseMatchScore,
   DraftRoundPhaseMatchMoveToStadium,
-  PlayoffRoundSetupPhase
+  PlayoffRoundSetupPhase,
+  PlayoffRoundPhaseTeamReveal,
+  PlayoffRoundPhaseMatchScore,
+  PlayoffRoundPhaseInterMatch
 }

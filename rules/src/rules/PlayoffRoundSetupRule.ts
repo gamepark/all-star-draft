@@ -4,6 +4,7 @@ import { MaterialType } from '../material/MaterialType'
 import { RuleId } from './RuleId'
 import { PlayerColor } from '../PlayerColor'
 import { MaterialRotation } from '../material/MaterialRotation'
+import { Memorize } from '../Memorize'
 
 export class PlayoffRoundSetupRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   public onRuleStart(
@@ -11,6 +12,7 @@ export class PlayoffRoundSetupRule extends SimultaneousRule<PlayerColor, Materia
     _previousRule?: RuleStep,
     _context?: PlayMoveContext
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    this.memorize(Memorize.ActivePlayers, this.game.players)
     return [
       this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).moveItemsAtOnce({
         type: LocationType.ArenaDiscardSpot
