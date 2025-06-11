@@ -4,6 +4,7 @@ import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
 import { Memorize } from '../Memorize'
 import { MaterialRotation } from '../material/MaterialRotation'
+import { RuleId } from './RuleId'
 
 export class PlayoffRoundPhaseInterMatchDiscardPlayersRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -36,7 +37,8 @@ export class PlayoffRoundPhaseInterMatchDiscardPlayersRule extends SimultaneousR
           .locationId(3)
           .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, player: player, id: 2, rotation: MaterialRotation.FaceUp })
       ]),
-      this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).deleteItemsAtOnce()
+      this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).deleteItemsAtOnce(),
+      this.startSimultaneousRule(RuleId.PlayoffRoundPhaseMainMatch)
     ]
   }
 }
