@@ -2,7 +2,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
-import { CardDescription, ItemButtonProps, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
 import Beaver1 from '../images/Cards/Hockeyer/Beaver1.jpg'
 import Beaver2 from '../images/Cards/Hockeyer/Beaver2.jpg'
 import Beaver3 from '../images/Cards/Hockeyer/Beaver3.jpg'
@@ -242,22 +242,23 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
       const ruleId = context.rules.game.rule.id
       const locationType = item.location.type
       const currentItemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
-      const currentItemLocation = item.location.x ?? 0
       const movesForThisItem = legalMoves
         .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
         .filter((move) => move.itemIndex === currentItemIndex)
-
-      const props = getMoveButtonPropsIfAny(ruleId, locationType)
-
-      if (movesForThisItem.length > 0 && props !== undefined) {
+      if (movesForThisItem.length > 0 && shouldButtonsAppear(ruleId, locationType)) {
         return (
           <>
             {movesForThisItem.map((move, moveIndex) => (
-              <ItemMenuButton key={`draft-card-move-${moveIndex}`} move={move} {...props(currentItemLocation).moveButton}>
+              <ItemMenuButton
+                key={`draft-card-move-${moveIndex}`}
+                move={move}
+                angle={-55 + (context.locators[locationType]?.getItemRotateZ(item, context) ?? 0)}
+                radius={2.1}
+              >
                 <FontAwesomeIcon icon={faHandPointer} size="lg" />
               </ItemMenuButton>
             ))}
-            {this.getHelpButton(item, context, props(currentItemLocation).helpButton)}
+            {this.getHelpButton(item, context, { angle: -125 + (context.locators[locationType]?.getItemRotateZ(item, context) ?? 0), radius: 2.1 })}
           </>
         )
       }
@@ -269,7 +270,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     if (context.player !== undefined && context.rules.game.rule !== undefined) {
       const ruleId = context.rules.game.rule.id
       const locationType = item.location.type
-      if (getMoveButtonPropsIfAny(ruleId, locationType) !== undefined) {
+      if (shouldButtonsAppear(ruleId, locationType)) {
         return item.location.player === context.player
       }
     }
@@ -277,36 +278,21 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 }
 
-const getMoveButtonPropsIfAny = (
-  ruleId: RuleId,
-  locationType: LocationType
-): ((currentItemLocation: number) => { moveButton: Partial<ItemButtonProps>; helpButton: Partial<ItemButtonProps> }) | undefined => {
-  switch (locationType) {
-    case LocationType.HockeyPlayerDraftSpot:
-      if (RuleId.DraftRoundPhaseCardSelection === ruleId)
-        return (currentItemLocation) => ({
-          moveButton: { angle: -60 + 3 * currentItemLocation, radius: 2 },
-          helpButton: { angle: -130 + 3 * currentItemLocation, radius: 2, label: <></> }
-        })
-      break
-    case LocationType.PlayerHockeyPlayerHandSpot:
-      if ([RuleId.DraftRoundPhaseTeamCreation, RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffRoundSetupPhase].includes(ruleId))
-        return (_currentItemLocation) => ({
-          moveButton: { x: -1.7, y: -1.4 },
-          helpButton: { x: -1.7, y: 1, label: <></> }
-        })
-      break
-    case LocationType.PlayerHockeyPlayerTeamSpot:
-      if (ruleId === RuleId.DraftRoundPhaseTeamExchange)
-        return (_currentItemLocation) => ({
-          moveButton: { x: -1.7, y: -1.4 },
-          helpButton: { x: -1.7, y: 1, label: <></> }
-        })
-      break
-    default:
-      return
-  }
-  return
+function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolean {
+  return (
+    (locationType === LocationType.HockeyPlayerDraftSpot && RuleId.DraftRoundPhaseCardSelection === ruleId) ||
+    (locationType === LocationType.PlayerHockeyPlayerHandSpot &&
+      [
+        RuleId.DraftRoundPhaseTeamCreation,
+        RuleId.DraftRoundPhaseTeamExchange,
+        RuleId.PlayoffRoundSetupPhase,
+        RuleId.PlayoffRoundSetupPhase,
+        RuleId.PlayoffRoundPhaseInterMatchAddPlayers,
+        RuleId.PlayoffRoundPhaseTieMatch
+      ].includes(ruleId)) ||
+    (locationType === LocationType.PlayerHockeyPlayerTeamSpot &&
+      [RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers].includes(ruleId))
+  )
 }
 
 export const hockeyPlayerCardDrescription = new HockeyPlayerCardDescription()
