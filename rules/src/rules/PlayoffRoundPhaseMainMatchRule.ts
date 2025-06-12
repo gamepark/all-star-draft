@@ -24,7 +24,6 @@ export class PlayoffRoundPhaseMainMatchRule extends PlayerTurnRule<PlayerColor, 
       }),
       this.game.players.length
     )
-    console.log("After main match last players : ", lastPlayers)
     this.memorize<PlayerColor[]>(Memorize.LastPlayers, lastPlayers)
     if (lastPlayers.length > 1) return [this.startSimultaneousRule(RuleId.PlayoffRoundPhaseTieMatch)]
     return [this.startSimultaneousRule(RuleId.PlayoffRoundPhaseScore)]

@@ -51,7 +51,7 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     const lastPlayers = this.remind<PlayerColor[]>(Memorize.LastPlayers)
-    moves.push( 
+    moves.push(
       ...lastPlayers.flatMap((player) => [
         // Move and reveal card changed by the player between matchs
         this.material(MaterialType.HockeyPlayerCard)

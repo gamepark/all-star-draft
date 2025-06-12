@@ -27,7 +27,6 @@ export class PlayoffRoundPhaseScoreRule extends PlayerTurnRule<PlayerColor, Mate
               this.game.players.length
             )
           : lastPlayers[0]
-      console.log("Last player of the round is ", lastPlayer)
       const playoffTicketTokens = this.material(MaterialType.PlayoffTicketToken).location(LocationType.PlayerPlayoffTicketTokenSpot).player(lastPlayer)
       if (playoffTicketTokens.length > 0) {
         moves.push(playoffTicketTokens.deleteItem())
