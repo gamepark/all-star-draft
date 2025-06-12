@@ -53,7 +53,7 @@ export function getWeakestPlayersFromTeams(teams: [PlayerColor, HockeyPlayerCard
         weakestPlayers = weakestPlayers.filter((player) => player !== mainTeam[0])
       } else if (matchResult < 0) {
         // concurrent team win and can't be last
-        weakestPlayers = weakestPlayers.filter((player) => player !== mainTeam[0])
+        weakestPlayers = weakestPlayers.filter((player) => player !== concurrentTeam[0])
       }
     }
   })
@@ -71,7 +71,7 @@ export function getWeakestPlayerFromCards(cards: [PlayerColor, HockeyPlayerCard]
         weakestPlayers = weakestPlayers.filter((player) => player !== mainCard[0])
       } else if (matchResult < 0) {
         // concurrent team win and can't be last
-        weakestPlayers = weakestPlayers.filter((player) => player !== mainCard[0])
+        weakestPlayers = weakestPlayers.filter((player) => player !== concurrentCard[0])
       }
     }
   })

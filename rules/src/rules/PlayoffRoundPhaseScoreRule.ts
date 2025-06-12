@@ -12,10 +12,8 @@ export class PlayoffRoundPhaseScoreRule extends PlayerTurnRule<PlayerColor, Mate
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     const currentLowestPosition = this.remind<PlayerColor[]>(Memorize.ActivePlayers).length
-    console.log('Place ', currentLowestPosition, ' is still open')
     const lastPlayers = this.remind<PlayerColor[]>(Memorize.LastPlayers)
     if (lastPlayers.length > 0) {
-      console.log('We got at least a loser')
       const lastPlayer =
         lastPlayers.length > 1
           ? getWeakestPlayerFromCards(
@@ -29,11 +27,9 @@ export class PlayoffRoundPhaseScoreRule extends PlayerTurnRule<PlayerColor, Mate
               this.game.players.length
             )
           : lastPlayers[0]
-      console.log('And it is ', lastPlayer)
+      console.log("Last player of the round is ", lastPlayer)
       const playoffTicketTokens = this.material(MaterialType.PlayoffTicketToken).location(LocationType.PlayerPlayoffTicketTokenSpot).player(lastPlayer)
-      console.log(playoffTicketTokens.getItems())
       if (playoffTicketTokens.length > 0) {
-        console.log('Some token to remove ! Still ', playoffTicketTokens.length)
         moves.push(playoffTicketTokens.deleteItem())
       } else {
         this.memorize<number>(Memorize.Score, (score) => score + playoffFanPoint[this.game.players.length][currentLowestPosition - 1], lastPlayer)
@@ -42,12 +38,12 @@ export class PlayoffRoundPhaseScoreRule extends PlayerTurnRule<PlayerColor, Mate
     }
     const activePlayers = this.remind<PlayerColor[]>(Memorize.ActivePlayers)
     if (activePlayers.length <= 1) {
-      if (activePlayers.length === 1)
-        this.memorize<number>(Memorize.Score, (score) => score + playoffFanPoint[this.game.players.length][currentLowestPosition - 1], activePlayers[0])
-      this.endGame()
+      if (activePlayers.length === 1) this.memorize<number>(Memorize.Score, (score) => score + playoffFanPoint[this.game.players.length][0], activePlayers[0])
+      moves.push(this.endGame())
+    } else {
+      this.memorize<PlayerColor[]>(Memorize.LastPlayers, [])
+      moves.push(this.startSimultaneousRule(RuleId.PlayoffRoundPhaseInterMatchAddPlayers))
     }
-    this.memorize<PlayerColor[]>(Memorize.LastPlayers, [])
-    moves.push(this.startSimultaneousRule(RuleId.PlayoffRoundPhaseInterMatchAddPlayers))
     return moves
   }
 }

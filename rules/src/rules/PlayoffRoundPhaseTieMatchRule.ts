@@ -3,7 +3,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
-import { difference } from 'lodash'
+import { difference, intersection } from 'lodash'
 import { playoffFanPoint } from '../material/PlayoffPointCard'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { RuleId } from './RuleId'
@@ -21,7 +21,7 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
         this.endPlayerTurn(player)
       }
     })
-    this.memorize<PlayerColor[]>(Memorize.LastPlayers, difference(lastPlayers, this.remind(Memorize.ActivePlayers)))
+    this.memorize<PlayerColor[]>(Memorize.LastPlayers, intersection(lastPlayers, this.remind(Memorize.ActivePlayers)))
     return []
   }
 
@@ -51,7 +51,7 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     const lastPlayers = this.remind<PlayerColor[]>(Memorize.LastPlayers)
-    moves.push(
+    moves.push( 
       ...lastPlayers.flatMap((player) => [
         // Move and reveal card changed by the player between matchs
         this.material(MaterialType.HockeyPlayerCard)
