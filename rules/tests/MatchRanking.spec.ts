@@ -1,9 +1,9 @@
 import { HockeyPlayerCard } from '../src/material/HockeyPlayerCard'
-import { getPlayerRanking } from '../src/material/MatchRanking'
+import { getPlayerRanking, getWeakestPlayerFromCards, getWeakestPlayersFromTeams } from '../src/material/MatchRanking'
 import { IrregularAttribute } from '../src/material/TeamStrength'
 import { PlayerColor } from '../src/PlayerColor'
 
-const actualTest = ({
+const actualRankingTest = ({
   teams,
   irregularAttribute,
   expectedRanking
@@ -19,7 +19,37 @@ const actualTest = ({
   expect(ranking).toMatchObject(expectedRanking)
 }
 
-describe('MatchRanking tests', () => {
+const actualFindWeaskestPlayersFromTeamTest = ({
+  teams,
+  expectedPlayers
+  }: {
+  teams: Array<{player : PlayerColor, team : HockeyPlayerCard[]}>,
+  expectedPlayers: PlayerColor[]
+}) => {
+  // When
+  const weakestPlayer = getWeakestPlayersFromTeams(teams, teams.length)
+
+  // Then
+  expect(weakestPlayer.sort()).toMatchObject(expectedPlayers.sort())
+}
+
+const actualFindWeaskestPlayersFromCardTest = ({
+  cards,
+  totalPlayers,
+  expectedPlayer
+  }: {
+  cards: Array<{player : PlayerColor, card : HockeyPlayerCard}>,
+  totalPlayers : number,
+  expectedPlayer: PlayerColor
+}) => {
+  // When
+  const weakestPlayer = getWeakestPlayerFromCards(cards, totalPlayers)
+
+  // Then
+  expect(weakestPlayer).toEqual(expectedPlayer)
+}
+
+describe('MatchRanking tests during draft phase', () => {
   describe('Test for 5 players with different strength', () => {
     test.each([
       {
@@ -78,7 +108,7 @@ describe('MatchRanking tests', () => {
           [PlayerColor.Red] : 2
         }
       }
-    ])('getRanking should return the correct match between player and rank', actualTest)
+    ])('getRanking should return the correct match between player and rank', actualRankingTest)
   })
 
   describe('Test for 6 players with ties', () => {
@@ -149,7 +179,7 @@ describe('MatchRanking tests', () => {
           [PlayerColor.Yellow]: 2
         }
       }
-    ])('getRanking should return the correct match between player and rank', actualTest)
+    ])('getRanking should return the correct match between player and rank', actualRankingTest)
   })
 
   describe('Test priority for 3 player', () => {
@@ -190,7 +220,7 @@ describe('MatchRanking tests', () => {
           [PlayerColor.Green] : 2,
         }
       }
-    ])('getRanking should return the correct match between player and rank', actualTest)
+    ])('getRanking should return the correct match between player and rank', actualRankingTest)
   })
 
   describe('Test priority for 5 player', () => {
@@ -251,7 +281,7 @@ describe('MatchRanking tests', () => {
           [PlayerColor.Red] : 1,
         }
       }
-    ])('getRanking should return the correct match between player and rank', actualTest)
+    ])('getRanking should return the correct match between player and rank', actualRankingTest)
   })
 
   describe('Test priority for same attribute and different value', () => {
@@ -424,7 +454,7 @@ describe('MatchRanking tests', () => {
         }
       }
     ],
-  )('getRanking should return the correct match between player and rank', actualTest)
+  )('getRanking should return the correct match between player and rank', actualRankingTest)
   })  
   
   describe('Test irregular attributes take priority when needed', () => {
@@ -592,6 +622,176 @@ describe('MatchRanking tests', () => {
         }
       },
     ],
-  )('getRanking should return the correct match between player and rank', actualTest)
+  )('getRanking should return the correct match between player and rank', actualRankingTest)
+  })
+})
+
+describe('MatchRanking tests during playoff phase', ()=> {
+  describe('Test teams for 4 players priority',()=>{
+    test.each([
+      {
+        teams:[
+            {player : PlayerColor.Black,
+            team : [
+              HockeyPlayerCard.Rabbit4,
+              HockeyPlayerCard.Rabbit5,
+              HockeyPlayerCard.Rabbit6,
+              HockeyPlayerCard.Duck4,
+              HockeyPlayerCard.Beaver4
+            ]},
+            {player : PlayerColor.Blue, 
+            team : [
+              HockeyPlayerCard.Beaver1,
+              HockeyPlayerCard.Beaver2,
+              HockeyPlayerCard.Beaver3,
+              HockeyPlayerCard.Rabbit1,
+              HockeyPlayerCard.Duck1
+            ]},
+            {player :PlayerColor.Green, 
+            team: [
+              HockeyPlayerCard.Eagle1,
+              HockeyPlayerCard.Eagle2,
+              HockeyPlayerCard.Eagle3,
+              HockeyPlayerCard.Eagle4,
+              HockeyPlayerCard.Eagle5
+            ]},
+            {player : PlayerColor.Purple,
+            team:[
+              HockeyPlayerCard.Horse1,
+              HockeyPlayerCard.Horse2,
+              HockeyPlayerCard.Horse3,
+              HockeyPlayerCard.Horse4,
+              HockeyPlayerCard.Horse5
+            ]
+          }
+        ] ,
+        expectedPlayers : [
+          PlayerColor.Blue
+        ]
+      }
+    ])('getWeakestPlayersFromTeams should return the correct players array', actualFindWeaskestPlayersFromTeamTest)
+  })
+
+  describe('Test teams for 5 players priority',()=>{
+    test.each([
+      {
+        teams:[
+            {player : PlayerColor.Black,
+            team : [
+              HockeyPlayerCard.Rabbit4,
+              HockeyPlayerCard.Rabbit5,
+              HockeyPlayerCard.Rabbit6,
+              HockeyPlayerCard.Duck4,
+              HockeyPlayerCard.Beaver4
+            ]},
+            {player : PlayerColor.Blue, 
+            team : [
+              HockeyPlayerCard.Beaver1,
+              HockeyPlayerCard.Beaver2,
+              HockeyPlayerCard.Beaver3,
+              HockeyPlayerCard.Rabbit1,
+              HockeyPlayerCard.Duck1
+            ]},
+            {player :PlayerColor.Green, 
+            team: [
+              HockeyPlayerCard.Eagle1,
+              HockeyPlayerCard.Eagle2,
+              HockeyPlayerCard.Eagle3,
+              HockeyPlayerCard.Eagle4,
+              HockeyPlayerCard.Eagle5
+            ]},
+            {player : PlayerColor.Purple,
+              team:[
+                HockeyPlayerCard.Horse1,
+                HockeyPlayerCard.Horse2,
+                HockeyPlayerCard.Horse3,
+                HockeyPlayerCard.Horse4,
+                HockeyPlayerCard.Horse5
+              ]
+            },
+            {player : PlayerColor.Red,
+              team:[
+                HockeyPlayerCard.Panda1,
+                HockeyPlayerCard.Panda2,
+                HockeyPlayerCard.Panda3,
+                HockeyPlayerCard.Panda4,
+                HockeyPlayerCard.Panda5
+              ]
+            }
+        ] ,
+        expectedPlayers : [
+          PlayerColor.Black
+        ]
+      }
+    ])('getWeakestPlayersFromTeams should return the correct players array', actualFindWeaskestPlayersFromTeamTest)
+  })
+
+  describe('Test teams for 3 players with a tie',()=>{
+    test.each([
+      {
+        teams:[
+            {player : PlayerColor.Black,
+            team : [
+              HockeyPlayerCard.Rabbit1,
+              HockeyPlayerCard.Rabbit2,
+              HockeyPlayerCard.Rabbit3,
+              HockeyPlayerCard.Duck1,
+              HockeyPlayerCard.Duck2
+            ]},
+            {player : PlayerColor.Blue, 
+            team : [
+              HockeyPlayerCard.Rabbit4,
+              HockeyPlayerCard.Rabbit5,
+              HockeyPlayerCard.Rabbit6,
+              HockeyPlayerCard.Duck3,
+              HockeyPlayerCard.Duck4
+            ]},
+            {player :PlayerColor.Green, 
+            team: [
+              HockeyPlayerCard.Eagle1,
+              HockeyPlayerCard.Eagle2,
+              HockeyPlayerCard.Eagle3,
+              HockeyPlayerCard.Eagle4,
+              HockeyPlayerCard.Eagle5
+            ]}
+        ] ,
+        expectedPlayers : [
+          PlayerColor.Black,
+          PlayerColor.Blue
+        ]
+      }
+    ])('getWeakestPlayersFromTeams should return the correct players array', actualFindWeaskestPlayersFromTeamTest)
+  })
+
+  describe('Test cards for 2-4 players priority',()=>{
+    test.each([
+      {
+        totalPlayers : 4,
+        cards:[
+          {player : PlayerColor.Black,
+          card : HockeyPlayerCard.Duck2},
+          {player : PlayerColor.Blue,
+            card : HockeyPlayerCard.Rabbit4}
+        ],
+        expectedPlayer : 
+          PlayerColor.Black,
+      }
+    ])('getWeakestPlayersFromTeams should return the correct players array', actualFindWeaskestPlayersFromCardTest)
+  })
+
+  describe('Test cards for 5-6 players priority',()=>{
+    test.each([
+      {
+        totalPlayers : 5,
+        cards:[
+            {player : PlayerColor.Black,
+            card : HockeyPlayerCard.Duck2},
+            {player : PlayerColor.Blue,
+              card : HockeyPlayerCard.Rabbit4}
+        ],
+        expectedPlayer : 
+          PlayerColor.Blue,
+      }
+    ])('getWeakestPlayersFromTeams should return the correct players array', actualFindWeaskestPlayersFromCardTest)
   })
 })
