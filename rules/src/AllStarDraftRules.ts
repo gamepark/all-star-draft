@@ -30,6 +30,7 @@ import { PlayoffRoundPhaseTieMatchRule } from './rules/PlayoffRoundPhaseTieMatch
 import { PlayoffRoundPhaseScoreRule } from './rules/PlayoffRoundPhaseScoreRule'
 import { PlayoffRoundPhaseInterMatchDiscardPlayersRule } from './rules/PlayoffRoundPhaseInterMatchDiscardPlayersRule'
 import { PlayoffRoundPhaseInterMatchAddPlayersRule } from './rules/PlayoffRoundPhaseInterMatchAddPlayersRule'
+import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
 
 /**
  * This class implements the rules of the board game.
@@ -54,7 +55,9 @@ export class AllStarDraftRules
     [RuleId.PlayoffRoundPhaseInterMatchAddPlayers]: PlayoffRoundPhaseInterMatchAddPlayersRule,
     [RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers]: PlayoffRoundPhaseInterMatchDiscardPlayersRule,
     [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchRule,
-    [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule
+    [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule,
+    [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionRule
+
   }
 
   hidingStrategies = {
