@@ -17,13 +17,11 @@ export class PlayoffRoundPhaseScoreRule extends PlayerTurnRule<PlayerColor, Mate
       const lastPlayer =
         lastPlayers.length > 1
           ? getWeakestPlayerFromCards(
-              lastPlayers.map((player) => {
-                return [
-                  player,
-                  this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(player).locationId(3).getItem()
-                    ?.id as HockeyPlayerCard
-                ]
-              }),
+              lastPlayers.map((player) => ({
+                player: player,
+                card: this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(player).locationId(3).getItem()
+                  ?.id as HockeyPlayerCard
+              })),
               this.game.players.length
             )
           : lastPlayers[0]
