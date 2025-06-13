@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
@@ -6,17 +6,6 @@ import { RuleId } from './RuleId'
 import { Memorize } from '../Memorize'
 
 export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  // Todo Remove once test are done
-  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return this.game.players.flatMap((player) => [
-      this.material(MaterialType.HockeyPlayerCard)
-        .location(LocationType.HockeyPlayerDraftSpot)
-        .player(player)
-        .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerHandSpot, player: player }),
-      this.endPlayerTurn(player)
-    ])
-  }
-
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).player(player).moveItems({
       type: LocationType.PlayerHockeyPlayerHandSpot,

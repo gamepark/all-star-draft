@@ -23,6 +23,13 @@ import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScore
 import { DraftRoundPhaseMatchMoveToStadiumRule } from './rules/DraftRoundPhaseMatchMoveToStadiumRule'
 import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthersWhenRotatedFaceDown'
 import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
+import { PlayoffRoundSetupRule } from './rules/PlayoffRoundSetupRule'
+import { PlayoffRoundPhaseTeamRevealRule } from './rules/PlayoffRoundPhaseTeamRevealRule'
+import { PlayoffRoundPhaseMainMatchRule } from './rules/PlayoffRoundPhaseMainMatchRule'
+import { PlayoffRoundPhaseTieMatchRule } from './rules/PlayoffRoundPhaseTieMatchRule'
+import { PlayoffRoundPhaseScoreRule } from './rules/PlayoffRoundPhaseScoreRule'
+import { PlayoffRoundPhaseInterMatchDiscardPlayersRule } from './rules/PlayoffRoundPhaseInterMatchDiscardPlayersRule'
+import { PlayoffRoundPhaseInterMatchAddPlayersRule } from './rules/PlayoffRoundPhaseInterMatchAddPlayersRule'
 
 /**
  * This class implements the rules of the board game.
@@ -40,7 +47,14 @@ export class AllStarDraftRules
     [RuleId.DraftRoundPhaseBusDispatch]: DraftRoundPhaseBusDispatchRule,
     [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundPhaseTeamRevealRule,
     [RuleId.DraftRoundPhaseMatchScore]: DraftRoundPhaseMatchScoreRule,
-    [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumRule
+    [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumRule,
+    [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupRule,
+    [RuleId.PlayoffRoundPhaseTeamReveal]: PlayoffRoundPhaseTeamRevealRule,
+    [RuleId.PlayoffRoundPhaseMainMatch]: PlayoffRoundPhaseMainMatchRule,
+    [RuleId.PlayoffRoundPhaseInterMatchAddPlayers]: PlayoffRoundPhaseInterMatchAddPlayersRule,
+    [RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers]: PlayoffRoundPhaseInterMatchDiscardPlayersRule,
+    [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchRule,
+    [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule
   }
 
   hidingStrategies = {

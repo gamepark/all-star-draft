@@ -154,7 +154,6 @@ export const getTeamStrength = (team: HockeyPlayerCard[], playersCount: number):
   )
 }
 
-// Basic comparison. No special rules
 export function compareTeam(t1: TeamStrength, t2: TeamStrength, playerCount: number, irregularAttribute?: IrregularAttribute): number {
   if (irregularAttribute !== undefined) {
     const t1HasAttributeValue = t1.irregularsAttributes?.includes(irregularAttribute) ? 1 : 0
@@ -173,4 +172,23 @@ export function compareTeam(t1: TeamStrength, t2: TeamStrength, playerCount: num
 function getAttributeKindPriority(playerCount: number): AttributeKind[] {
   if (playerCount > 4) return [AttributeKind.Number, AttributeKind.Species, AttributeKind.Symbol]
   return [AttributeKind.Species, AttributeKind.Number, AttributeKind.Symbol]
+}
+
+export function compareCards(c1: HockeyPlayerCard, c2: HockeyPlayerCard, playerCount: number): number {
+  const attributes = getAttributeKindPriority(playerCount).reverse() // Needed to test the best attribute first
+  const mainCardStrength: Record<AttributeKind, number> = {
+    [AttributeKind.Species]: getHockeyPlayerCardSpecie(c1),
+    [AttributeKind.Number]: getHockeyPlayerCardValue(c1),
+    [AttributeKind.Symbol]: getHockeyPlayerCardSymbol(c1)
+  }
+  const concurrentCardStrength: Record<AttributeKind, number> = {
+    [AttributeKind.Species]: getHockeyPlayerCardSpecie(c2),
+    [AttributeKind.Number]: getHockeyPlayerCardValue(c2),
+    [AttributeKind.Symbol]: getHockeyPlayerCardSymbol(c2)
+  }
+  for (const attribute of attributes) {
+    const diff = mainCardStrength[attribute] - concurrentCardStrength[attribute]
+    if (diff !== 0) return diff
+  }
+  return 0
 }

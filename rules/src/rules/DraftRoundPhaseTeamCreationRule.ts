@@ -34,7 +34,6 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     return []
   }
 
-  // Todo : Rework when next rule is created
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return [this.startSimultaneousRule(RuleId.DraftRoundPhaseBusDispatch)]
   }
