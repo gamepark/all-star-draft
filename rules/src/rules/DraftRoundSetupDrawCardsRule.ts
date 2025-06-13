@@ -27,7 +27,7 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
         },
         this.remind<number>(Memorize.RoundNumber)
       ),
-      ...Array(6)
+      ...Array(this.game.players.length === 2 ? 7 : 6)
         .fill(1)
         .flatMap((_) =>
           this.game.players.map((player) =>

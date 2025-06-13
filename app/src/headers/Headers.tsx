@@ -16,6 +16,7 @@ import { PlayoffRoundPhaseScoreHeader } from './PlayoffRoundPhaseScoreHeader'
 import { PlayoffRoundPhaseTieMatchHeader } from './PlayoffRoundPhaseTieMatchHeader'
 import { PlayoffRoundPhaseInterMatchAddPlayerHeader } from './PlayoffRoundPhaseInterMatchAddPlayerHeader'
 import { PlayoffRoundPhaseInterMatchDiscardPlayerHeader } from './PlayoffRoundPhaseInterMatchDiscardPlayerHeader'
+import { DraftRoundPhaseOpenMarketCardSelectionHeader } from './DraftRoundPhaseOpenMarketCardSelectionHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsHeader,
@@ -32,5 +33,6 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.PlayoffRoundPhaseInterMatchAddPlayers]: PlayoffRoundPhaseInterMatchAddPlayerHeader,
   [RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers]: PlayoffRoundPhaseInterMatchDiscardPlayerHeader,
   [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchHeader,
-  [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreHeader
+  [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreHeader,
+  [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionHeader
 }
