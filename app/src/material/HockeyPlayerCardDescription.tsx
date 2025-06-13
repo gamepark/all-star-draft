@@ -238,7 +238,11 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode {
-    if (context.player !== undefined && item.location.player === context.player && context.rules.game.rule !== undefined) {
+    if (
+      context.player !== undefined &&
+      (item.location.player === context.player || item.location.type === LocationType.HockeyPlayerOpenMarketDraftLocator) &&
+      context.rules.game.rule !== undefined
+    ) {
       const ruleId = context.rules.game.rule.id
       const locationType = item.location.type
       const currentItemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
@@ -275,7 +279,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
       const ruleId = context.rules.game.rule.id
       const locationType = item.location.type
       if (shouldButtonsAppear(ruleId, locationType)) {
-        return item.location.player === context.player
+        return item.location.player === context.player || item.location.type === LocationType.HockeyPlayerOpenMarketDraftLocator
       }
     }
     return false
@@ -295,7 +299,8 @@ function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolea
         RuleId.PlayoffRoundPhaseTieMatch
       ].includes(ruleId)) ||
     (locationType === LocationType.PlayerHockeyPlayerTeamSpot &&
-      [RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers].includes(ruleId))
+      [RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers].includes(ruleId)) ||
+    (locationType === LocationType.HockeyPlayerOpenMarketDraftLocator && ruleId === RuleId.DraftRoundPhaseOpenMarketCardSelection)
   )
 }
 

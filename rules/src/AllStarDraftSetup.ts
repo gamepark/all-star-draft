@@ -30,11 +30,6 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   start(_options: AllStarDraftOptions) {
     if (this.players.length === 2) {
       this.memorize<RegularSeasonGameMode>(Memorize.GameMode, _options.gameMode)
-      console.log('Gamemode Openmarket : ', _options.gameMode === RegularSeasonGameMode.OpenMarket)
-      if (_options.gameMode === RegularSeasonGameMode.OpenMarket) {
-        this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection) 
-        return
-      }
     }
     this.startPlayerTurn(RuleId.DraftRoundSetupDrawCards)
   }
