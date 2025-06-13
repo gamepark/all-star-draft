@@ -258,7 +258,11 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
                 <FontAwesomeIcon icon={faHandPointer} size="lg" />
               </ItemMenuButton>
             ))}
-            {this.getHelpButton(item, context, { angle: -125 + (context.locators[locationType]?.getItemRotateZ(item, context) ?? 0), radius: 2.1 })}
+            {this.getHelpButton(item, context, {
+              angle: -125 + (context.locators[locationType]?.getItemRotateZ(item, context) ?? 0),
+              radius: 2.1,
+              label: <></>
+            })}
           </>
         )
       }
