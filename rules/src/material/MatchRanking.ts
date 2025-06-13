@@ -42,38 +42,19 @@ export function getPlayerRanking(teams: [PlayerColor, HockeyPlayerCard[]][], irr
   return Object.fromEntries(ranking) as Partial<Record<PlayerColor, number>>
 }
 
-export function getWeakestPlayersFromTeams(teams: [PlayerColor, HockeyPlayerCard[]][], playerCount: number): PlayerColor[] {
-  let weakestPlayers: PlayerColor[] = teams.map((team) => team[0])
-  teams.forEach((mainTeam, index) => {
-    for (let i = index + 1; i < playerCount; i++) {
-      const concurrentTeam = teams[i]
-      const matchResult = compareTeam(getTeamStrength(mainTeam[1], playerCount), getTeamStrength(concurrentTeam[1], playerCount), playerCount)
-      if (matchResult > 0) {
-        // main team win and can't be last
-        weakestPlayers = weakestPlayers.filter((player) => player !== mainTeam[0])
-      } else if (matchResult < 0) {
-        // concurrent team win and can't be last
-        weakestPlayers = weakestPlayers.filter((player) => player !== concurrentTeam[0])
-      }
-    }
-  })
-  return weakestPlayers
+export const getWeakestPlayersFromTeams = (teams: { player: PlayerColor; team: HockeyPlayerCard[] }[], playerCount: number): PlayerColor[] => {
+  return teams
+    .map((team) => ({ player: team.player, teamStrength: getTeamStrength(team.team, playerCount) }))
+    .sort((a, b) => compareTeam(a.teamStrength, b.teamStrength, playerCount))
+    .filter(
+      (team, _index, array) =>
+        team.teamStrength.strength === array[0].teamStrength.strength &&
+        team.teamStrength.attribute.kind === array[0].teamStrength.attribute.kind &&
+        team.teamStrength.attribute.value === array[0].teamStrength.attribute.value
+    )
+    .map((team) => team.player)
 }
 
-export function getWeakestPlayerFromCards(cards: [PlayerColor, HockeyPlayerCard][], playerCount: number): PlayerColor {
-  let weakestPlayers: PlayerColor[] = cards.map((card) => card[0])
-  cards.forEach((mainCard, index) => {
-    for (let i = index + 1; i < playerCount; i++) {
-      const concurrentCard = cards[i]
-      const matchResult = compareCards(mainCard[1], concurrentCard[1], playerCount)
-      if (matchResult > 0) {
-        // main team win and can't be last
-        weakestPlayers = weakestPlayers.filter((player) => player !== mainCard[0])
-      } else if (matchResult < 0) {
-        // concurrent team win and can't be last
-        weakestPlayers = weakestPlayers.filter((player) => player !== concurrentCard[0])
-      }
-    }
-  })
-  return weakestPlayers[0]
+export const getWeakestPlayerFromCards = (cards: { player: PlayerColor; card: HockeyPlayerCard }[], playerCount: number): PlayerColor => {
+  return cards.sort((a, b) => compareCards(a.card, b.card, playerCount)).map((card) => card.player)[0]
 }

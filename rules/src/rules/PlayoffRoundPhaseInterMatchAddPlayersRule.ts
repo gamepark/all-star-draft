@@ -8,11 +8,16 @@ import { RuleId } from './RuleId'
 import { Memorize } from '../Memorize'
 import { playoffFanPoint } from '../material/PlayoffPointCard'
 
+const NEW_HOCKEY_PLAYERS_LOCATION_ID = 3
+
 export class PlayoffRoundPhaseInterMatchAddPlayersRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const activePlayers = this.remind<PlayerColor[]>(Memorize.ActivePlayers)
     const currentLowestPosition = activePlayers.length
-    this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(3).deleteItemsAtOnce()
+    this.material(MaterialType.HockeyPlayerCard)
+      .location(LocationType.PlayerHockeyPlayerTeamSpot)
+      .locationId(NEW_HOCKEY_PLAYERS_LOCATION_ID)
+      .deleteItemsAtOnce()
     activePlayers.forEach((player) => {
       if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getItems().length < 2) {
         this.memorize<number>(Memorize.Score, (score) => score + playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
@@ -30,11 +35,17 @@ export class PlayoffRoundPhaseInterMatchAddPlayersRule extends SimultaneousRule<
         .player(_player)
         .moveItems({
           type: LocationType.PlayerHockeyPlayerTeamSpot,
-          id: 3,
+          id: NEW_HOCKEY_PLAYERS_LOCATION_ID,
           player: _player,
           rotation: MaterialRotation.FaceDown
         })
-      if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(3).player(_player).getItems().length >= 2)
+      if (
+        this.material(MaterialType.HockeyPlayerCard)
+          .location(LocationType.PlayerHockeyPlayerTeamSpot)
+          .locationId(NEW_HOCKEY_PLAYERS_LOCATION_ID)
+          .player(_player)
+          .getItems().length >= 2
+      )
         moves.push(this.customMove(CustomMoveType.Pass, { player: _player }))
       return moves
     }
@@ -44,7 +55,7 @@ export class PlayoffRoundPhaseInterMatchAddPlayersRule extends SimultaneousRule<
   afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
-      move.location.id === 3 &&
+      move.location.id === NEW_HOCKEY_PLAYERS_LOCATION_ID &&
       move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
       move.location.player !== undefined &&
       this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(move.location.player).locationId(move.location.id)
