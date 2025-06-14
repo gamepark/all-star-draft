@@ -31,6 +31,9 @@ import { PlayoffRoundPhaseScoreRule } from './rules/PlayoffRoundPhaseScoreRule'
 import { PlayoffRoundPhaseInterMatchDiscardPlayersRule } from './rules/PlayoffRoundPhaseInterMatchDiscardPlayersRule'
 import { PlayoffRoundPhaseInterMatchAddPlayersRule } from './rules/PlayoffRoundPhaseInterMatchAddPlayersRule'
 import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
+import { DraftRoundPhaseHeritageAndClashCardSelectionRule } from './rules/DraftRoundPhaseHeritageAndClashCardSelection'
+import { DraftRoundPhaseDiscardCardOverflowRule } from './rules/DraftRoundPhaseDiscardCardOverflowRule'
+import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
 
 /**
  * This class implements the rules of the board game.
@@ -56,7 +59,10 @@ export class AllStarDraftRules
     [RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers]: PlayoffRoundPhaseInterMatchDiscardPlayersRule,
     [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchRule,
     [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule,
-    [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionRule
+    [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionRule,
+    [RuleId.DraftRoundPhaseHeritageAndClashCardSelection]: DraftRoundPhaseHeritageAndClashCardSelectionRule,
+    [RuleId.DraftRoundPhaseDiscardCardOverflow]: DraftRoundPhaseDiscardCardOverflowRule,
+    [RuleId.DraftRoundPhaseClashCardSelectionForOpponent]: DraftRoundPhaseClashCardSelectionForOpponentRule
 
   }
 

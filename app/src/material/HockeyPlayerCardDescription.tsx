@@ -288,7 +288,10 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
 
 function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolean {
   return (
-    (locationType === LocationType.HockeyPlayerDraftSpot && RuleId.DraftRoundPhaseCardSelection === ruleId) ||
+    (locationType === LocationType.HockeyPlayerDraftSpot &&
+      [RuleId.DraftRoundPhaseCardSelection, RuleId.DraftRoundPhaseHeritageAndClashCardSelection, RuleId.DraftRoundPhaseClashCardSelectionForOpponent].includes(
+        ruleId
+      )) ||
     (locationType === LocationType.PlayerHockeyPlayerHandSpot &&
       [
         RuleId.DraftRoundPhaseTeamCreation,
@@ -296,7 +299,8 @@ function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolea
         RuleId.PlayoffRoundSetupPhase,
         RuleId.PlayoffRoundSetupPhase,
         RuleId.PlayoffRoundPhaseInterMatchAddPlayers,
-        RuleId.PlayoffRoundPhaseTieMatch
+        RuleId.PlayoffRoundPhaseTieMatch,
+        RuleId.DraftRoundPhaseDiscardCardOverflow
       ].includes(ruleId)) ||
     (locationType === LocationType.PlayerHockeyPlayerTeamSpot &&
       [RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers].includes(ruleId)) ||
