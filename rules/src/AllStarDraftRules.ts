@@ -31,7 +31,6 @@ import { PlayoffRoundPhaseScoreRule } from './rules/PlayoffRoundPhaseScoreRule'
 import { PlayoffRoundPhaseInterMatchDiscardPlayersRule } from './rules/PlayoffRoundPhaseInterMatchDiscardPlayersRule'
 import { PlayoffRoundPhaseInterMatchAddPlayersRule } from './rules/PlayoffRoundPhaseInterMatchAddPlayersRule'
 import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
-import { DraftRoundPhaseHeritageAndClashCardSelectionRule } from './rules/DraftRoundPhaseHeritageAndClashCardSelection'
 import { DraftRoundPhaseDiscardCardOverflowRule } from './rules/DraftRoundPhaseDiscardCardOverflowRule'
 import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
 
@@ -60,7 +59,6 @@ export class AllStarDraftRules
     [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchRule,
     [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule,
     [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionRule,
-    [RuleId.DraftRoundPhaseHeritageAndClashCardSelection]: DraftRoundPhaseHeritageAndClashCardSelectionRule,
     [RuleId.DraftRoundPhaseDiscardCardOverflow]: DraftRoundPhaseDiscardCardOverflowRule,
     [RuleId.DraftRoundPhaseClashCardSelectionForOpponent]: DraftRoundPhaseClashCardSelectionForOpponentRule
   }

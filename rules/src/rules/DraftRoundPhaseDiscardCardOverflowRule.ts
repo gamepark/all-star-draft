@@ -4,14 +4,10 @@ import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 import { Memorize } from '../Memorize'
-import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 
 export class DraftRoundPhaseDiscardCardOverflowRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const cardsDrafted = this.material(MaterialType.HockeyPlayerCard)
-      .location(LocationType.PlayerHockeyPlayerHandSpot)
-      .player(player)
-      .id((id) => !this.remind<HockeyPlayerCard[]>(Memorize.CardsAlreadyInHand, player).includes(id as HockeyPlayerCard))
+    const cardsDrafted = this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).selected(false)
     return cardsDrafted.moveItems({ type: LocationType.HockeyPlayerDraftSpot, player: player })
   }
 
