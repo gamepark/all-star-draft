@@ -63,7 +63,6 @@ export class AllStarDraftRules
     [RuleId.DraftRoundPhaseHeritageAndClashCardSelection]: DraftRoundPhaseHeritageAndClashCardSelectionRule,
     [RuleId.DraftRoundPhaseDiscardCardOverflow]: DraftRoundPhaseDiscardCardOverflowRule,
     [RuleId.DraftRoundPhaseClashCardSelectionForOpponent]: DraftRoundPhaseClashCardSelectionForOpponentRule
-
   }
 
   hidingStrategies = {
@@ -97,7 +96,7 @@ export class AllStarDraftRules
       [LocationType.HockeyPlayerDraftSpot]: new PositiveSequenceStrategy(),
       [LocationType.PlayerHockeyPlayerHandSpot]: new PositiveSequenceStrategy(),
       [LocationType.PlayerHockeyPlayerTeamSpot]: new PositiveSequenceStrategy(),
-      [LocationType.HockeyPlayerOpenMarketDraftLocator]: new FillGapStrategy(),
+      [LocationType.HockeyPlayerOpenMarketDraftLocator]: new FillGapStrategy()
     },
     [MaterialType.PlayoffTicketToken]: {
       [LocationType.PlayerPlayoffTicketTokenSpot]: new PositiveSequenceStrategy()

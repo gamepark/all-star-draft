@@ -33,5 +33,5 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.PlayerPlayoffTicketTokenSpot]: playerPlayoffTicketTokenSpotLocator,
   [LocationType.PlayoffPointCardSpot]: playoffPointCardSpotLocator,
   [LocationType.TieBreakerCardSpot]: tieBreakerCardSpotLocator,
-  [LocationType.HockeyPlayerOpenMarketDraftLocator]: hockeyPlayerOpenMarketDraftLocator,
+  [LocationType.HockeyPlayerOpenMarketDraftLocator]: hockeyPlayerOpenMarketDraftLocator
 }
