@@ -28,18 +28,20 @@ export class DraftRoundPhaseClashCardSelectionForOpponentRule extends Simultaneo
   }
 
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).length > 0) {
-      return [
-        ...this.game.players.map((player) => {
-          const nextPlayer = this.game.players[(this.game.players.indexOf(player) + 1) % this.game.players.length]
-          return this.material(MaterialType.HockeyPlayerCard)
-            .location((location) => location.type === LocationType.HockeyPlayerDraftSpot && location.z === 1)
-            .player(player)
-            .moveItem({
-              type: LocationType.PlayerHockeyPlayerHandSpot,
-              player: nextPlayer
-            })
-        }),
+    const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.game.players.map((player) => {
+      const nextPlayer = this.game.players[(this.game.players.indexOf(player) + 1) % this.game.players.length]
+      return this.material(MaterialType.HockeyPlayerCard)
+        .location((location) => location.type === LocationType.HockeyPlayerDraftSpot && location.z === 1)
+        .player(player)
+        .moveItem({
+          type: LocationType.PlayerHockeyPlayerHandSpot,
+          player: nextPlayer
+        })
+    })
+    if (
+      this.material(MaterialType.HockeyPlayerCard).location((location) => location.type === LocationType.HockeyPlayerDraftSpot && location.z !== 1).length > 0
+    ) {
+      moves.push(
         ...this.game.players.map((player) => {
           const nextPlayer = this.game.players[(this.game.players.indexOf(player) + 1) % this.game.players.length]
           return this.material(MaterialType.HockeyPlayerCard)
@@ -51,8 +53,9 @@ export class DraftRoundPhaseClashCardSelectionForOpponentRule extends Simultaneo
             })
         }),
         this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseCardSelection)
-      ]
+      )
+      return moves
     }
-    return [this.startSimultaneousRule(RuleId.DraftRoundPhaseDiscardCardOverflow)]
+    return [...moves, this.startSimultaneousRule(RuleId.DraftRoundPhaseDiscardCardOverflow)]
   }
 }
