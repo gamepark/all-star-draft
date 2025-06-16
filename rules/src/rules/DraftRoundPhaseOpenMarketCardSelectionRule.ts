@@ -15,13 +15,11 @@ export class DraftRoundPhaseOpenMarketCardSelectionRule extends PlayerTurnRule<P
     return []
   }
 
-  getLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return player === this.getActivePlayer()
-      ? this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerOpenMarketDraftLocator).moveItems({
-          type: LocationType.PlayerHockeyPlayerHandSpot,
-          player: player
-        })
-      : []
+  getPlayerMoves(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerOpenMarketDraftLocator).moveItems({
+      type: LocationType.PlayerHockeyPlayerHandSpot,
+      player: this.player
+    })
   }
 
   afterItemMove(_move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -31,15 +29,21 @@ export class DraftRoundPhaseOpenMarketCardSelectionRule extends PlayerTurnRule<P
       _move.location.player !== undefined
     ) {
       const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
-      if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerOpenMarketDraftLocator).length === 1)
+      if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerOpenMarketDraftLocator).length === 1) {
         moves.push(this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerOpenMarketDraftLocator).deleteItem())
+      }
       if (
         this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).length ===
         10 + 2 * this.remind<number>(Memorize.RoundNumber) // 5 card + 1 left per round for the two players
-      )
-        if (this.remind(Memorize.RoundNumber) > 1) moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamExchange))
-        else moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation))
-      else moves.push(this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection, this.nextPlayer))
+      ) {
+        if (this.remind(Memorize.RoundNumber) > 1) {
+          moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamExchange))
+        } else {
+          moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation))
+        }
+      } else {
+        moves.push(this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection, this.nextPlayer))
+      }
       return moves
     }
     return []

@@ -45,24 +45,14 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
       }))
     )
     if (this.players.length === 2) {
-      if (gameMode === RegularSeasonGameMode.OpenMarket)
-        this.material(MaterialType.HockeyPlayerCard).createItemsAtOnce(
-          selectHockeyPlayerCardsForRandomSpecies(6).map((card) => ({
-            id: card,
-            location: {
-              type: LocationType.HockeyPlayerDeckSpot
-            }
-          }))
-        )
-      else
-        this.material(MaterialType.HockeyPlayerCard).createItemsAtOnce(
-          selectHockeyPlayerCardsForRandomSpecies(5).map((card) => ({
-            id: card,
-            location: {
-              type: LocationType.HockeyPlayerDeckSpot
-            }
-          }))
-        )
+      this.material(MaterialType.HockeyPlayerCard).createItemsAtOnce(
+        selectHockeyPlayerCardsForRandomSpecies(gameMode === RegularSeasonGameMode.OpenMarket ? 6 : 5).map((card) => ({
+          id: card,
+          location: {
+            type: LocationType.HockeyPlayerDeckSpot
+          }
+        }))
+      )
     } else
       this.material(MaterialType.HockeyPlayerCard).createItemsAtOnce(
         selectHockeyPlayerCardsForRandomSpecies(this.rules.players.length * 2).map((card) => ({

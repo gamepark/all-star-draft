@@ -28,8 +28,11 @@ export class DraftRoundPhaseDiscardCardOverflowRule extends SimultaneousRule<Pla
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [
       this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).deleteItemsAtOnce()
     ]
-    if (this.remind(Memorize.RoundNumber) > 1) moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamExchange))
-    else moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation))
+    if (this.remind(Memorize.RoundNumber) > 1) {
+      moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamExchange))
+    } else {
+      moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation))
+    }
     return moves
   }
 }

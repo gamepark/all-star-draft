@@ -28,7 +28,7 @@ export const arenaCardsForTwoPlayers = arenaCards.filter((id) => isArenaForTwoPl
 export const arenasFanPoints: Record<ArenaCard, number[]> = {
   [ArenaCard.ComboStadium1]: [21, 18, 15, 12, 9, 6],
   [ArenaCard.ComboStadium2]: [22, 20, 17, 15, 13, 11],
-  [ArenaCard.ComboStadium3]: [18, 16, 14, 12, 10],
+  [ArenaCard.ComboStadium3]: [18, 16, 14, 12, 10, 8],
   [ArenaCard.DamStadium1]: [7, 10, 12, 13, 15, 18],
   [ArenaCard.DamStadium2]: [10, 9, 7, 5, 6, 8],
   [ArenaCard.DamStadium3]: [13, 14, 16, 13, 11, 9],

@@ -31,7 +31,7 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
     ]
 
     // Card are dealt as long as OpenMarket is not the selected mode
-    if (this.game.players.length === 2 && this.remind<RegularSeasonGameMode>(Memorize.GameMode) === RegularSeasonGameMode.OpenMarket) {
+    if (this.remind<RegularSeasonGameMode>(Memorize.GameMode) === RegularSeasonGameMode.OpenMarket) {
       const scoreMap = this.game.players.map((player) => ({ player: player, score: this.remind<number>(Memorize.Score, player) }))
       const lastPlayer = minBy(scoreMap, 'score')?.player ?? this.game.players[0]
       moves.push(this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection, lastPlayer))
