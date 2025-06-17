@@ -10,6 +10,7 @@ import { selectHockeyPlayerCardsForRandomSpecies } from './material/HockeyPlayer
 import { busTokensByPlayerColor } from './material/BusToken'
 import { Memorize } from './Memorize'
 import { MaterialRotation } from './material/MaterialRotation'
+import { RegularSeasonGameMode } from './RegularSeasonGameMode'
 
 /**
  * This class creates a new Game based on the game options
@@ -18,7 +19,7 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   Rules = AllStarDraftRules
 
   setupMaterial(_options: AllStarDraftOptions) {
-    this.setupCards()
+    this.setupCards(_options.gameMode)
     this.setupTokens()
     this.memorize<number>(Memorize.RoundNumber, 0)
     this.game.players.forEach((player) => {
@@ -26,11 +27,14 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
     })
   }
 
-  start() {
+  start(_options: AllStarDraftOptions) {
+    if (this.players.length === 2) {
+      this.memorize<RegularSeasonGameMode>(Memorize.GameMode, _options.gameMode)
+    }
     this.startPlayerTurn(RuleId.DraftRoundSetupDrawCards)
   }
 
-  setupCards() {
+  setupCards(gameMode: RegularSeasonGameMode) {
     const availableArenaCards = this.rules.players.length === 2 ? arenaCardsForTwoPlayers : arenaCards
     this.material(MaterialType.ArenaCard).createItemsAtOnce(
       availableArenaCards.map((card) => ({
@@ -40,14 +44,24 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
         }
       }))
     )
-    this.material(MaterialType.HockeyPlayerCard).createItemsAtOnce(
-      selectHockeyPlayerCardsForRandomSpecies(this.rules.players.length * 2).map((card) => ({
-        id: card,
-        location: {
-          type: LocationType.HockeyPlayerDeckSpot
-        }
-      }))
-    )
+    if (this.players.length === 2) {
+      this.material(MaterialType.HockeyPlayerCard).createItemsAtOnce(
+        selectHockeyPlayerCardsForRandomSpecies(gameMode === RegularSeasonGameMode.OpenMarket ? 6 : 5).map((card) => ({
+          id: card,
+          location: {
+            type: LocationType.HockeyPlayerDeckSpot
+          }
+        }))
+      )
+    } else
+      this.material(MaterialType.HockeyPlayerCard).createItemsAtOnce(
+        selectHockeyPlayerCardsForRandomSpecies(this.rules.players.length * 2).map((card) => ({
+          id: card,
+          location: {
+            type: LocationType.HockeyPlayerDeckSpot
+          }
+        }))
+      )
     this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDeckSpot).shuffle()
     this.material(MaterialType.ArenaCard).location(LocationType.ArenaDeckSpot).shuffle()
   }

@@ -4,5 +4,7 @@ export enum Memorize {
   CurrentTeamNumber,
   TeamLineup,
   ActivePlayers,
-  LastPlayers
+  LastPlayers,
+  GameMode,
+  CardsAlreadyInHand
 }

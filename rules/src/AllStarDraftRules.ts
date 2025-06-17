@@ -30,6 +30,9 @@ import { PlayoffRoundPhaseTieMatchRule } from './rules/PlayoffRoundPhaseTieMatch
 import { PlayoffRoundPhaseScoreRule } from './rules/PlayoffRoundPhaseScoreRule'
 import { PlayoffRoundPhaseInterMatchDiscardPlayersRule } from './rules/PlayoffRoundPhaseInterMatchDiscardPlayersRule'
 import { PlayoffRoundPhaseInterMatchAddPlayersRule } from './rules/PlayoffRoundPhaseInterMatchAddPlayersRule'
+import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
+import { DraftRoundPhaseDiscardCardOverflowRule } from './rules/DraftRoundPhaseDiscardCardOverflowRule'
+import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
 
 /**
  * This class implements the rules of the board game.
@@ -54,7 +57,10 @@ export class AllStarDraftRules
     [RuleId.PlayoffRoundPhaseInterMatchAddPlayers]: PlayoffRoundPhaseInterMatchAddPlayersRule,
     [RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers]: PlayoffRoundPhaseInterMatchDiscardPlayersRule,
     [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchRule,
-    [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule
+    [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule,
+    [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionRule,
+    [RuleId.DraftRoundPhaseDiscardCardOverflow]: DraftRoundPhaseDiscardCardOverflowRule,
+    [RuleId.DraftRoundPhaseClashCardSelectionForOpponent]: DraftRoundPhaseClashCardSelectionForOpponentRule
   }
 
   hidingStrategies = {
@@ -87,7 +93,8 @@ export class AllStarDraftRules
       [LocationType.HockeyPlayerDeckSpot]: new PositiveSequenceStrategy(),
       [LocationType.HockeyPlayerDraftSpot]: new PositiveSequenceStrategy(),
       [LocationType.PlayerHockeyPlayerHandSpot]: new PositiveSequenceStrategy(),
-      [LocationType.PlayerHockeyPlayerTeamSpot]: new PositiveSequenceStrategy()
+      [LocationType.PlayerHockeyPlayerTeamSpot]: new PositiveSequenceStrategy(),
+      [LocationType.HockeyPlayerOpenMarketDraftLocator]: new FillGapStrategy()
     },
     [MaterialType.PlayoffTicketToken]: {
       [LocationType.PlayerPlayoffTicketTokenSpot]: new PositiveSequenceStrategy()
