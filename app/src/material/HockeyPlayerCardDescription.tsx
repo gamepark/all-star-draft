@@ -117,6 +117,7 @@ import { ReactNode } from 'react'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
+import { HockeyPlayerCardHelp } from '../components/help/HockeyPlayerCardHelp'
 
 class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, HockeyPlayerCard> {
   height = 8.7
@@ -284,6 +285,8 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     }
     return false
   }
+
+  help = HockeyPlayerCardHelp
 }
 
 function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolean {
