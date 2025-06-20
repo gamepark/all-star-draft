@@ -3,10 +3,13 @@ import {
   getHockeyPlayerCardSpecie,
   getHockeyPlayerCardSymbol,
   getHockeyPlayerCardValue,
+  getSpecieTranslationKey,
+  getSymbolTranslationKey,
   HockeyPlayerCard,
   HockeyPlayerCardSpeciesType,
   HockeyPlayerCardSymbolsType
 } from './HockeyPlayerCard'
+import { TFunction } from 'i18next'
 
 export type TeamStrength = {
   strength: number
@@ -191,4 +194,33 @@ export function compareCards(c1: HockeyPlayerCard, c2: HockeyPlayerCard, playerC
     if (diff !== 0) return diff
   }
   return 0
+}
+
+export const getTeamStrengthAttributeTranslationKey = (teamStrength: TeamStrength, t: TFunction) => {
+  const attributeKind = getAttributeTranslationKey(teamStrength.attribute.kind, t)
+  switch (teamStrength.attribute.kind) {
+    case AttributeKind.Species:
+      return { attributeKind, attributeValue: getSpecieTranslationKey(teamStrength.attribute.value, t) }
+    case AttributeKind.Number:
+      return { attributeKind, attributeValue: teamStrength.attribute.value }
+    case AttributeKind.Symbol:
+      return { attributeKind, attributeValue: getSymbolTranslationKey(teamStrength.attribute.value, t) }
+
+    default:
+      throw new Error('Invalid AttributeKind')
+  }
+}
+
+export const getAttributeTranslationKey = (kind: AttributeKind, t: TFunction) => {
+  switch (kind) {
+    case AttributeKind.Species:
+      return t('attributeKind.specie')
+    case AttributeKind.Number:
+      return t('attributeKind.number')
+    case AttributeKind.Symbol:
+      return t('attributeKind.symbol')
+
+    default:
+      throw new Error('Invalid AttributeKind')
+  }
 }
