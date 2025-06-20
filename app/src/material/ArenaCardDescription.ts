@@ -19,6 +19,7 @@ import StadiumFall2 from '../images/Cards/Arena/StadiumFall2.jpg'
 import StadiumFall3 from '../images/Cards/Arena/StadiumFall3.jpg'
 import ArenaCardBack from '../images/Cards/Arena/ArenaCardBack.jpg'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
+import { ArenaCardHelp } from '../components/help/ArenaCardHelp'
 
 class ArenaCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, ArenaCard> {
   height = 9
@@ -41,6 +42,8 @@ class ArenaCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
     [ArenaCard.StadiumFall3]: StadiumFall3
   }
   backImage = ArenaCardBack
+
+  help = ArenaCardHelp
 }
 
 export const arenaCardDrescription = new ArenaCardDescription()
