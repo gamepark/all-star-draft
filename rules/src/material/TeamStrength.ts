@@ -88,7 +88,13 @@ const getTeamStrengthFromCharacteristics = (
     teamStrength.irregularsAttributes = [IrregularAttribute.OneOfEach]
   }
   const cardValues = Array.from(teamCharacteristics.numbers.keys())
-  if (cardValues.length === 5 && cardValues.slice(0, 4).every((value, index) => value === cardValues[index + 1] - 1)) {
+  if (
+    cardValues.length === 5 &&
+    cardValues
+      .slice(0, 5)
+      .sort()
+      .every((value, index, arrayToCheck) => value === arrayToCheck[index + 1] - 1 || index === arrayToCheck.length - 1)
+  ) {
     if (teamStrength.irregularsAttributes !== undefined) {
       teamStrength.irregularsAttributes.push(IrregularAttribute.Straight)
     } else {
@@ -222,5 +228,19 @@ export const getAttributeTranslationKey = (kind: AttributeKind, t: TFunction) =>
 
     default:
       throw new Error('Invalid AttributeKind')
+  }
+}
+
+export const getIrregularAttributeTranslationKey = (kind: IrregularAttribute, t: TFunction) => {
+  switch (kind) {
+    case IrregularAttribute.FullHouse:
+      return t('irregularAttributeKind.fullHouse')
+    case IrregularAttribute.OneOfEach:
+      return t('irregularAttributeKind.oneOfEach')
+    case IrregularAttribute.Straight:
+      return t('irregularAttributeKind.straight')
+
+    default:
+      throw new Error('Invalid IrregularAttribute')
   }
 }

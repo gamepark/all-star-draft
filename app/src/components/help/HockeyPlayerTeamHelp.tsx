@@ -2,7 +2,7 @@ import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
-import { getTeamStrength, getTeamStrengthAttributeTranslationKey } from '@gamepark/all-star-draft/material/TeamStrength'
+import { getIrregularAttributeTranslationKey, getTeamStrength, getTeamStrengthAttributeTranslationKey } from '@gamepark/all-star-draft/material/TeamStrength'
 import { LocationHelpProps, MaterialComponent, pointerCursorCss, usePlay, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { sortBy } from 'lodash'
@@ -62,7 +62,12 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
         {teamStrength.irregularsAttributes && teamStrength.irregularsAttributes.length > 0 && (
           <p>
             <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerTeam.additionalAttribute')}</span>
-            {' ' + teamStrength.attribute.value}
+            {teamStrength.irregularsAttributes.map((irregularAttribute, index) => (
+              <>
+                {index > 0 ? ', ' : ' '}
+                {getIrregularAttributeTranslationKey(irregularAttribute, t)}
+              </>
+            ))}
           </p>
         )}
       </div>

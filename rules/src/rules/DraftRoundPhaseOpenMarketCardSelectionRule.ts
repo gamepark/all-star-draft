@@ -42,7 +42,11 @@ export class DraftRoundPhaseOpenMarketCardSelectionRule extends PlayerTurnRule<P
           moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation))
         }
       } else {
-        moves.push(this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection, this.nextPlayer))
+        if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerOpenMarketDraftLocator).length === 1) {
+          moves.push(this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection, this.player))
+        } else {
+          moves.push(this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection, this.nextPlayer))
+        }
       }
       return moves
     }
