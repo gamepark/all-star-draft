@@ -23,9 +23,18 @@ export const HockeyPlayerCardHelp: FC<MaterialHelpProps<number, MaterialType, Lo
     return (
       <>
         <h2>{t('help.hockeyPlayerCard.title')}</h2>
-        <p>{t('help.hockeyPlayerCard.specie', { specie: translatedSpecie })}</p>
-        <p>{t('help.hockeyPlayerCard.number', { number: cardValue })}</p>
-        <p>{t('help.hockeyPlayerCard.symbol', { symbol: translatedSymbol })}</p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerCard.specie')}</span>
+          {' ' + translatedSpecie}
+        </p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerCard.number')}</span>
+          {' ' + cardValue.toString()}
+        </p>
+        <p>
+          <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerCard.symbol')}</span>
+          {' ' + translatedSymbol}
+        </p>
       </>
     )
   }

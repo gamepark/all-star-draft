@@ -2,9 +2,9 @@
   "en": {
     "translation": {
       "help.hockeyPlayerCard.title": "Hockey Player",
-      "help.hockeyPlayerCard.number": "Number : {number}",
-      "help.hockeyPlayerCard.specie": "Specie : {specie}",
-      "help.hockeyPlayerCard.symbol": "Symbol : {symbol}",
+      "help.hockeyPlayerCard.number": "Number :",
+      "help.hockeyPlayerCard.specie": "Specie :",
+      "help.hockeyPlayerCard.symbol": "Symbol :",
       "help.arenaCard.title": "Arena Card",
       "help.arenaCard.fanPoints": "Fan points gain :",
       "help.arenaCard.irregularFanPoint": "This arena rewards with an irregular amount of fan points",
