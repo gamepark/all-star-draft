@@ -293,6 +293,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     context: ItemContext<PlayerColor, MaterialType, LocationType>
   ): DisplayHelp<PlayerColor, MaterialType, LocationType> {
     if (item.location.type === LocationType.PlayerHockeyPlayerTeamSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
+    if (item.location.type === LocationType.HockeyPlayerDeckSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
     return super.displayHelp(item, context)
   }
 }
