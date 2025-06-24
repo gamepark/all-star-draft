@@ -4,5 +4,5 @@ import { useTranslation } from 'react-i18next'
 
 export const DraftRoundPhaseTeamCreationHeader = () => {
   const { t } = useTranslation()
-  return <>{t('header.DraftRoundPhaseTeamCreation')}</>
+  return <>{t('header.draft.createTeam')}</>
 }

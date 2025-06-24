@@ -4,5 +4,5 @@ import { useTranslation } from 'react-i18next'
 
 export const DraftRoundPhaseMatchScoreHeader = () => {
   const { t } = useTranslation()
-  return <>{t('header.DraftRoundPhaseMatchScore')}</>
+  return <>{t('header.draft.score')}</>
 }

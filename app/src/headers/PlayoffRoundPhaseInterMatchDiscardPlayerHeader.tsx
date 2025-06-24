@@ -4,5 +4,5 @@ import { useTranslation } from 'react-i18next'
 
 export const PlayoffRoundPhaseInterMatchDiscardPlayerHeader = () => {
   const { t } = useTranslation()
-  return <>{t('header.PlayoffRoundPhaseInterMatchDiscardPlayer')}</>
+  return <>{t('header.playoff.discardPlayer')}</>
 }
