@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
@@ -7,6 +7,17 @@ import { MaterialRotation } from '../material/MaterialRotation'
 import { RuleId } from './RuleId'
 
 export class PlayoffRoundPhaseInterMatchDiscardPlayersRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
+  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const activePlayers = this.remind<PlayerColor[]>(Memorize.ActivePlayers)
+    const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+    this.game.players.forEach((player) => {
+      if (!activePlayers.includes(player)) {
+        moves.push(this.endPlayerTurn(player))
+      }
+    })
+    return moves
+  }
+
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(2).player(player).moveItems({
       type: LocationType.HockeyPlayerDraftSpot,

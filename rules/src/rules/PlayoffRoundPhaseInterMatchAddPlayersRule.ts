@@ -13,19 +13,24 @@ const NEW_HOCKEY_PLAYERS_LOCATION_ID = 3
 export class PlayoffRoundPhaseInterMatchAddPlayersRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const activePlayers = this.remind<PlayerColor[]>(Memorize.ActivePlayers)
+    const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     const currentLowestPosition = activePlayers.length
     this.material(MaterialType.HockeyPlayerCard)
       .location(LocationType.PlayerHockeyPlayerTeamSpot)
       .locationId(NEW_HOCKEY_PLAYERS_LOCATION_ID)
       .deleteItemsAtOnce()
-    activePlayers.forEach((player) => {
-      if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getItems().length < 2) {
-        this.memorize<number>(Memorize.Score, (score) => score + playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
-        this.memorize<PlayerColor[]>(Memorize.ActivePlayers, (activePlayers) => activePlayers.filter((player) => player !== player))
-        this.endPlayerTurn(player)
+    this.game.players.forEach((player) => {
+      if (activePlayers.includes(player)) {
+        if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getItems().length < 2) {
+          this.memorize<number>(Memorize.Score, (score) => score + playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
+          this.memorize<PlayerColor[]>(Memorize.ActivePlayers, (activePlayers) => activePlayers.filter((player) => player !== player))
+          moves.push(this.endPlayerTurn(player))
+        }
+      } else {
+        moves.push(this.endPlayerTurn(player))
       }
     })
-    return []
+    return moves
   }
 
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {

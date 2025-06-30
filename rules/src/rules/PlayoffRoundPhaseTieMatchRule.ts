@@ -10,19 +10,20 @@ import { RuleId } from './RuleId'
 
 export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     const currentLowestPosition = this.remind<PlayerColor[]>(Memorize.ActivePlayers).length
     const lastPlayers = this.remind<PlayerColor[]>(Memorize.LastPlayers)
-    difference(this.game.players, lastPlayers).forEach((player) => this.endPlayerTurn(player)) // Non last players don't need to play the tie breaker
+    difference(this.game.players, lastPlayers).forEach((player) => moves.push(this.endPlayerTurn(player))) // Non last players don't need to play the tie breaker
     // Players who cannot participate score points and are eliminated
     lastPlayers.forEach((player) => {
       if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getItems().length === 0) {
         this.memorize<number>(Memorize.Score, (score) => score + playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
         this.memorize<PlayerColor[]>(Memorize.ActivePlayers, (activePlayers) => activePlayers.filter((player) => player !== player))
-        this.endPlayerTurn(player)
+        moves.push(this.endPlayerTurn(player))
       }
     })
     this.memorize<PlayerColor[]>(Memorize.LastPlayers, intersection(lastPlayers, this.remind(Memorize.ActivePlayers)))
-    return []
+    return moves
   }
 
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
