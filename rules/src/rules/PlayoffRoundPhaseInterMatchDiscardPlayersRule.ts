@@ -7,10 +7,10 @@ import { MaterialRotation } from '../material/MaterialRotation'
 import { RuleId } from './RuleId'
 
 export class PlayoffRoundPhaseInterMatchDiscardPlayersRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(2).player(_player).moveItems({
+  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(2).player(player).moveItems({
       type: LocationType.HockeyPlayerDraftSpot,
-      player: _player
+      player: player
     })
   }
 

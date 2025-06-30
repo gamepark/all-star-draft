@@ -9,9 +9,13 @@ export const TieBreakerCardHelp: FC<MaterialHelpProps<number, MaterialType, Loca
   return (
     <>
       <h2>{t('help.tieBreakerCard.title')}</h2>
-      <p>{t('help.tieBreakerCard.description1')}</p>
-      <p>{t('help.tieBreakerCard.description2')}</p>
-      <p>{t('help.tieBreakerCard.description3')}</p>
+      <p>
+        {t('help.tieBreakerCard.description1')}
+        <ol>
+          <li>{t('help.tieBreakerCard.description2')}</li>
+          <li>{t('help.tieBreakerCard.description3')}</li>
+        </ol>
+      </p>
     </>
   )
 }

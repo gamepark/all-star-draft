@@ -22,11 +22,11 @@ export class DraftRoundPhaseOpenMarketCardSelectionRule extends PlayerTurnRule<P
     })
   }
 
-  afterItemMove(_move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(_move) &&
-      _move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
-      _move.location.player !== undefined
+      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
+      move.location.player !== undefined
     ) {
       const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
       if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerOpenMarketDraftLocator).length === 1) {
@@ -36,11 +36,8 @@ export class DraftRoundPhaseOpenMarketCardSelectionRule extends PlayerTurnRule<P
         this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).length ===
         10 + 2 * this.remind<number>(Memorize.RoundNumber) // 5 card + 1 left per round for the two players
       ) {
-        if (this.remind(Memorize.RoundNumber) > 1) {
-          moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamExchange))
-        } else {
-          moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation))
-        }
+        const isFirstRound = this.remind(Memorize.RoundNumber) === 1
+        moves.push(this.startSimultaneousRule(isFirstRound ? RuleId.DraftRoundPhaseTeamCreation : RuleId.DraftRoundPhaseTeamExchange))
       } else {
         if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerOpenMarketDraftLocator).length === 1) {
           moves.push(this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection, this.player))

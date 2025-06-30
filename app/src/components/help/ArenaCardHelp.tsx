@@ -38,8 +38,12 @@ export const ArenaCardHelp: FC<MaterialHelpProps<number, MaterialType, LocationT
             </div>
           ))}
         </div>
-        <h4>{t('help.arenaCard.additionnalRule')}</h4>
-        {arenaIrregularAttribute[arenaId] !== undefined && <p>{getTranslatedAdditionnalRuleKey(arenaIrregularAttribute[arenaId]!, t)}</p>}
+        {arenaIrregularAttribute[arenaId] !== undefined && (
+          <>
+            <h4>{t('help.arenaCard.additionnalRule')}</h4>
+            <p>{getTranslatedAdditionnalRuleKey(arenaIrregularAttribute[arenaId]!, t)}</p>
+          </>
+        )}
         {isIrregularFanCount && <p>{t('help.arenaCard.irregularFanPoint')}</p>}
       </>
     )

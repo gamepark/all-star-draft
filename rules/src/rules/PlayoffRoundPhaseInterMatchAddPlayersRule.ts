@@ -28,25 +28,25 @@ export class PlayoffRoundPhaseInterMatchAddPlayersRule extends SimultaneousRule<
     return []
   }
 
-  getActivePlayerLegalMoves(_player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (this.remind<PlayerColor[]>(Memorize.ActivePlayers).includes(_player)) {
+  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    if (this.remind<PlayerColor[]>(Memorize.ActivePlayers).includes(player)) {
       const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.material(MaterialType.HockeyPlayerCard)
         .location(LocationType.PlayerHockeyPlayerHandSpot)
-        .player(_player)
+        .player(player)
         .moveItems({
           type: LocationType.PlayerHockeyPlayerTeamSpot,
           id: NEW_HOCKEY_PLAYERS_LOCATION_ID,
-          player: _player,
+          player: player,
           rotation: MaterialRotation.FaceDown
         })
       if (
         this.material(MaterialType.HockeyPlayerCard)
           .location(LocationType.PlayerHockeyPlayerTeamSpot)
           .locationId(NEW_HOCKEY_PLAYERS_LOCATION_ID)
-          .player(_player)
+          .player(player)
           .getItems().length >= 2
       )
-        moves.push(this.customMove(CustomMoveType.Pass, { player: _player }))
+        moves.push(this.customMove(CustomMoveType.Pass, { player: player }))
       return moves
     }
     return []
@@ -66,8 +66,8 @@ export class PlayoffRoundPhaseInterMatchAddPlayersRule extends SimultaneousRule<
     return []
   }
 
-  onCustomMove(_move: MaterialMove, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (isPassCustomMove(_move)) return [this.endPlayerTurn(_move.data.player)]
+  onCustomMove(move: MaterialMove, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    if (isPassCustomMove(move)) return [this.endPlayerTurn(move.data.player)]
     return []
   }
 
