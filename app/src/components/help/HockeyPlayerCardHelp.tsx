@@ -10,7 +10,11 @@ import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { MaterialHelpProps } from '@gamepark/react-game'
 import { FC } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+
+const components = {
+  bold: <strong />
+}
 
 export const HockeyPlayerCardHelp: FC<MaterialHelpProps<number, MaterialType, LocationType>> = ({ item }) => {
   const { t } = useTranslation()
@@ -23,16 +27,13 @@ export const HockeyPlayerCardHelp: FC<MaterialHelpProps<number, MaterialType, Lo
       <>
         <h2>{t('help.hockeyPlayerCard.title')}</h2>
         <p>
-          <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerCard.specie')}</span>
-          {' ' + translatedSpecie}
+          <Trans defaults={'help.hockeyPlayerCard.specie'} components={components} values={{ specie: translatedSpecie }} />
         </p>
         <p>
-          <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerCard.number')}</span>
-          {' ' + cardValue.toString()}
+          <Trans defaults={'help.hockeyPlayerCard.number'} components={components} values={{ number: cardValue.toString() }} />
         </p>
         <p>
-          <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerCard.symbol')}</span>
-          {' ' + translatedSymbol}
+          <Trans defaults={'help.hockeyPlayerCard.symbol'} components={components} values={{ symbol: translatedSymbol }} />
         </p>
       </>
     )

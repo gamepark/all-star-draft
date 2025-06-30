@@ -6,7 +6,11 @@ import { getIrregularAttributeTranslationKey, getTeamStrength, getTeamStrengthAt
 import { LocationHelpProps, MaterialComponent, pointerCursorCss, usePlay, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { sortBy } from 'lodash'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+
+const components = {
+  bold: <strong />
+}
 
 export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
   const { t } = useTranslation()
@@ -48,26 +52,40 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
       <div>
         <h2 style={{ padding: '0em 2em' }}>{t('help.hockeyPlayerTeam.title', { teamNumber: location.id ?? 0 })}</h2>
         <p>
-          <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerTeam.strength')}</span>
-          {' ' + teamStrength.strength}
+          <Trans defaults={'help.hockeyPlayerTeam.strength'} components={components} values={{ strength: teamStrength.strength }} />
         </p>
         <p>
-          <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerTeam.attribute')}</span>
-          {' ' + getTeamStrengthAttributeTranslationKey(teamStrength, t).attributeKind}
+          <Trans
+            defaults={'help.hockeyPlayerTeam.attribute'}
+            components={components}
+            values={{ attribute: getTeamStrengthAttributeTranslationKey(teamStrength, t).attributeKind }}
+          />
         </p>
         <p>
-          <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerTeam.value')}</span>
-          {' ' + getTeamStrengthAttributeTranslationKey(teamStrength, t).attributeValue}
+          <Trans
+            defaults={'help.hockeyPlayerTeam.value'}
+            components={components}
+            values={{ value: getTeamStrengthAttributeTranslationKey(teamStrength, t).attributeValue }}
+          />
         </p>
         {teamStrength.irregularsAttributes && teamStrength.irregularsAttributes.length > 0 && (
           <p>
-            <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerTeam.additionalAttribute')}</span>
-            {teamStrength.irregularsAttributes.map((irregularAttribute, index) => (
-              <>
-                {index > 0 ? ', ' : ' '}
-                {getIrregularAttributeTranslationKey(irregularAttribute, t)}
-              </>
-            ))}
+            <Trans
+              defaults={'help.hockeyPlayerTeam.additionalAttribute'}
+              components={components}
+              values={{
+                additionalAttribute: (
+                  <>
+                    {teamStrength.irregularsAttributes.map((irregularAttribute, index) => (
+                      <>
+                        {index > 0 ? ', ' : ' '}
+                        {getIrregularAttributeTranslationKey(irregularAttribute, t)}
+                      </>
+                    ))}
+                  </>
+                )
+              }}
+            />
           </p>
         )}
       </div>

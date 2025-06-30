@@ -2,7 +2,11 @@ import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { LocationHelpProps, useRules } from '@gamepark/react-game'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+
+const components = {
+  bold: <strong />
+}
 
 export const HockeyPlayerDeckHelp = ({ location }: LocationHelpProps) => {
   const { t } = useTranslation()
@@ -12,8 +16,7 @@ export const HockeyPlayerDeckHelp = ({ location }: LocationHelpProps) => {
     <div>
       <h2 style={{ padding: '0em 2em' }}>{t('help.hockeyPlayerDeck.title', { teamNumber: location.id ?? 0 })}</h2>
       <p>
-        <span style={{ fontWeight: 'bold' }}>{t('help.hockeyPlayerDeck.cardsLefts')}</span>
-        {' ' + cardsLeft}
+        <Trans defaults={'help.hockeyPlayerDeck.cardsLefts'} components={components} values={{ cardsLeft }} />
       </p>
     </div>
   )
