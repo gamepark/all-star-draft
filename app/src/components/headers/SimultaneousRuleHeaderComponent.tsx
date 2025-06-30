@@ -30,11 +30,7 @@ export const SimultaneousRuleHeaderComponent: FC<SimultaneousRuleHeaderComponent
         components={
           pass
             ? {
-                pass: (
-                  <PlayMoveButton move={passMove}>
-                    <Trans default="header.pass" />
-                  </PlayMoveButton>
-                )
+                pass: <PlayMoveButton move={passMove} />
               }
             : undefined
         }
