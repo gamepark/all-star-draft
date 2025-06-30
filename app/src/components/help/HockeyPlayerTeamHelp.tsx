@@ -74,16 +74,9 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
               defaults={'help.hockeyPlayerTeam.additionalAttribute'}
               components={components}
               values={{
-                additionalAttribute: (
-                  <>
-                    {teamStrength.irregularsAttributes.map((irregularAttribute, index) => (
-                      <>
-                        {index > 0 ? ', ' : ' '}
-                        {getIrregularAttributeTranslationKey(irregularAttribute, t)}
-                      </>
-                    ))}
-                  </>
-                )
+                additionalAttribute: teamStrength.irregularsAttributes
+                  .map((irregularAttribute) => getIrregularAttributeTranslationKey(irregularAttribute, t))
+                  .join(', ')
               }}
             />
           </p>
