@@ -43,7 +43,7 @@ const coordinatesMap: Record<number, { x: number; y: number }[]> = {
   3: [
     { x: 34, y: -4 },
     { x: -61, y: -25 },
-    { x: -1, y: -25 },
+    { x: -1, y: -25 }
   ],
   2: [
     { x: 34, y: -4 },

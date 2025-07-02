@@ -9,7 +9,7 @@ class CurrentArenasRowSpotLocator extends ListLocator<PlayerColor, MaterialType,
     const playerCount = _context.rules.players.length
     return playerCount <= 3 ? { y: 12 } : { y: 10 }
   }
-  
+
   getCoordinates(_location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): Partial<Coordinates> {
     const playerCount = context.rules.players.length
     switch (playerCount) {
