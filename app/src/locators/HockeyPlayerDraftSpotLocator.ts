@@ -38,6 +38,10 @@ const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
     { x: 30, y: 39 },
     { x: -24, y: -39 },
     { x: 69, y: -24 }
+  ],
+  2: [
+    { x: 30, y: 13 },
+    { x: -24, y: -39 }
   ]
 }
 
@@ -61,7 +65,7 @@ class HockeyPlayerDraftSpotLocator extends HandLocator<PlayerColor, MaterialType
   getCoordinates(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
-    const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3]
+    const coordArray = coordinatesMap[playerCount]
     return coordArray[index]
   }
 

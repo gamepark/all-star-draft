@@ -44,6 +44,10 @@ const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     { x: 34, y: 22 },
     { x: -25, y: -25 },
     { x: 55, y: -25 }
+  ],
+  2: [
+    { x: 34, y: -4 },
+    { x: -25, y: -25 }
   ]
 }
 
@@ -68,7 +72,7 @@ class PlayerPlayoffTicketTokenSpotLocator extends ListLocator<PlayerColor, Mater
   ): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
-    const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3]
+    const coordArray = coordinatesMap[playerCount]
     return coordArray[index]
   }
 }
