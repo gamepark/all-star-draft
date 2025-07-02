@@ -30,15 +30,19 @@ export const SimultaneousRuleHeaderComponent: FC<SimultaneousRuleHeaderComponent
         components={
           pass
             ? {
-                pass: <PlayMoveButton move={passMove} />
+                pass: (
+                  <PlayMoveButton move={passMove}>
+                    <Trans defaults="header.pass" />
+                  </PlayMoveButton>
+                )
               }
             : undefined
         }
       />
     )
   } else if (activePlayers.length > 1) {
-    return <Trans defaults={translationGroupKey + '.some'} values={{ ...interpolations }} />
+    return <Trans defaults={translationGroupKey + '.players'} values={{ ...interpolations }} />
   } else {
-    return <Trans defaults={translationGroupKey + '.one'} values={{ ...interpolations, name: player }} />
+    return <Trans defaults={translationGroupKey + '.player'} values={{ ...interpolations, name: player }} />
   }
 }
