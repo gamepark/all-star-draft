@@ -384,7 +384,7 @@ describe('MatchRanking tests during draft phase', () => {
         }
       },
       {
-        // irregularAttribute : IrregularAttribute.FullHouse,
+        // irregularAttribute : IrregularAttribute.Straight,
         teams: [
           {
             player: PlayerColor.Black, // Strength : Straight or 3, value : Rabbit

@@ -23,6 +23,9 @@ export const arenaCards = getEnumValues(ArenaCard)
 
 export const isArenaForTwoPlayer = (cardId: ArenaCard): boolean => cardId !== ArenaCard.StadiumFall1 && cardId !== ArenaCard.Polarena3
 
+export const isArenaWithIrregularFanCount = (cardId: ArenaCard): boolean =>
+  [ArenaCard.Polarena3, ArenaCard.DamStadium1, ArenaCard.DamStadium2, ArenaCard.DamStadium3].includes(cardId)
+
 export const arenaCardsForTwoPlayers = arenaCards.filter((id) => isArenaForTwoPlayer(id))
 
 export const arenasFanPoints: Record<ArenaCard, number[]> = {

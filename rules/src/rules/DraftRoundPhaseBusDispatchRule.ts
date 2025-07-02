@@ -39,17 +39,17 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
       )
   }
 
-  afterItemMove(_move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(_move) &&
-      _move.location.type === LocationType.PlayerBusTokenTeamSpot &&
-      _move.location.player !== undefined
+      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
+      move.location.type === LocationType.PlayerBusTokenTeamSpot &&
+      move.location.player !== undefined
     ) {
       if (
-        this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenReserveSpot).player(_move.location.player).getItems().length ===
+        this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenReserveSpot).player(move.location.player).getItems().length ===
         3 - this.remind(Memorize.RoundNumber)
       ) {
-        return [this.endPlayerTurn(_move.location.player)]
+        return [this.endPlayerTurn(move.location.player)]
       }
     }
     return []

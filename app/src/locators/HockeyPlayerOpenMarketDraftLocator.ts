@@ -4,7 +4,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { ListLocator } from '@gamepark/react-game'
 
 class HockeyPlayerOpenMarketDraftLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
-  coordinates = { x: -25, y: 10 }
+  coordinates = { x: -10, y: -13 }
   gap = { x: 10 }
 }
 

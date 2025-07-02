@@ -238,7 +238,7 @@ describe('TeamStrength tests', () => {
       },
       {
         playerCount: 2,
-        cards: [HockeyPlayerCard.Duck3, HockeyPlayerCard.Duck4, HockeyPlayerCard.Duck5, HockeyPlayerCard.Duck6, HockeyPlayerCard.Reindeer2], // 3 ducks and 2 goals
+        cards: [HockeyPlayerCard.Duck3, HockeyPlayerCard.Duck4, HockeyPlayerCard.Duck5, HockeyPlayerCard.Duck6, HockeyPlayerCard.Eagle3], // 3 ducks and 2 goals
         expectedIrregularCombination: IrregularAttribute.FullHouse
       }
     ])('getTeamStrength should return an irregular combination of FullHouse', ({ playerCount, cards, expectedIrregularCombination }) => {

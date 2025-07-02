@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
-
-import { useTranslation } from 'react-i18next'
+import { SimultaneousRuleHeaderComponent } from '../components/headers/SimultaneousRuleHeaderComponent'
 
 export const PlayoffRoundSetupPhaseHeader = () => {
-  const { t } = useTranslation()
-  return <>{t('header.PlayoffRoundSetupPhase')}</>
+  return <SimultaneousRuleHeaderComponent translationGroupKey="header.playoff.setup" />
 }

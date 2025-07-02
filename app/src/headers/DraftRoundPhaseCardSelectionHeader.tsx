@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
-
-import { useTranslation } from 'react-i18next'
+import { SimultaneousRuleHeaderComponent } from '../components/headers/SimultaneousRuleHeaderComponent'
 
 export const DraftRoundPhaseCardSelectionHeader = () => {
-  const { t } = useTranslation()
-  return <>{t('header.DraftRoundPhaseCardSelection')}</>
+  return <SimultaneousRuleHeaderComponent translationGroupKey="header.draft.select" />
 }

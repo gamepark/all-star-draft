@@ -1,4 +1,5 @@
 import { getEnumValues } from '@gamepark/rules-api'
+import { TFunction } from 'i18next'
 import { sampleSize } from 'lodash'
 
 export enum HockeyPlayerCard {
@@ -164,4 +165,55 @@ export const hockeyPlayerCardsBySpecies = hockeyPlayerCardSpeciesTypes.reduce(
 
 export const selectHockeyPlayerCardsForRandomSpecies = (quantity: number): HockeyPlayerCard[] => {
   return sampleSize(hockeyPlayerCardSpeciesTypes, quantity).flatMap((specie) => hockeyPlayerCardsBySpecies[specie])
+}
+
+export const getSpecieTranslationKey = (specie: HockeyPlayerCardSpeciesType, t: TFunction) => {
+  switch (specie) {
+    case HockeyPlayerCardSpeciesType.Rabbit:
+      return t('specie.rabbit')
+    case HockeyPlayerCardSpeciesType.Duck:
+      return t('specie.duck')
+    case HockeyPlayerCardSpeciesType.Beaver:
+      return t('specie.beaver')
+    case HockeyPlayerCardSpeciesType.Eagle:
+      return t('specie.eagle')
+    case HockeyPlayerCardSpeciesType.Penguin:
+      return t('specie.penguin')
+    case HockeyPlayerCardSpeciesType.Panda:
+      return t('specie.panda')
+    case HockeyPlayerCardSpeciesType.Wolf:
+      return t('specie.wolf')
+    case HockeyPlayerCardSpeciesType.Shark:
+      return t('specie.shark')
+    case HockeyPlayerCardSpeciesType.Tiger:
+      return t('specie.tiger')
+    case HockeyPlayerCardSpeciesType.Horse:
+      return t('specie.horse')
+    case HockeyPlayerCardSpeciesType.Reindeer:
+      return t('specie.reindeer')
+    case HockeyPlayerCardSpeciesType.PolarBear:
+      return t('specie.polarBear')
+    default:
+      throw new Error('Invalid HockeyPlayerCardType')
+  }
+}
+
+export const getSymbolTranslationKey = (symbol: HockeyPlayerCardSymbolsType, t: TFunction) => {
+  switch (symbol) {
+    case HockeyPlayerCardSymbolsType.None:
+      return t('symbol.none')
+    case HockeyPlayerCardSymbolsType.Skate:
+      return t('symbol.skate')
+    case HockeyPlayerCardSymbolsType.Glove:
+      return t('symbol.glove')
+    case HockeyPlayerCardSymbolsType.Helmet:
+      return t('symbol.helmet')
+    case HockeyPlayerCardSymbolsType.Puck:
+      return t('symbol.puck')
+    case HockeyPlayerCardSymbolsType.Goal:
+      return t('symbol.goal')
+
+    default:
+      throw new Error('Invalid HockeyPlayerCardType')
+  }
 }

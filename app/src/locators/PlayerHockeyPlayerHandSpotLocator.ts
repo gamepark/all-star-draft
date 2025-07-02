@@ -9,7 +9,7 @@ const baseAngleMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
   5: [0, 90, 180, 270, 270],
   4: [0, 90, 180, 270],
-  3: [0, 180, 270]
+  3: [0, 180, 180]
 }
 
 const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
@@ -35,9 +35,13 @@ const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
     { x: 69, y: 0 }
   ],
   3: [
-    { x: 0, y: 39 },
-    { x: 0, y: -39 },
-    { x: 69, y: 0 }
+    { x: 0, y: 13 },
+    { x: -36, y: -39 },
+    { x: 26, y: -39 }
+  ],
+  2: [
+    { x: 0, y: 13 },
+    { x: 0, y: -39 }
   ]
 }
 
@@ -57,7 +61,7 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
   getCoordinates(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
-    const coordArray = coordinatesMap[playerCount] ?? coordinatesMap[3]
+    const coordArray = coordinatesMap[playerCount]
     return coordArray[index]
   }
 

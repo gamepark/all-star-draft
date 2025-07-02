@@ -7,6 +7,7 @@ import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { Memorize } from '../Memorize'
 import { getTeamStrength } from '../material/TeamStrength'
 import { RuleId } from './RuleId'
+import { ArenaCard, arenaIrregularAttribute } from '../material/ArenaCard'
 
 export class DraftRoundPhaseMatchMoveToStadiumRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -31,7 +32,15 @@ export class DraftRoundPhaseMatchMoveToStadiumRule extends PlayerTurnRule<Player
         .getItems()
         .map((hockeyPlayer) => hockeyPlayer.id as HockeyPlayerCard)
       this.memorize(Memorize.TeamLineup, teamLineup, player)
-      return busToken.moveItem({ type: LocationType.BusTokenSpotBelowBusStationBoard, x: getTeamStrength(teamLineup, playerCount).strength - 1 })
+      const irregularAttribute =
+        arenaIrregularAttribute[
+          this.material(MaterialType.ArenaCard)
+            .location((location) => location.type === LocationType.CurrentArenasRowSpot && location.x === arenaIndex - 1)
+            .getItem<ArenaCard>()!.id
+        ]
+      const teamStrength = getTeamStrength(teamLineup, playerCount)
+      const teamHasNeededIrregularAttribute = irregularAttribute !== undefined && (teamStrength.irregularsAttributes ?? []).includes(irregularAttribute)
+      return busToken.moveItem({ type: LocationType.BusTokenSpotBelowBusStationBoard, x: teamHasNeededIrregularAttribute ? 5 : teamStrength.strength - 1 })
     })
     moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseMatchScore))
     return moves

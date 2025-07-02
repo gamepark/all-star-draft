@@ -112,11 +112,12 @@ import Wolf7 from '../images/Cards/Hockeyer/Wolf7.jpg'
 import Wolf8 from '../images/Cards/Hockeyer/Wolf8.jpg'
 import Wolf9 from '../images/Cards/Hockeyer/Wolf9.jpg'
 import HockeyPlayerCardBack from '../images/Cards/Hockeyer/HockeyPlayerCardBack.jpg'
-import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { DisplayHelp, isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { ReactNode } from 'react'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
+import { HockeyPlayerCardHelp } from '../components/help/HockeyPlayerCardHelp'
 
 class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, HockeyPlayerCard> {
   height = 8.7
@@ -284,6 +285,17 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     }
     return false
   }
+
+  help = HockeyPlayerCardHelp
+
+  displayHelp(
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>
+  ): DisplayHelp<PlayerColor, MaterialType, LocationType> {
+    if (item.location.type === LocationType.PlayerHockeyPlayerTeamSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
+    if (item.location.type === LocationType.HockeyPlayerDeckSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
+    return super.displayHelp(item, context)
+  }
 }
 
 function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolean {
@@ -306,4 +318,4 @@ function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolea
   )
 }
 
-export const hockeyPlayerCardDrescription = new HockeyPlayerCardDescription()
+export const hockeyPlayerCardDescription = new HockeyPlayerCardDescription()

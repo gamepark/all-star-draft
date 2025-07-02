@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
-import { CardDescription } from '@gamepark/react-game'
+import { CardDescription, ItemContext } from '@gamepark/react-game'
 import ComboStadium1 from '../images/Cards/Arena/ComboStadium1.jpg'
 import ComboStadium2 from '../images/Cards/Arena/ComboStadium2.jpg'
 import ComboStadium3 from '../images/Cards/Arena/ComboStadium3.jpg'
@@ -19,6 +19,8 @@ import StadiumFall2 from '../images/Cards/Arena/StadiumFall2.jpg'
 import StadiumFall3 from '../images/Cards/Arena/StadiumFall3.jpg'
 import ArenaCardBack from '../images/Cards/Arena/ArenaCardBack.jpg'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
+import { ArenaCardHelp } from '../components/help/ArenaCardHelp'
+import { DisplayHelp, MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 
 class ArenaCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, ArenaCard> {
   height = 9
@@ -41,6 +43,16 @@ class ArenaCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
     [ArenaCard.StadiumFall3]: StadiumFall3
   }
   backImage = ArenaCardBack
+
+  help = ArenaCardHelp
+
+  displayHelp(
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>
+  ): DisplayHelp<PlayerColor, MaterialType, LocationType> {
+    if (item.location.type === LocationType.ArenaDeckSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
+    return super.displayHelp(item, context)
+  }
 }
 
 export const arenaCardDrescription = new ArenaCardDescription()

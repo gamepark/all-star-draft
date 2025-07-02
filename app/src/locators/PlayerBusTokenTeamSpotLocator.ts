@@ -8,14 +8,14 @@ const teamRotationMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
   5: [0, 90, 180, 270, 270],
   4: [0, 90, 180, 270],
-  3: [0, 180, 270]
+  3: [0, 180, 180]
 }
 
 const gapMap: Record<number, Partial<Coordinates>[]> = {
   6: [{ x: 2.2 }, { y: 1.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
   5: [{ x: 2.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
   4: [{ x: 2.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }],
-  3: [{ x: 2.2 }, { x: -1.2 }, { y: -1.2 }]
+  3: [{ x: 2.2 }, { x: -1.2 }, { x: -1.2 }]
 }
 
 const teamGapMap: Record<number, number[]> = {
@@ -54,8 +54,12 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
     ],
     3: [
       { x: teamCoordinates(teamNumber), y: 22 },
-      { x: teamCoordinates(teamNumber), y: -22 },
-      { x: 52, y: teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber) - 36, y: -22 },
+      { x: teamCoordinates(teamNumber) + 26, y: -22 }
+    ],
+    2: [
+      { x: teamCoordinates(teamNumber), y: -4 },
+      { x: teamCoordinates(teamNumber), y: -22 }
     ]
   }
 

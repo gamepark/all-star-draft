@@ -6,6 +6,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import TieBreakerCard2_4 from '../images/Cards/TieBreakerCard2_4.jpg'
 import TieBreakerCard5_6 from '../images/Cards/TieBreakerCard5_6.jpg'
 import { MaterialItem } from '@gamepark/rules-api'
+import { TieBreakerCardHelp } from '../components/help/TieBreakerCardHelp'
 
 class TieBreakerCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, TieBreakerCard> {
   height = 16
@@ -23,6 +24,8 @@ class TieBreakerCardDescription extends CardDescription<PlayerColor, MaterialTyp
       }
     ]
   }
+
+  help = TieBreakerCardHelp
 }
 
 export const tieBreakerCardDrescription = new TieBreakerCardDescription()

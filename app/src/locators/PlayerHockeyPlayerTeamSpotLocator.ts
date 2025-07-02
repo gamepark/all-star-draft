@@ -1,22 +1,24 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { getRelativePlayerIndex, MaterialContext, ListLocator, ItemContext } from '@gamepark/react-game'
+import { getRelativePlayerIndex, MaterialContext, ListLocator, ItemContext, LocationDescription } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { orderBy } from 'lodash'
+import { HockeyPlayerTeamHelp } from '../components/help/HockeyPlayerTeamHelp'
+import { hockeyPlayerCardDescription } from '../material/HockeyPlayerCardDescription'
 
 const teamRotationMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
   5: [0, 90, 180, 270, 270],
   4: [0, 90, 180, 270],
-  3: [0, 180, 270]
+  3: [0, 180, 180]
 }
 
 const gapMap: Record<number, Partial<Coordinates>[]> = {
   6: [{ x: 2.2 }, { y: 1.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
   5: [{ x: 2.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
   4: [{ x: 2.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }],
-  3: [{ x: 2.2 }, { x: -1.2 }, { y: -1.2 }]
+  3: [{ x: 2.2 }, { x: -1.2 }, { x: -1.2 }]
 }
 
 const teamGapMap: Record<number, number[]> = {
@@ -54,9 +56,13 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
       { x: 58, y: teamCoordinates(teamNumber) }
     ],
     3: [
-      { x: teamCoordinates(teamNumber), y: 28 },
-      { x: teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: teamCoordinates(teamNumber) }
+      { x: teamCoordinates(teamNumber), y: 2 },
+      { x: teamCoordinates(teamNumber) - 36, y: -28 },
+      { x: teamCoordinates(teamNumber) + 26, y: -28 }
+    ],
+    2: [
+      { x: teamCoordinates(teamNumber), y: 2 },
+      { x: teamCoordinates(teamNumber), y: -28 }
     ]
   }
 
@@ -65,6 +71,8 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
 }
 
 class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
+  locationDescription = new PlayerHockeyPlayerTeamSpotDescription(hockeyPlayerCardDescription)
+
   getRotateZ(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
@@ -99,6 +107,10 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
     }
     return item.location.x!
   }
+}
+
+class PlayerHockeyPlayerTeamSpotDescription extends LocationDescription {
+  help = HockeyPlayerTeamHelp
 }
 
 export const playerHockeyPlayerTeamSpotLocator = new PlayerHockeyPlayerTeamSpotLocator()
