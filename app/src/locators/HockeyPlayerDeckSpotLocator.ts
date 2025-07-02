@@ -10,7 +10,14 @@ class HockeyPlayerDeckSpotLocator extends DeckLocator<PlayerColor, MaterialType,
 
   getCoordinates(_location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): Partial<Coordinates> {
     const playerCount = context.rules.players.length
-    return playerCount < 3 ? { x: -66, y: -33 } : { x: 29, y: -12 }
+    switch (playerCount) {
+      case 2:
+        return { x: -66, y: -33 }
+      case 3:
+        return { x: -69, y: -12 }
+      default:
+        return { x: 29, y: -12 }
+    }
   }
 
   locationDescription = new HockeyPlayerDeckSpotDescription()

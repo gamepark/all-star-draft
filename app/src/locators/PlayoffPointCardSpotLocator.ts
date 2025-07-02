@@ -7,7 +7,14 @@ import { Coordinates, Location } from '@gamepark/rules-api'
 class PlayoffPointCardSpotLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   getCoordinates(_location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): Partial<Coordinates> {
     const playerCount = context.rules.players.length
-    return playerCount < 3 ? { x: -66, y: -23 } : { x: 29, y: 12 }
+    switch (playerCount) {
+      case 2:
+        return { x: -66, y: -23 }
+      case 3:
+        return { x: -69, y: -4 }
+      default:
+        return { x: 29, y: 12 }
+    }
   }
 }
 

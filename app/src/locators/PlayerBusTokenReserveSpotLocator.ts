@@ -10,14 +10,14 @@ const rotationMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
   5: [0, 90, 180, 270, 270],
   4: [0, 90, 180, 270],
-  3: [0, 180, 270]
+  3: [0, 180, 180]
 }
 
 const gapMap: Record<number, Partial<Coordinates>[]> = {
   6: [{ y: 5 }, { x: -3 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
   5: [{ y: 5 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
   4: [{ y: 5 }, { x: -3 }, { y: -3 }, { x: 3 }],
-  3: [{ y: 5 }, { y: -3 }, { x: 3 }]
+  3: [{ y: 5 }, { y: -3 }, { y: -3 }]
 }
 
 const coordinatesMap: Record<number, { x: number; y: number }[]> = {
@@ -43,9 +43,9 @@ const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     { x: 55, y: -22 }
   ],
   3: [
-    { x: 28, y: 22 },
-    { x: -22, y: -25 },
-    { x: 55, y: -22 }
+    { x: 28, y: -4 },
+    { x: -58, y: -25 },
+    { x: 2, y: -25 }
   ],
   2: [
     { x: 28, y: -4 },

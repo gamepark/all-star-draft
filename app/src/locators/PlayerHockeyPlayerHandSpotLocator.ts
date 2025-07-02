@@ -9,7 +9,7 @@ const baseAngleMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
   5: [0, 90, 180, 270, 270],
   4: [0, 90, 180, 270],
-  3: [0, 180, 270]
+  3: [0, 180, 180]
 }
 
 const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
@@ -35,9 +35,9 @@ const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
     { x: 69, y: 0 }
   ],
   3: [
-    { x: 0, y: 39 },
-    { x: 0, y: -39 },
-    { x: 69, y: 0 }
+    { x: 0, y: 13 },
+    { x: -36, y: -39 },
+    { x: 26, y: -39 }
   ],
   2: [
     { x: 0, y: 13 },

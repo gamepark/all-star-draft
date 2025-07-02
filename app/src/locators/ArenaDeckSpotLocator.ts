@@ -10,7 +10,14 @@ class ArenaDeckSpotLocator extends DeckLocator<PlayerColor, MaterialType, Locati
 
   getCoordinates(_location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): Partial<Coordinates> {
     const playerCount = context.rules.players.length
-    return playerCount < 3 ? { x: -62, y: -7 } : { x: -22, y: -11 }
+    switch (playerCount) {
+      case 2:
+        return { x: -62, y: -7 }
+      case 3:
+        return { x: -55, y: 0 }
+      default:
+        return { x: -22, y: -11 }
+    }
   }
 }
 

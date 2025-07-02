@@ -7,7 +7,14 @@ import { Coordinates, Location } from '@gamepark/rules-api'
 class ArenaDiscardSpotLocator extends DeckLocator<PlayerColor, MaterialType, LocationType> {
   getCoordinates(_location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): Partial<Coordinates> {
     const playerCount = context.rules.players.length
-    return playerCount < 3 ? { x: -62, y: 5 } : { x: -22, y: -1 }
+    switch (playerCount) {
+      case 2:
+        return { x: -62, y: 5 }
+      case 3:
+        return { x: -55, y: 12 }
+      default:
+        return { x: -22, y: -1 }
+    }
   }
 }
 
