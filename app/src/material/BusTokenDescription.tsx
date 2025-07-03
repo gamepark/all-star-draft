@@ -100,17 +100,6 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
     }
     return undefined
   }
-
-  isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
-    if (
-      context.rules.game.rule?.id === RuleId.DraftRoundPhaseBusDispatch &&
-      context.player !== undefined &&
-      item.location.type === LocationType.PlayerBusTokenReserveSpot
-    ) {
-      return item.location.player === context.player
-    }
-    return false
-  }
 }
 
 export const busTokenDescription = new BusTokenDescription()
