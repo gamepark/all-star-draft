@@ -22,7 +22,7 @@ export const PlayerPanels = () => {
           key={player.id}
           player={player}
           color={playerColorCode[player.id]}
-          css={panelPosition(index)}
+          css={[panelBackground(playerColorCode[player.id]), panelPosition(index)]}
         />
       ))}
     </>,
@@ -34,6 +34,10 @@ const panelPosition = (index: number) => css`
   right: 1em;
   top: ${8.5 + index * 16}em;
   width: 28em;
+`
+
+const panelBackground = (color: string) => css`
+  background: linear-gradient(135deg, white 0%, ${color} 100%);
 `
 
 export const playerColorCode: Record<PlayerColor, string> = {

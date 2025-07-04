@@ -118,6 +118,7 @@ import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { HockeyPlayerCardHelp } from '../components/help/HockeyPlayerCardHelp'
+import { Trans } from 'react-i18next'
 
 class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType, HockeyPlayerCard> {
   height = 8.7
@@ -259,31 +260,21 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
                 move={move}
                 angle={-55 + (context.locators[locationType]?.getItemRotateZ(item, context) ?? 0)}
                 radius={2.1}
+                label={<Trans defaults={'card.act'} />}
+                labelPosition={'right'}
               >
                 <FontAwesomeIcon icon={faHandPointer} size="lg" />
               </ItemMenuButton>
             ))}
             {this.getHelpButton(item, context, {
               angle: -125 + (context.locators[locationType]?.getItemRotateZ(item, context) ?? 0),
-              radius: 2.1,
-              label: <></>
+              radius: 2.1
             })}
           </>
         )
       }
     }
     return undefined
-  }
-
-  isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
-    if (context.player !== undefined && context.rules.game.rule !== undefined) {
-      const ruleId = context.rules.game.rule.id
-      const locationType = item.location.type
-      if (shouldButtonsAppear(ruleId, locationType)) {
-        return item.location.player === context.player || item.location.type === LocationType.HockeyPlayerOpenMarketDraftLocator
-      }
-    }
-    return false
   }
 
   help = HockeyPlayerCardHelp
