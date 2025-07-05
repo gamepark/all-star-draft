@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { getRelativePlayerIndex, MaterialContext, ListLocator, ItemContext, DropAreaDescription, ComponentSize } from '@gamepark/react-game'
+import { getRelativePlayerIndex, MaterialContext, ListLocator, ItemContext, DropAreaDescription } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { orderBy } from 'lodash'
 import { HockeyPlayerTeamHelp } from '../components/help/HockeyPlayerTeamHelp'
@@ -72,6 +72,7 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
 
 class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
   locationDescription = new PlayerHockeyPlayerTeamSpotDescription(hockeyPlayerCardDescription)
+  maxCount = 5
 
   getRotateZ(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
@@ -110,11 +111,6 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
 }
 
 class PlayerHockeyPlayerTeamSpotDescription extends DropAreaDescription {
-  getLocationSize(location: Location, _context: MaterialContext): ComponentSize {
-    const itemCount = _context.locators[LocationType.PlayerHockeyPlayerTeamSpot]?.countItems(location, _context) ?? 0
-    const teamWidth = itemCount > 0 ? hockeyPlayerCardDescription.width + gapMap[3][0].x! * (itemCount - 1) : hockeyPlayerCardDescription.width
-    return { width: teamWidth, height: hockeyPlayerCardDescription.height }
-  }
   help = HockeyPlayerTeamHelp
 }
 
