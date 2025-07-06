@@ -13,7 +13,7 @@ class TieBreakerCardSpotLocator extends Locator<PlayerColor, MaterialType, Locat
       case 3:
         return { x: -69, y: 8 }
       default:
-        return { x: 29, y: 0 }
+        return { x: 30, y: 0 }
     }
   }
 }
