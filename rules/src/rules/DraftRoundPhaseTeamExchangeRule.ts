@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
@@ -8,6 +8,10 @@ import { RuleId } from './RuleId'
 import { CustomMoveType, isPassCustomMove } from '../material/CustomMoveType'
 
 export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
+  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    return this.material(MaterialType.HockeyPlayerCard).unselectItems()
+  }
+
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, player)
     if (
