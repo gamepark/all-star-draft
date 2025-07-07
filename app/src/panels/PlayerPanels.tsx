@@ -19,7 +19,10 @@ export const PlayerPanels = () => {
     <>
       {players.map((player, index) => (
         <StyledPlayerPanel
-          mainCounter={{ image: supportersIcon, value: rules?.remind<number>(Memorize.Score, player.id) ?? 0 }}
+          mainCounter={{
+            image: supportersIcon,
+            value: (rules?.remind<number>(Memorize.Score, player.id) ?? 0) + (rules?.remind<number>(Memorize.ScorePlayoff, player.id) ?? 0)
+          }}
           key={player.id}
           player={player}
           color={playerColorCode[player.id]}
