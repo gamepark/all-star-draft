@@ -112,8 +112,12 @@ const getTeamStrengthFromCharacteristics = (
           union(threeOfAKindArray, secondThreeOfAKindArray).length === 5 && intersection(threeOfAKindArray, secondThreeOfAKindArray).length === 1
       )
     ) ||
-    fourOfAKind.some((fourOfAKindArray) =>
-      pairs.some((pairsArray) => union(fourOfAKindArray, pairsArray).length === 5 && intersection(fourOfAKindArray, pairsArray).length === 1)
+    fourOfAKind.some(
+      (fourOfAKindArray) =>
+        pairs.some((pairsArray) => union(fourOfAKindArray, pairsArray).length === 5 && intersection(fourOfAKindArray, pairsArray).length === 1) ||
+        threeOfAKind.some(
+          (threeOfAKindArray) => union(fourOfAKindArray, threeOfAKindArray).length === 5 && intersection(fourOfAKindArray, threeOfAKindArray).length === 2
+        )
     )
   ) {
     if (teamStrength.irregularsAttributes !== undefined) {
@@ -178,7 +182,7 @@ export function compareTeam(t1: TeamStrength, t2: TeamStrength, playerCount: num
   return t1.attribute.value - t2.attribute.value
 }
 
-function getAttributeKindPriority(playerCount: number): AttributeKind[] {
+export const getAttributeKindPriority = (playerCount: number): AttributeKind[] => {
   if (playerCount > 4) return [AttributeKind.Number, AttributeKind.Species, AttributeKind.Symbol]
   return [AttributeKind.Species, AttributeKind.Number, AttributeKind.Symbol]
 }
