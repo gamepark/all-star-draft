@@ -285,6 +285,8 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   ): DisplayHelp<PlayerColor, MaterialType, LocationType> {
     if (item.location.type === LocationType.PlayerHockeyPlayerTeamSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
     if (item.location.type === LocationType.HockeyPlayerDeckSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
+    if (item.id === undefined && item.location.type === LocationType.HockeyPlayerDraftSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
+    if (item.id === undefined && item.location.type === LocationType.PlayerHockeyPlayerHandSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
     return super.displayHelp(item, context)
   }
 }

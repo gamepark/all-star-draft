@@ -1,9 +1,10 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { getRelativePlayerIndex, HandLocator, ItemContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { orderBy } from 'lodash'
+import { PlayerHandHelp } from '../components/help/PlayerHandHelp'
 
 const baseAngleMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
@@ -51,6 +52,8 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
   gapMaxAngle = 1
   clockwise = true
 
+  locationDescription = new PlayerHockeyPlayerHandSpotDescription()
+
   getBaseAngle(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
@@ -74,6 +77,12 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     }
     return item.location.x!
   }
+}
+
+class PlayerHockeyPlayerHandSpotDescription extends LocationDescription {
+  help = PlayerHandHelp
+  height = 9
+  width = 16
 }
 
 export const playerHockeyPlayerHandSpotLocator = new PlayerHockeyPlayerHandSpotLocator()
