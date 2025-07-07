@@ -13,7 +13,7 @@ class PlayoffPointCardSpotLocator extends Locator<PlayerColor, MaterialType, Loc
       case 3:
         return { x: -69, y: -4 }
       default:
-        return { x: 29, y: 12 }
+        return { x: 30, y: 12 }
     }
   }
 }

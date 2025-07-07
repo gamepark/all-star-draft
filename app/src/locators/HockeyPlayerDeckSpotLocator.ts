@@ -16,7 +16,7 @@ class HockeyPlayerDeckSpotLocator extends DeckLocator<PlayerColor, MaterialType,
       case 3:
         return { x: -69, y: -12 }
       default:
-        return { x: 29, y: -12 }
+        return { x: 30, y: -12 }
     }
   }
 

@@ -4,7 +4,6 @@ import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { getRelativePlayerIndex, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
-import { orderBy } from 'lodash'
 
 const rotationMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
@@ -14,15 +13,15 @@ const rotationMap: Record<number, number[]> = {
 }
 
 const gapMap: Record<number, Partial<Coordinates>[]> = {
-  6: [{ y: 5 }, { x: -3 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
-  5: [{ y: 5 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
-  4: [{ y: 5 }, { x: -3 }, { y: -3 }, { x: 3 }],
-  3: [{ y: 5 }, { y: -3 }, { y: -3 }]
+  6: [{ y: 10 }, { x: -3 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
+  5: [{ y: 10 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
+  4: [{ y: 10 }, { x: -3 }, { y: -3 }, { x: 3 }],
+  3: [{ y: 12 }, { y: -3 }, { y: -3 }]
 }
 
 const coordinatesMap: Record<number, { x: number; y: number }[]> = {
   6: [
-    { x: 28, y: 22 },
+    { x: 22, y: -11 },
     { x: -55, y: 40 },
     { x: -55, y: -6 },
     { x: -22, y: -25 },
@@ -30,25 +29,25 @@ const coordinatesMap: Record<number, { x: number; y: number }[]> = {
     { x: 55, y: 6 }
   ],
   5: [
-    { x: 28, y: 22 },
+    { x: 22, y: -11 },
     { x: -55, y: 22 },
     { x: -22, y: -25 },
     { x: 55, y: -40 },
     { x: 55, y: 6 }
   ],
   4: [
-    { x: 28, y: 22 },
+    { x: 22, y: -11 },
     { x: -55, y: 22 },
     { x: -22, y: -25 },
     { x: 55, y: -22 }
   ],
   3: [
-    { x: 28, y: -4 },
+    { x: -28, y: -12 },
     { x: -58, y: -25 },
     { x: 2, y: -25 }
   ],
   2: [
-    { x: 28, y: -4 },
+    { x: -28, y: -19 },
     { x: -22, y: -25 }
   ]
 }
@@ -79,13 +78,10 @@ class PlayerBusTokenReserveSpotLocator extends ListLocator<PlayerColor, Material
   }
 
   getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
-    const { player, rules, index } = context
-    if (item.location.player === player) {
-      const busTokens = rules.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenReserveSpot).player(player)
-      const sorted = orderBy(busTokens.getIndexes(), (index) => busTokenValue((busTokens.getItem(index).id as KnownBusTokenId).front))
-      return sorted.indexOf(index)
+    if (context.player === item.location.player) {
+      return busTokenValue((item.id as KnownBusTokenId).front) - 1
     }
-    return item.location.x!
+    return super.getItemIndex(item, context)
   }
 }
 

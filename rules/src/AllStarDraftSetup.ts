@@ -24,6 +24,7 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
     this.memorize<number>(Memorize.RoundNumber, 0)
     this.game.players.forEach((player) => {
       this.memorize<number>(Memorize.Score, 0, player)
+      this.memorize<number>(Memorize.ScorePlayoff, 0, player)
     })
   }
 

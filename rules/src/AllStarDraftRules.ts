@@ -1,4 +1,5 @@
 import {
+  CompetitiveScore,
   FillGapStrategy,
   hideItemId,
   hideItemIdToOthers,
@@ -33,6 +34,7 @@ import { PlayoffRoundPhaseInterMatchAddPlayersRule } from './rules/PlayoffRoundP
 import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
 import { DraftRoundPhaseDiscardCardOverflowRule } from './rules/DraftRoundPhaseDiscardCardOverflowRule'
 import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
+import { Memorize } from './Memorize'
 
 /**
  * This class implements the rules of the board game.
@@ -40,8 +42,21 @@ import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftR
  */
 export class AllStarDraftRules
   extends SecretMaterialRules<PlayerColor, MaterialType, LocationType>
-  implements TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
+  implements
+    TimeLimit<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>,
+    CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
 {
+  getScore(playerId: PlayerColor): number {
+    return this.getMemory(playerId).remind<number>(Memorize.Score) + this.getMemory(playerId).remind<number>(Memorize.ScorePlayoff)
+  }
+
+  getTieBreaker(tieBreaker: number, playerId: PlayerColor): number | undefined {
+    if (tieBreaker === 1) {
+      return this.getMemory(playerId).remind<number>(Memorize.ScorePlayoff)
+    }
+    return
+  }
+
   rules = {
     [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsRule,
     [RuleId.DraftRoundPhaseCardSelection]: DraftRoundPhaseCardSelectionRule,
