@@ -5,6 +5,7 @@ import { Memorize } from '@gamepark/all-star-draft/Memorize'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { StyledPlayerPanel, usePlayers, useRules } from '@gamepark/react-game'
 import { createPortal } from 'react-dom'
+import supportersIcon from '../images/Symbols/Supporters.svg'
 
 export const PlayerPanels = () => {
   const players = usePlayers<PlayerColor>({ sortFromMe: true })
@@ -18,7 +19,7 @@ export const PlayerPanels = () => {
     <>
       {players.map((player, index) => (
         <StyledPlayerPanel
-          mainCounter={{ image: '', value: rules?.remind<number>(Memorize.Score, player.id) ?? 0 }}
+          mainCounter={{ image: supportersIcon, value: rules?.remind<number>(Memorize.Score, player.id) ?? 0 }}
           key={player.id}
           player={player}
           color={playerColorCode[player.id]}
