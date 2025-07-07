@@ -12,11 +12,13 @@ import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { AttributeKind, getAttributeKindPriority } from '@gamepark/all-star-draft/material/TeamStrength'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { MaterialHelpProps, useRules } from '@gamepark/react-game'
+import { MaterialHelpProps, usePlayerName, useRules } from '@gamepark/react-game'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { MedalIconComponent } from '../symbols/MedalIconComponent'
 import { getSpeciesValueComponent, getSymbolValueComponent } from './util/valueComponents'
+import { MaterialItem } from '@gamepark/rules-api'
+import { TFunction } from 'i18next'
 
 export const HockeyPlayerCardHelp: FC<MaterialHelpProps<PlayerColor, MaterialType, LocationType>> = ({ item }) => {
   const { t } = useTranslation()
@@ -74,7 +76,7 @@ export const HockeyPlayerCardHelp: FC<MaterialHelpProps<PlayerColor, MaterialTyp
         .indexOf(AttributeKind.Species) == 1
     return (
       <>
-        <h2>{t('help.hockeyPlayerCard.title')}</h2>
+        <h2>{getTitleKey(item, t)}</h2>
         {getHockeyPlayerCardSymbol(hockeyPlayerId) !== HockeyPlayerCardSymbolsType.None && (
           <p>
             <Trans
@@ -93,5 +95,16 @@ export const HockeyPlayerCardHelp: FC<MaterialHelpProps<PlayerColor, MaterialTyp
       </>
     )
   }
-  return <></>
+  return <h2>{getTitleKey(item, t)}</h2>
+}
+
+function getTitleKey(item: Partial<MaterialItem<PlayerColor, LocationType>>, t: TFunction): string {
+  const { location } = item
+  if (location?.type === LocationType.PlayerHockeyPlayerHandSpot) {
+    return t('help.hockeyPlayerCard.handTitle', { playerName: usePlayerName(location.player) })
+  }
+  if (location?.type === LocationType.HockeyPlayerDraftSpot) {
+    return t('help.hockeyPlayerCard.draftTitle', { playerName: usePlayerName(location.player) })
+  }
+  return t('help.hockeyPlayerCard.title')
 }
