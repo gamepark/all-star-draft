@@ -11,6 +11,7 @@ import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
 import translations from './translations.json'
 import { AllStarDraftScoringDescription } from './scoring/AllStarDraftScoringDescription'
+import { AllStarDraftTutorial } from './tutorial/AllStarDraftTutorial'
 
 setupTranslation(translations, { debug: false })
 
@@ -24,6 +25,7 @@ ReactDOM.render(
       material={Material}
       locators={Locators}
       animations={gameAnimations}
+      tutorial={new AllStarDraftTutorial()}
       scoring={new AllStarDraftScoringDescription()}
     >
       <App />
