@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { getRelativePlayerIndex, HandLocator, ItemContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { orderBy } from 'lodash'
 import { PlayerHandHelp } from '../components/help/PlayerHandHelp'
@@ -79,7 +79,7 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
   }
 }
 
-class PlayerHockeyPlayerHandSpotDescription extends LocationDescription {
+class PlayerHockeyPlayerHandSpotDescription extends DropAreaDescription {
   help = PlayerHandHelp
   height = 9
   width = 16
