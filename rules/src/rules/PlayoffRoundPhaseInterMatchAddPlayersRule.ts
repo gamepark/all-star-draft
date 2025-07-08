@@ -26,7 +26,10 @@ export class PlayoffRoundPhaseInterMatchAddPlayersRule extends SimultaneousRule<
           this.memorize<number>(Memorize.ScoreTicket, ticketCount * this.game.players.length, player)
           this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
           this.memorize<PlayerColor[]>(Memorize.ActivePlayers, (activePlayers) => activePlayers.filter((player) => player !== player))
-          moves.push(this.endPlayerTurn(player))
+          moves.push(
+            this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(player).deleteItemsAtOnce(),
+            this.endPlayerTurn(player)
+          )
         }
       } else {
         moves.push(this.endPlayerTurn(player))

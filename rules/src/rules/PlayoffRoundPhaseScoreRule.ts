@@ -31,6 +31,7 @@ export class PlayoffRoundPhaseScoreRule extends PlayerTurnRule<PlayerColor, Mate
       } else {
         this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][currentLowestPosition - 1], lastPlayer)
         this.memorize<PlayerColor[]>(Memorize.ActivePlayers, (activePlayers) => activePlayers.filter((player) => player !== lastPlayer))
+        moves.push(this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(lastPlayer).deleteItemsAtOnce())
       }
     }
     const activePlayers = this.remind<PlayerColor[]>(Memorize.ActivePlayers)
