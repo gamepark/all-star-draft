@@ -8,7 +8,7 @@ import {
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { IrregularAttribute } from '@gamepark/all-star-draft/material/TeamStrength'
-import { MaterialHelpProps, Picture } from '@gamepark/react-game'
+import { MaterialHelpProps, Picture, useRules } from '@gamepark/react-game'
 import { TFunction } from 'i18next'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
@@ -18,6 +18,7 @@ import straight from '../../images/Symbols/ArenaStraight.png'
 import whistle from '../../images/Symbols/ArenaWhistle.png'
 import notForTwoPlayers from '../../images/Symbols/ArenaNot2Players.png'
 import threeAndPair from '../../images/Symbols/ArenaThreeOfAKindPair.png'
+import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 
 const getIrregularAttributeSymbol = (arenaIrregularAttributeElement: IrregularAttribute) => {
   switch (arenaIrregularAttributeElement) {
@@ -33,8 +34,10 @@ const getIrregularAttributeSymbol = (arenaIrregularAttributeElement: IrregularAt
 export const ArenaCardHelp: FC<MaterialHelpProps<number, MaterialType, LocationType>> = ({ item }) => {
   const { t } = useTranslation()
   if (item.id !== undefined) {
+    const rules = useRules<AllStarDraftRules>()
+    const playerCount = rules?.game.players.length ?? 6
     const arenaId = item.id as ArenaCard
-    const fanPoints = arenasFanPoints[arenaId]
+    const fanPoints = arenasFanPoints[arenaId].slice(0, playerCount)
     const isIrregularFanCount = isArenaWithIrregularFanCount(arenaId)
     const irregularAttribute = arenaIrregularAttribute[arenaId]
     return (
@@ -45,7 +48,7 @@ export const ArenaCardHelp: FC<MaterialHelpProps<number, MaterialType, LocationT
           <tbody>
             <tr>
               <th style={{ border: '1px solid black', textAlign: 'center' }}>{t('help.arenaCard.rank')}</th>
-              {Array(6)
+              {Array(playerCount)
                 .fill(1)
                 .map((_, index) => (
                   <td style={{ border: '1px solid black', textAlign: 'center', fontWeight: 'bold' }} key={`rank-index-${index}`}>
