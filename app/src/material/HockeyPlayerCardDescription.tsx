@@ -260,7 +260,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
                 move={move}
                 angle={-55 + (context.locators[locationType]?.getItemRotateZ(item, context) ?? 0)}
                 radius={2.1}
-                label={<Trans defaults={'card.act'} />}
+                label={<Trans defaults={moveTranslationKey(item, ruleId)} />}
                 labelPosition={'right'}
               >
                 <FontAwesomeIcon icon={faHandPointer} size="lg" />
@@ -309,6 +309,24 @@ function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolea
       [RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers].includes(ruleId)) ||
     (locationType === LocationType.HockeyPlayerOpenMarketDraftLocator && ruleId === RuleId.DraftRoundPhaseOpenMarketCardSelection)
   )
+}
+
+function moveTranslationKey(item: MaterialItem<PlayerColor, LocationType>, ruleId: RuleId): string {
+  if (item.location.type === LocationType.HockeyPlayerDraftSpot) {
+    if (ruleId === RuleId.DraftRoundPhaseClashCardSelectionForOpponent) {
+      return 'card.give'
+    } else {
+      return 'card.take'
+    }
+  }
+  if (item.location.type === LocationType.PlayerHockeyPlayerHandSpot) {
+    if (ruleId === RuleId.DraftRoundPhaseDiscardCardOverflow) {
+      return 'card.discard'
+    } else {
+      return 'card.play'
+    }
+  }
+  return 'card.take'
 }
 
 export const hockeyPlayerCardDescription = new HockeyPlayerCardDescription()
