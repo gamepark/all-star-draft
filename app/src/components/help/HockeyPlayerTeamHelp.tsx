@@ -4,7 +4,8 @@ import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import {
   AttributeKind,
-  getAttributeKindPriority, getIrregularAttributeTranslationKey,
+  getAttributeKindPriority,
+  getIrregularAttributeTranslationKey,
   getTeamStrength,
   getTeamStrengthAttributeTranslationKey,
   IrregularAttribute,
