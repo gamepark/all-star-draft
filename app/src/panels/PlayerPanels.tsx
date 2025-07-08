@@ -21,7 +21,10 @@ export const PlayerPanels = () => {
         <StyledPlayerPanel
           mainCounter={{
             image: supportersIcon,
-            value: (rules?.remind<number>(Memorize.Score, player.id) ?? 0) + (rules?.remind<number>(Memorize.ScorePlayoff, player.id) ?? 0)
+            value:
+              (rules?.remind<number>(Memorize.Score, player.id) ?? 0) +
+              (rules?.remind<number>(Memorize.ScorePlayoff, player.id) ?? 0) +
+              (rules?.remind<number>(Memorize.ScoreTicket, player.id) ?? 0)
           }}
           key={player.id}
           player={player}

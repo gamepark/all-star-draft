@@ -7,5 +7,6 @@ export enum Memorize {
   LastPlayers,
   GameMode,
   CardsAlreadyInHand,
-  ScorePlayoff
+  ScorePlayoff,
+  ScoreTicket
 }

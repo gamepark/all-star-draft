@@ -40,7 +40,7 @@ export class PlayoffRoundPhaseScoreRule extends PlayerTurnRule<PlayerColor, Mate
           .location(LocationType.PlayerPlayoffTicketTokenSpot)
           .player(activePlayers[0])
           .getQuantity()
-        this.memorize<number>(Memorize.Score, (score) => score + ticketCount * this.game.players.length, activePlayers[0])
+        this.memorize<number>(Memorize.ScoreTicket, ticketCount * this.game.players.length, activePlayers[0])
         this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][0], activePlayers[0])
       }
       moves.push(this.endGame())
