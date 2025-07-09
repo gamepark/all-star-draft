@@ -1,9 +1,10 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { HandLocator, getRelativePlayerIndex, MaterialContext, ItemContext } from '@gamepark/react-game'
+import { HandLocator, getRelativePlayerIndex, MaterialContext, ItemContext, DropAreaDescription } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { orderBy } from 'lodash'
+import { PlayerDraftHelp } from '../components/help/PlayerDraftHelp'
 
 const baseAngleMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
@@ -46,6 +47,7 @@ const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
 }
 
 class HockeyPlayerDraftSpotLocator extends HandLocator<PlayerColor, MaterialType, LocationType> {
+  locationDescription = new HockeyPlayerDraftSpotDescription()
   radius = 75
   gapMaxAngle = 3
   clockwise = true
@@ -78,6 +80,12 @@ class HockeyPlayerDraftSpotLocator extends HandLocator<PlayerColor, MaterialType
     }
     return item.location.x!
   }
+}
+
+class HockeyPlayerDraftSpotDescription extends DropAreaDescription {
+  help = PlayerDraftHelp
+  height = 9
+  width = 16
 }
 
 export const hockeyPlayerDraftSpotLocator = new HockeyPlayerDraftSpotLocator()

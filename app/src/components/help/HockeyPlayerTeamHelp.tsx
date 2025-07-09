@@ -4,13 +4,14 @@ import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import {
   AttributeKind,
-  getAttributeKindPriority, getIrregularAttributeTranslationKey,
+  getAttributeKindPriority,
+  getIrregularAttributeTranslationKey,
   getTeamStrength,
   getTeamStrengthAttributeTranslationKey,
   IrregularAttribute,
   TeamStrength
 } from '@gamepark/all-star-draft/material/TeamStrength'
-import { LocationHelpProps, MaterialComponent, Picture, pointerCursorCss, usePlay, useRules } from '@gamepark/react-game'
+import { LocationHelpProps, MaterialComponent, Picture, pointerCursorCss, usePlay, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { sortBy } from 'lodash'
 import { Trans, useTranslation } from 'react-i18next'
@@ -38,16 +39,20 @@ const getValueComponent = (teamStrength: TeamStrength) => {
 export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
   const { t } = useTranslation()
   const rules = useRules<AllStarDraftRules>()
-  const cards = sortBy(
-    rules?.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(location.id).player(location.player).entries,
-    (card) => card[1].id
-  )
+  const locationCards = rules
+    ?.material(MaterialType.HockeyPlayerCard)
+    .location(LocationType.PlayerHockeyPlayerTeamSpot)
+    .locationId(location.id)
+    .player(location.player)
+    .getItems<HockeyPlayerCard | undefined>()
+  const cards = sortBy(locationCards, (card) => card.id)
   const numberOfPlayers = rules?.players.length ?? 2
   const play = usePlay()
-  const team: HockeyPlayerCard[] = cards.filter((card) => card[1].id !== undefined).map((card) => card[1].id as HockeyPlayerCard)
+  const playerName = usePlayerName(location.player)
+  const team: HockeyPlayerCard[] = locationCards?.filter((card) => card.id !== undefined).map((card) => card.id!) ?? []
   const teamStrength = getTeamStrength(team, rules?.game.players.length ?? 0)
   const valueComponent = teamStrength.attribute.kind === AttributeKind.Number ? undefined : getValueComponent(teamStrength)
-  return (
+  return locationCards?.some((card) => card.id !== undefined) ? (
     <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100%', overflow: 'hidden' }}>
       <ol
         style={{
@@ -59,11 +64,8 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
           margin: 0
         }}
       >
-        {cards.map(([index, card], i) => (
-          <li
-            key={index}
-            style={{ marginLeft: i === 0 ? 0 : '1.5em' }} // ajuster le chevauchement ici
-          >
+        {cards.map((card, index) => (
+          <li key={index} style={{ marginLeft: index === 0 ? 0 : '1.5em' }}>
             <MaterialComponent
               type={MaterialType.HockeyPlayerCard}
               itemId={card.id}
@@ -75,7 +77,7 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
         ))}
       </ol>
       <div>
-        <h2 style={{ padding: '0em 2em' }}>{t('help.hockeyPlayerTeam.title', { teamNumber: location.id ?? 0 })}</h2>
+        <h2 style={{ padding: '0em 2em' }}>{t('help.hockeyPlayerTeam.title', { teamNumber: location.id ?? 0, name: playerName })}</h2>
         <p>
           <Trans
             defaults={'help.hockeyPlayerTeam.strength'}
@@ -135,5 +137,7 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
         )}
       </div>
     </div>
+  ) : (
+    <h2 style={{ padding: '0em 2em' }}>{t('help.hockeyPlayerTeam.title', { teamNumber: location.id ?? 0, name: playerName })}</h2>
   )
 }

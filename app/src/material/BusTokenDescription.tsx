@@ -32,6 +32,7 @@ import { fa1, fa2, fa3 } from '@fortawesome/free-solid-svg-icons'
 import { ReactNode } from 'react'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
+import { BusTokenHelp } from '../components/help/BusTokenHelp'
 
 const dispatchButtonProps: { coordinates: Partial<ItemButtonProps>; icon: FontAwesomeIconProps['icon'] }[] = [
   { coordinates: { x: 1, y: -1 }, icon: fa1 },
@@ -70,6 +71,8 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
     [PlayerColor.Red]: RedBack,
     [PlayerColor.Yellow]: YellowBack
   }
+
+  help = BusTokenHelp
 
   getItemMenu(
     item: MaterialItem<PlayerColor, LocationType>,

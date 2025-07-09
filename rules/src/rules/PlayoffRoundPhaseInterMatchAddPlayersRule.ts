@@ -22,9 +22,17 @@ export class PlayoffRoundPhaseInterMatchAddPlayersRule extends SimultaneousRule<
     this.game.players.forEach((player) => {
       if (activePlayers.includes(player)) {
         if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getItems().length < 2) {
+          const ticketCount = this.material(MaterialType.PlayoffTicketToken)
+            .location(LocationType.PlayerPlayoffTicketTokenSpot)
+            .player(player)
+            .getItems().length
+          this.memorize<number>(Memorize.ScoreTicket, ticketCount * this.game.players.length, player)
           this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
           this.memorize<PlayerColor[]>(Memorize.ActivePlayers, (activePlayers) => activePlayers.filter((player) => player !== player))
-          moves.push(this.endPlayerTurn(player))
+          moves.push(
+            this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(player).deleteItemsAtOnce(),
+            this.endPlayerTurn(player)
+          )
         }
       } else {
         moves.push(this.endPlayerTurn(player))

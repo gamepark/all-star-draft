@@ -47,7 +47,11 @@ export class AllStarDraftRules
     CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>
 {
   getScore(playerId: PlayerColor): number {
-    return this.getMemory(playerId).remind<number>(Memorize.Score) + this.getMemory(playerId).remind<number>(Memorize.ScorePlayoff)
+    return (
+      this.getMemory(playerId).remind<number>(Memorize.Score) +
+      this.getMemory(playerId).remind<number>(Memorize.ScorePlayoff) +
+      this.getMemory(playerId).remind<number>(Memorize.ScoreTicket)
+    )
   }
 
   getTieBreaker(tieBreaker: number, playerId: PlayerColor): number | undefined {
