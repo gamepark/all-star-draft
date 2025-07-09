@@ -4,7 +4,7 @@ import { MaterialType } from '../material/MaterialType'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 import { Memorize } from '../Memorize'
-import { RegularSeasonGameMode } from '../RegularSeasonGameMode'
+import { TwoPlayersMode } from '../TwoPlayersMode'
 
 export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
@@ -32,7 +32,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
       move.location.player !== undefined
     ) {
       if (
-        this.remind<RegularSeasonGameMode>(Memorize.GameMode) === RegularSeasonGameMode.Duel &&
+        this.remind<TwoPlayersMode>(Memorize.GameMode) === TwoPlayersMode.Clash &&
         this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).player(move.location.player).length === 7
       )
         return []
@@ -47,7 +47,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
 
     // If cards are left in the draft
     if (draftCards.length > 0) {
-      if (this.game.players.length === 2 && this.remind<RegularSeasonGameMode>(Memorize.GameMode) === RegularSeasonGameMode.Duel) {
+      if (this.game.players.length === 2 && this.remind<TwoPlayersMode>(Memorize.GameMode) === TwoPlayersMode.Clash) {
         return [this.startSimultaneousRule(RuleId.DraftRoundPhaseClashCardSelectionForOpponent)]
       }
       const moveCards = this.game.players.map((player) => {
@@ -64,8 +64,8 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
     }
 
     // If no cards are left
-    const gameMode = this.remind<RegularSeasonGameMode>(Memorize.GameMode)
-    if (this.game.players.length === 2 && [RegularSeasonGameMode.Heritage, RegularSeasonGameMode.Duel].includes(gameMode)) {
+    const gameMode = this.remind<TwoPlayersMode>(Memorize.GameMode)
+    if (this.game.players.length === 2 && [TwoPlayersMode.Heritage, TwoPlayersMode.Clash].includes(gameMode)) {
       return [this.startSimultaneousRule(RuleId.DraftRoundPhaseDiscardCardOverflow)]
     }
 

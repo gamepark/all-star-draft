@@ -4,7 +4,7 @@ import { MaterialType } from '../material/MaterialType'
 import { RuleId } from './RuleId'
 import { PlayerColor } from '../PlayerColor'
 import { Memorize } from '../Memorize'
-import { RegularSeasonGameMode } from '../RegularSeasonGameMode'
+import { TwoPlayersMode } from '../TwoPlayersMode'
 import { minBy } from 'lodash'
 
 export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
@@ -30,8 +30,8 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
       )
     ]
 
-    // Card are dealt as long as OpenMarket is not the selected mode
-    if (this.remind<RegularSeasonGameMode>(Memorize.GameMode) === RegularSeasonGameMode.OpenMarket) {
+    // Card are dealt as long as FreeAgency is not the selected mode
+    if (this.remind<TwoPlayersMode>(Memorize.GameMode) === TwoPlayersMode.FreeAgency) {
       const scoreMap = this.game.players.map((player) => ({ player: player, score: this.remind<number>(Memorize.Score, player) }))
       const lastPlayer = minBy(scoreMap, 'score')?.player ?? this.game.players[0]
       moves.push(this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection, lastPlayer))

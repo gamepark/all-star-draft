@@ -10,7 +10,7 @@ import { selectHockeyPlayerCardsForRandomSpecies } from './material/HockeyPlayer
 import { busTokensByPlayerColor } from './material/BusToken'
 import { Memorize } from './Memorize'
 import { MaterialRotation } from './material/MaterialRotation'
-import { RegularSeasonGameMode } from './RegularSeasonGameMode'
+import { TwoPlayersMode } from './TwoPlayersMode'
 
 /**
  * This class creates a new Game based on the game options
@@ -31,12 +31,12 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
 
   start(_options: AllStarDraftOptions) {
     if (this.players.length === 2) {
-      this.memorize<RegularSeasonGameMode>(Memorize.GameMode, _options.gameMode)
+      this.memorize<TwoPlayersMode>(Memorize.GameMode, _options.gameMode)
     }
     this.startPlayerTurn(RuleId.DraftRoundSetupDrawCards)
   }
 
-  setupCards(gameMode: RegularSeasonGameMode) {
+  setupCards(gameMode: TwoPlayersMode) {
     const availableArenaCards = this.rules.players.length === 2 ? arenaCardsForTwoPlayers : arenaCards
     this.material(MaterialType.ArenaCard).createItemsAtOnce(
       availableArenaCards.map((card) => ({
@@ -48,7 +48,7 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
     )
     if (this.players.length === 2) {
       this.material(MaterialType.HockeyPlayerCard).createItemsAtOnce(
-        selectHockeyPlayerCardsForRandomSpecies(gameMode === RegularSeasonGameMode.OpenMarket ? 6 : 5).map((card) => ({
+        selectHockeyPlayerCardsForRandomSpecies(gameMode === TwoPlayersMode.FreeAgency ? 6 : 5).map((card) => ({
           id: card,
           location: {
             type: LocationType.HockeyPlayerDeckSpot
