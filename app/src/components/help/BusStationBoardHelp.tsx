@@ -15,12 +15,10 @@ export const BusStationBoardHelp: FC<MaterialHelpProps<number, MaterialType, Loc
     <>
       <h2>{t('help.busStationBoard.title')}</h2>
       <p>
-        {
-          <Trans
-            defaults={'help.busStationBoard.description'}
-            components={{ strengthSymbolMin: <TeamStrengthIconComponent strength={1} />, strengthSymbolMax: <TeamStrengthIconComponent strength={5} /> }}
-          />
-        }
+        <Trans
+          defaults={'help.busStationBoard.description'}
+          components={{ strengthSymbolMin: <TeamStrengthIconComponent strength={1} />, strengthSymbolMax: <TeamStrengthIconComponent strength={5} /> }}
+        />
       </p>
       <p>
         <Trans
