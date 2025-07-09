@@ -4,7 +4,9 @@ import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { Memorize } from '@gamepark/all-star-draft/Memorize'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { ScoringDescription } from '@gamepark/react-client'
+import { Picture } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
+import playOffTicker from '../images/Tokens/PlayoffTicketToken.jpg'
 
 enum ScoringKeys {
   DraftRound,
@@ -25,7 +27,12 @@ export class AllStarDraftScoringDescription implements ScoringDescription<Player
       case ScoringKeys.PlayoffRound:
         return <Trans defaults="scoring.playoff" />
       case ScoringKeys.PlayoffTicketTokens:
-        return <Trans defaults="scoring.ticketTokens" />
+        return (
+          <div style={{ display: 'flex', flexDirection: 'column', justifyItems: 'center', alignItems: 'center' }}>
+            <Picture src={playOffTicker} width={75} />
+            <Trans defaults="scoring.ticketTokens" />
+          </div>
+        )
       case ScoringKeys.Total:
         return (
           <div css={bold}>
