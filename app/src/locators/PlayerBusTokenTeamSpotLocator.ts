@@ -58,7 +58,7 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
       { x: teamCoordinates(teamNumber) + 26, y: -22 }
     ],
     2: [
-      { x: teamCoordinates(teamNumber), y: -4 },
+      { x: teamCoordinates(teamNumber), y: -12 },
       { x: teamCoordinates(teamNumber), y: -22 }
     ]
   }
