@@ -1,15 +1,15 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { AllStarDraftOptions } from './AllStarDraftOptions'
 import { AllStarDraftRules } from './AllStarDraftRules'
+import { arenaCards, arenaCardsForTwoPlayers } from './material/ArenaCard'
+import { busTokensByPlayerColor } from './material/BusToken'
+import { selectHockeyPlayerCardsForRandomSpecies } from './material/HockeyPlayerCard'
 import { LocationType } from './material/LocationType'
+import { MaterialRotation } from './material/MaterialRotation'
 import { MaterialType } from './material/MaterialType'
+import { Memorize } from './Memorize'
 import { PlayerColor } from './PlayerColor'
 import { RuleId } from './rules/RuleId'
-import { arenaCards, arenaCardsForTwoPlayers } from './material/ArenaCard'
-import { selectHockeyPlayerCardsForRandomSpecies } from './material/HockeyPlayerCard'
-import { busTokensByPlayerColor } from './material/BusToken'
-import { Memorize } from './Memorize'
-import { MaterialRotation } from './material/MaterialRotation'
 import { TwoPlayersMode } from './TwoPlayersMode'
 
 /**
@@ -18,8 +18,12 @@ import { TwoPlayersMode } from './TwoPlayersMode'
 export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialType, LocationType, AllStarDraftOptions> {
   Rules = AllStarDraftRules
 
-  setupMaterial(_options: AllStarDraftOptions) {
-    this.setupCards(_options.gameMode)
+  setupMaterial(options: Partial<AllStarDraftOptions>) {
+    const gameMode = options.gameMode ?? TwoPlayersMode.Clash
+    if (this.players.length === 2) {
+      this.memorize<TwoPlayersMode>(Memorize.GameMode, gameMode)
+    }
+    this.setupCards(gameMode)
     this.setupTokens()
     this.memorize<number>(Memorize.RoundNumber, 0)
     this.game.players.forEach((player) => {
@@ -29,10 +33,7 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
     })
   }
 
-  start(_options: AllStarDraftOptions) {
-    if (this.players.length === 2) {
-      this.memorize<TwoPlayersMode>(Memorize.GameMode, _options.gameMode)
-    }
+  start() {
     this.startPlayerTurn(RuleId.DraftRoundSetupDrawCards)
   }
 
