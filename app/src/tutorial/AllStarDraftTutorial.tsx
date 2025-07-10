@@ -6,9 +6,10 @@ import HairColorName from '@gamepark/avataaars/dist/avatar/top/HairColorName'
 import { TopType, FacialHairType, ClotheType, EyeType, EyebrowType, MouthType } from '@gamepark/avataaars'
 import { MaterialTutorial, Picture, TutorialStep } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
+import { SupportersIconComponent } from '../components/symbols/SupportersIconComponent'
 import { AllStarDraftTutorialSetup, me, opponent1, opponent2 } from './AllStarDraftTutorialSetup'
 import { getHockeyPlayerCardSymbol, HockeyPlayerCard, HockeyPlayerCardSymbolsType } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
-import { MaterialMove, MaterialGame, isMoveItemType, isMoveItemTypeAtOnce, isDeleteItemTypeAtOnce } from '@gamepark/rules-api'
+import { MaterialMove, MaterialGame, isMoveItemType, isMoveItemTypeAtOnce } from '@gamepark/rules-api'
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
 import { busTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { busStationBoardDescription } from '../material/BusStationBoardDescription'
@@ -36,22 +37,22 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     { id: me },
     {
       id: opponent1,
-      name: 'Thomas',
+      name: 'Marco',
       avatar: {
-        topType: TopType.LongHairBun,
+        topType: TopType.Hat,
         hairColor: HairColorName.Blonde,
-        facialHairType: FacialHairType.BeardLight,
+        facialHairType: FacialHairType.MoustacheMagnum,
         facialHairColor: HairColorName.Blonde,
         clotheType: ClotheType.BlazerShirt,
-        eyeType: EyeType.Default,
-        eyebrowType: EyebrowType.DefaultNatural,
+        eyeType: EyeType.Wink,
+        eyebrowType: EyebrowType.RaisedExcited,
         mouthType: MouthType.Smile,
         skinColor: SkinColor.Pale
       }
     },
     {
       id: opponent2,
-      name: 'Joseph',
+      name: 'Malte',
       avatar: {
         topType: TopType.Eyepatch,
         hairColor: HairColorName.Blonde,
@@ -79,7 +80,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.goal" components={{ bold: <strong /> }} />
+        text: () => <Trans defaults="tuto.goal" components={{ bold: <strong />, supporterIcon: <SupportersIconComponent /> }} />
       }
     },
     {
@@ -94,7 +95,8 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.recruitFirst" components={{ bold: <strong /> }} />
+        text: () => <Trans defaults="tuto.recruitFirst" components={{ bold: <strong /> }} />,
+        position: { y: -20 }
       },
       focus: (_game, _context) => ({
         materials: [
@@ -150,11 +152,9 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       popup: {
         text: () => <Trans defaults="tuto.recruitSecond" components={{ bold: <strong /> }} />
-      }
-    },
-    {
+      },
       move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
       }
     },
     {
@@ -170,26 +170,9 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       popup: {
         text: () => <Trans defaults="tuto.continueDraft" components={{ bold: <strong /> }} />
-      }
-    },
-    {
+      },
       move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
       }
     },
     {
@@ -204,7 +187,22 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+      }
+    },
+    {
+      move: {
+        player: opponent1
+      }
+    },
+    {
+      move: {
+        player: opponent2
+      }
+    },
+    {
+      move: {
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
       }
     },
     {
@@ -225,7 +223,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       popup: {
         text: () => <Trans defaults="tuto.arenaIntro" components={{ bold: <strong /> }} />,
-        position: { y: 25 }
+        position: { y: 30 }
       },
       focus: (_game, _context) => ({
         materials: [this.material(_game, MaterialType.ArenaCard).id(ArenaCard.Polarena1)],
@@ -241,83 +239,38 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       popup: {
         text: () => <Trans defaults="tuto.buildTeam" />
-      }
-    },
-    {
+      },
       move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
       }
     },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
+    ...Array(4)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+          }
+        })
+      ),
+    ...Array(5)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: opponent1
+          }
+        })
+      ),
+    ...Array(5)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: opponent2
+          }
+        })
+      ),
     {
       popup: {
         text: () => <Trans defaults="tuto.busExplanation" components={{ bold: <strong /> }} />,
@@ -345,12 +298,12 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       popup: {
         text: () => <Trans defaults="tuto.busPlacement" components={{ bold: <strong /> }} />,
-        position: { x: 50 }
+        position: { x: 35 }
       },
       focus: (_game, _context) => ({
         materials: [this.material(_game, MaterialType.BusToken).location(LocationType.BusTokenSpotBelowBusStationBoard)],
         staticItems: { [MaterialType.BusStationBoard]: busStationBoardDescription.getStaticItems(_context) },
-        margin: { right: 10 }
+        margin: { right: 20 }
       })
     },
     {
@@ -360,18 +313,13 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       focus: (_game, _context) => ({
         staticItems: { [MaterialType.TieBreakerCard]: tieBreakerCardDrescription.getStaticItems(_context) },
         margin: { right: 10 }
-      }),
-      move: {}
+      })
     },
-    // {
-    //   popup: {
-    //     text: () => <Trans defaults="tuto.busMovement" components={{ bold: <strong /> }} />
-    //   }
-    // },
     {
       popup: {
         text: () => <Trans defaults="tuto.startRound2" components={{ bold: <strong /> }} />
-      }
+      },
+      move: {}
     },
     {
       popup: {
@@ -380,8 +328,10 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.round2Explanation" components={{ bold: <strong />, italic: <em />, whistle: <span className="icon-whistle" /> }} />,
-        position: { x: 30 }
+        text: () => (
+          <Trans defaults="tuto.round2Explanation" components={{ bold: <strong />, italic: <em />, whistle: <Picture src={whistle} width={50} /> }} />
+        ),
+        position: { x: 45 }
       },
       focus: (_game, _context) => ({
         materials: [this.material(_game, MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot)],
@@ -390,9 +340,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       popup: {
-        text: () => (
-          <Trans defaults="tuto.recruitingGoalRound2" components={{ bold: <strong />, italic: <em />, whistle: <Picture src={whistle} width={50} /> }} />
-        )
+        text: () => <Trans defaults="tuto.recruitingGoalRound2" components={{ bold: <strong />, italic: <em /> }} />
       },
       move: {
         filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
@@ -411,7 +359,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
         text: () => <Trans defaults="tuto.recruitRound2" components={{ bold: <strong /> }} />
       },
       move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
       }
     },
     {
@@ -426,7 +374,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
       }
     },
     {
@@ -441,7 +389,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
       }
     },
     {
@@ -456,7 +404,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
       }
     },
     {
@@ -477,13 +425,14 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       popup: {
         text: () => <Trans defaults="tuto.swapPlayer" />,
-        position: { x: 30, y: -15 }
+        position: { x: 40, y: -15 }
       },
       focus: (_game, _context) => ({
         materials: [
           this.material(_game, MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(1).player(me),
           this.material(_game, MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(me)
-        ]
+        ],
+        margin: { top: 2, right: 5 }
       }),
       move: {
         filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
@@ -502,13 +451,13 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game),
-        player: opponent2
+        player: opponent1
       }
     },
     {
       move: {
-        player: opponent1
+        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game),
+        player: opponent2
       }
     },
     {
@@ -524,76 +473,33 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
         filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
       }
     },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        filter: (move, _game) => this.isMoveForHockeyPlayerCard(move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
+    ...Array(4)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+          }
+        })
+      ),
+    ...Array(5)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: opponent2
+          }
+        })
+      ),
+    ...Array(5)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: opponent1
+          }
+        })
+      ),
     {
       popup: {
         text: () => <Trans defaults="tuto.sendBuses" />
@@ -604,22 +510,22 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
         player: me
       }
     },
     {
       move: {
         player: opponent1
+      }
+    },
+    {
+      move: {
+        player: opponent1
+      }
+    },
+    {
+      move: {
+        player: opponent2
       }
     },
     {
@@ -639,21 +545,21 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       popup: {
         text: () => <Trans defaults="tuto.round3Intro" components={{ bold: <strong /> }} />,
-        position: { x: 30 }
+        position: { x: 35 }
       },
       focus: (_game, _context) => ({
         materials: [this.material(_game, MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot)],
-        margin: { right: 15 }
+        margin: { right: 20 }
       })
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.arenaSpecialIcon" components={{ bold: <strong />, icon: <Picture src={allGear} width={70} /> }} />,
-        position: { x: 30 }
+        text: () => <Trans defaults="tuto.arenaSpecialIcon" components={{ bold: <strong />, icon: <Picture src={allGear} width={150} /> }} />,
+        position: { x: 35 }
       },
       focus: (_game, _context) => ({
         materials: [this.material(_game, MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).id(ArenaCard.ComboStadium1)],
-        margin: { right: 15 }
+        margin: { right: 20 }
       })
     },
     {
@@ -679,66 +585,25 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
         player: opponent2
       }
     },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
+    ...Array(4)
+      .fill(1)
+      .flatMap((): TutorialStep[] => [
+        {
+          move: {
+            player: me
+          }
+        },
+        {
+          move: {
+            player: opponent1
+          }
+        },
+        {
+          move: {
+            player: opponent2
+          }
+        }
+      ]),
     {
       popup: {
         text: () => <Trans defaults="tuto.swapEachTeam" />
@@ -750,29 +615,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        player: opponent1,
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
-      }
-    },
-    {
-      move: {
         player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
       }
     },
     {
@@ -783,8 +626,29 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
+        player: me
+      }
+    },
+    {
+      move: {
         player: opponent1,
         filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+      }
+    },
+    {
+      move: {
+        player: opponent1
+      }
+    },
+    {
+      move: {
+        player: opponent1,
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+      }
+    },
+    {
+      move: {
+        player: opponent1
       }
     },
     {
@@ -795,12 +659,13 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        player: me
+        player: opponent2
       }
     },
     {
       move: {
-        player: opponent1
+        player: opponent2,
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
       }
     },
     {
@@ -816,76 +681,33 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
         player: me
       }
     },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
+    ...Array(4)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: me
+          }
+        })
+      ),
+    ...Array(5)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: opponent1
+          }
+        })
+      ),
+    ...Array(5)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: opponent2
+          }
+        })
+      ),
     {
       popup: {
         text: () => <Trans defaults="tuto.sendFinalBuses" />
@@ -896,12 +718,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
+        player: me
       }
     },
     {
@@ -916,17 +733,22 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
+        player: opponent1
       }
     },
     {
       move: {
         player: opponent1
+      }
+    },
+    {
+      move: {
+        player: opponent2
+      }
+    },
+    {
+      move: {
+        player: opponent2
       }
     },
     {
@@ -969,237 +791,50 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       },
       move: { player: me }
     },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
-    {
-      move: {
-        player: me
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2
-      }
-    },
+    ...Array(4)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: me
+          }
+        })
+      ),
+    ...Array(5)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: opponent1
+          }
+        })
+      ),
+    ...Array(5)
+      .fill(1)
+      .map(
+        (): TutorialStep => ({
+          move: {
+            player: opponent2
+          }
+        })
+      ),
     {
       popup: {
         text: () => <Trans defaults="tuto.playoffElimination" components={{ bold: <strong /> }} />,
-        position: { x: 30 }
+        position: { y: 20 }
       },
       focus: (_game, _context) => {
         const lastPlayer = _game.players.find((player) => this.material(_game, MaterialType.PlayoffTicketToken).player(player).getItems().length === 0)
         return {
           materials: [this.material(_game, MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(lastPlayer)],
           scale: 0.75,
-          margin: { right: 10 }
+          margin: { bottom: 10 }
         }
       }
     },
     {
       popup: {
         text: () => <Trans defaults="tuto.mandatoryChanges" components={{ bold: <strong /> }} />
-      },
-      move: {
-        player: me,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: me,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: me,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: me,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: me,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: me,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: me,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: me,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent1,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game)
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (_move, _game) => this.isMoveForHockeyPlayerCard(_move, _game),
-        interrupt: (_move) => isDeleteItemTypeAtOnce<number, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(_move)
       }
     },
     {

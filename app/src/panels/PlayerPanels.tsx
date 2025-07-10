@@ -80,7 +80,7 @@ const panelBackground = (color: string) => css`
 export const playerColorCode: Record<PlayerColor, string> = {
   [PlayerColor.Yellow]: 'yellow',
   [PlayerColor.Purple]: 'purple',
-  [PlayerColor.Blue]: 'blue',
+  [PlayerColor.Blue]: 'dodgerblue',
   [PlayerColor.Green]: 'green',
   [PlayerColor.Black]: 'black',
   [PlayerColor.Red]: 'red'

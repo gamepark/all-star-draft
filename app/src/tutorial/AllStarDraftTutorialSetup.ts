@@ -5,8 +5,8 @@ import { getHockeyPlayerCardSymbol, HockeyPlayerCard, HockeyPlayerCardSymbolsTyp
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { RegularSeasonGameMode } from '@gamepark/all-star-draft/RegularSeasonGameMode'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
+import { TwoPlayersMode } from '@gamepark/all-star-draft/TwoPlayersMode'
 
 export const me = PlayerColor.Blue
 export const opponent1 = PlayerColor.Green
@@ -26,7 +26,7 @@ export class AllStarDraftTutorialSetup extends AllStarDraftSetup {
           id: opponent2
         }
       ],
-      gameMode: RegularSeasonGameMode.Duel
+      gameMode: TwoPlayersMode.Clash
     })
     //Send a card with a symbol at the top of the deck
     this.material(MaterialType.HockeyPlayerCard)

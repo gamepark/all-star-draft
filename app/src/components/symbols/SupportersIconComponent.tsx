@@ -3,7 +3,15 @@ import { CSSProperties, FC } from 'react'
 export const SupportersIconComponent: FC = () => {
   const supporterStyle: CSSProperties = { fill: '#fddd10', fillOpacity: 1, fillRule: 'nonzero', stroke: 'none' }
   return (
-    <svg version="1.1" id="svg1" width="50" height="51" viewBox="0 0 245.79992 253.58786" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      version="1.1"
+      id="svg1"
+      width="50"
+      height="51"
+      viewBox="0 0 245.79992 253.58786"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ verticalAlign: 'middle' }}
+    >
       <defs id="defs1" />
       <g id="g1" transform="translate(0.00260417,-0.00400967)">
         <g id="group-R5">
