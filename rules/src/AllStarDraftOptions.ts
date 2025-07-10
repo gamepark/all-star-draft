@@ -30,7 +30,7 @@ export const AllStarDraftOptionsSpec: OptionsSpec<AllStarDraftOptions> = {
     }
   },
   gameMode: {
-    label: (t: TFunction) => t('option.regularSeason.mode'),
+    label: (t: TFunction) => t('option.mode'),
     values: getEnumValues(TwoPlayersMode),
     valueSpec: (mode: TwoPlayersMode) => ({
       label: (t) => t(`option.mode.${mode}.label`),
