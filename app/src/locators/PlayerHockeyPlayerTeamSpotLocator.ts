@@ -50,7 +50,7 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
 }
 
 class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
-  locationDescription = new PlayerHockeyPlayerTeamSpotDescription(hockeyPlayerCardDescription)
+  locationDescription = new PlayerHockeyPlayerTeamSpotDescription()
   maxCount = 5
 
   getGap(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
@@ -81,6 +81,9 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
 }
 
 class PlayerHockeyPlayerTeamSpotDescription extends DropAreaDescription {
+  width = hockeyPlayerCardDescription.width + 2.2 * 4
+  height = hockeyPlayerCardDescription.height
+  borderRadius = hockeyPlayerCardDescription.borderRadius
   help = HockeyPlayerTeamHelp
 }
 
