@@ -7,30 +7,9 @@ import { orderBy } from 'lodash'
 import { HockeyPlayerTeamHelp } from '../components/help/HockeyPlayerTeamHelp'
 import { hockeyPlayerCardDescription } from '../material/HockeyPlayerCardDescription'
 
-const teamRotationMap: Record<number, number[]> = {
-  6: [0, 90, 90, 180, 270, 270],
-  5: [0, 90, 180, 270, 270],
-  4: [0, 90, 180, 270],
-  3: [0, 180, 180]
-}
-
-const gapMap: Record<number, Partial<Coordinates>[]> = {
-  6: [{ x: 2.2 }, { y: 1.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
-  5: [{ x: 2.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }, { y: -1.2 }],
-  4: [{ x: 2.2 }, { y: 1.2 }, { x: -1.2 }, { y: -1.2 }],
-  3: [{ x: 2.2 }, { x: -1.2 }, { x: -1.2 }]
-}
-
-const teamGapMap: Record<number, number[]> = {
-  6: [6, 6, 6, -6, -6, -6],
-  5: [6, 6, -6, -6, -6],
-  4: [6, 6, -6, -6],
-  3: [6, -6, -6]
-}
-
 const getTeamCoordinates = (playerCount: number, index: number, teamNumber: number): Partial<Coordinates> => {
-  const teamSpread = ((gapMap[playerCount] ?? gapMap[3])[index].x ?? (gapMap[playerCount] ?? gapMap[3])[index].y)! * 5 // Total width of a team
-  const teamGap = (teamGapMap[playerCount] ?? teamGapMap[3])[index] // Gap between teams
+  const teamSpread = (index === 0 ? 2.2 : 1.2) * 5 // Total width of a team
+  const teamGap = 6 // Gap between teams
   const locatorOffset = (3 * teamSpread + 2 * teamGap) / 2 // Used to center the teams on the player hand
   const teamCoordinates = (teamNumber: number) => -locatorOffset + (teamNumber - 1) * (teamGap + teamSpread)
   const coordinatesMap: Record<number, { x: number; y: number }[]> = {
@@ -53,7 +32,7 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
       { x: teamCoordinates(teamNumber), y: 28 },
       { x: -58, y: teamCoordinates(teamNumber) },
       { x: teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: teamCoordinates(teamNumber) }
+      { x: 54, y: teamCoordinates(teamNumber) }
     ],
     3: [
       { x: teamCoordinates(teamNumber), y: 2 },
@@ -74,18 +53,9 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
   locationDescription = new PlayerHockeyPlayerTeamSpotDescription(hockeyPlayerCardDescription)
   maxCount = 5
 
-  getRotateZ(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
-    const index = getRelativePlayerIndex(context, location.player)
-    const playerCount = context.rules.players.length
-    const angleArray = teamRotationMap[playerCount] ?? teamRotationMap[3]
-    return angleArray[index]
-  }
-
   getGap(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
-    const playerCount = context.rules.players.length
-    const gapArray = gapMap[playerCount] ?? gapMap[3]
-    return gapArray[index]
+    return { x: index === 0 ? 2.2 : 1.2 }
   }
 
   getCoordinates(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
