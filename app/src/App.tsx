@@ -16,7 +16,13 @@ export default function App() {
   return (
     <>
       {!!game && <GameDisplay players={game.players.length} />}
-      <LoadingScreen display={loading} author="Marco Schaub" artist="Malte Zirbel" publisher="Palladis Games" developer={['Isilud', 'SwHawk']} />
+      <LoadingScreen
+        display={loading}
+        author="Marco Schaub"
+        artist={['Malte Zirbel', 'Armand Teixier']}
+        publisher="Palladis Games"
+        developer={['Isilud', 'SwHawk']}
+      />
       <MaterialHeader rulesStepsHeaders={Headers} loading={loading} />
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />
       <Menu />
