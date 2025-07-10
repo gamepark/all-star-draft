@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { getRelativePlayerIndex, MaterialContext, ListLocator, ItemContext, DropAreaDescription } from '@gamepark/react-game'
+import { DropAreaDescription, getRelativePlayerIndex, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { orderBy } from 'lodash'
 import { HockeyPlayerTeamHelp } from '../components/help/HockeyPlayerTeamHelp'
@@ -77,6 +77,10 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
       return sorted.indexOf(index)
     }
     return item.location.x!
+  }
+
+  getHoverTransform() {
+    return ['translateZ(10em)', 'scale(3)']
   }
 }
 

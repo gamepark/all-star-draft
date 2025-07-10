@@ -1,8 +1,8 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { Locator, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location } from '@gamepark/rules-api'
+import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 
 class PlayoffPointCardSpotLocator extends Locator<PlayerColor, MaterialType, LocationType> {
   getCoordinates(_location: Location<PlayerColor, LocationType>, context: MaterialContext<PlayerColor, MaterialType, LocationType>): Partial<Coordinates> {
@@ -15,6 +15,10 @@ class PlayoffPointCardSpotLocator extends Locator<PlayerColor, MaterialType, Loc
       default:
         return { x: 30, y: 12 }
     }
+  }
+
+  getHoverTransform(_: MaterialItem, context: ItemContext) {
+    return ['translateZ(10em)', `translateX(${context.rules.players.length < 4 ? 15 : 0}em)`, 'scale(5)']
   }
 }
 

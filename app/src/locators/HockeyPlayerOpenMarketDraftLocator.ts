@@ -6,6 +6,10 @@ import { ListLocator } from '@gamepark/react-game'
 class HockeyPlayerOpenMarketDraftLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
   coordinates = { x: -10, y: -17 }
   gap = { x: 10 }
+
+  getHoverTransform() {
+    return ['translateZ(10em)', 'scale(3)']
+  }
 }
 
 export const hockeyPlayerOpenMarketDraftLocator = new HockeyPlayerOpenMarketDraftLocator()

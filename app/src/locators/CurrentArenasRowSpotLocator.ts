@@ -21,6 +21,10 @@ class CurrentArenasRowSpotLocator extends ListLocator<PlayerColor, MaterialType,
         return { x: 12, y: -11 }
     }
   }
+
+  getHoverTransform() {
+    return ['translateZ(10em)', 'scale(3)']
+  }
 }
 
 export const currentArenasRowSpotLocator = new CurrentArenasRowSpotLocator()

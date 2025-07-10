@@ -85,6 +85,13 @@ class HockeyPlayerDraftSpotLocator extends HandLocator<PlayerColor, MaterialType
     }
     return item.location.x!
   }
+
+  getHoverTransform(item: MaterialItem, context: ItemContext) {
+    const hoverTransform = super.getHoverTransform(item, context)
+    hoverTransform.pop()
+    hoverTransform.push(`translate(${context.rules.players.length < 4 ? -5 : 0}em, -7em)`, 'scale(3)')
+    return hoverTransform
+  }
 }
 
 class HockeyPlayerDraftSpotDescription extends DropAreaDescription {

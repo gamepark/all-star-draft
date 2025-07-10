@@ -16,6 +16,10 @@ class TieBreakerCardSpotLocator extends Locator<PlayerColor, MaterialType, Locat
         return { x: 30, y: 0 }
     }
   }
+
+  getHoverTransform() {
+    return ['translateZ(10em)', 'scale(3)']
+  }
 }
 
 export const tieBreakerCardSpotLocator = new TieBreakerCardSpotLocator()

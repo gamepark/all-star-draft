@@ -77,6 +77,13 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     }
     return item.location.x!
   }
+
+  getHoverTransform(item: MaterialItem, context: ItemContext) {
+    const hoverTransform = super.getHoverTransform(item, context)
+    hoverTransform.pop()
+    hoverTransform.push('translateY(-7em)', 'scale(3)')
+    return hoverTransform
+  }
 }
 
 class PlayerHockeyPlayerHandSpotDescription extends DropAreaDescription {
