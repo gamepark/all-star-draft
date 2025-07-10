@@ -1,6 +1,7 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
+import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { HandLocator, getRelativePlayerIndex, MaterialContext, ItemContext, DropAreaDescription } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { orderBy } from 'lodash'
@@ -36,12 +37,12 @@ const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
     { x: 69, y: -24 }
   ],
   3: [
-    { x: 30, y: 13 },
+    { x: 20, y: 13 },
     { x: -60, y: -39 },
     { x: 0, y: -39 }
   ],
   2: [
-    { x: 24, y: 5 },
+    { x: 24, y: 2 },
     { x: -24, y: -39 }
   ]
 }
@@ -68,6 +69,10 @@ class HockeyPlayerDraftSpotLocator extends HandLocator<PlayerColor, MaterialType
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
     const coordArray = coordinatesMap[playerCount]
+    if (context.rules.game.rule?.id === RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers) {
+      const { x, y } = coordArray[index]
+      return { x, y: y! + 4 }
+    }
     return coordArray[index]
   }
 

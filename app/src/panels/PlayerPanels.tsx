@@ -29,18 +29,48 @@ export const PlayerPanels = () => {
           key={player.id}
           player={player}
           color={playerColorCode[player.id]}
-          css={[panelBackground(playerColorCode[player.id]), panelPosition(index)]}
+          css={[panelCss, panelBackground(playerColorCode[player.id]), panelPosition(index, players.length)]}
         />
       ))}
     </>,
     root
   )
 }
-const panelPosition = (index: number) => css`
+
+const panelCss = css`
   position: absolute;
+  width: 28em;
+`
+
+const panelPosition = (index: number, players: number) => {
+  switch (players) {
+    case 2:
+      return index === 0 ? bottomRight : topRight
+    case 3:
+      return index === 0 ? bottomRight : index === 1 ? topLeft : topRight
+    default:
+      return defaultPanelPosition(index)
+  }
+}
+
+const topRight = css`
+  right: 1em;
+  top: 9em;
+`
+
+const bottomRight = css`
+  right: 1em;
+  bottom: 1em;
+`
+
+const topLeft = css`
+  left: 1em;
+  top: 9em;
+`
+
+const defaultPanelPosition = (index: number) => css`
   right: 1em;
   top: ${8.5 + index * 16}em;
-  width: 28em;
 `
 
 const panelBackground = (color: string) => css`

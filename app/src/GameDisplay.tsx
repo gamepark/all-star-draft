@@ -9,18 +9,12 @@ type GameDisplayProps = {
 
 export function GameDisplay({ players }: GameDisplayProps) {
   const margin = { top: 7, left: 0, right: players > 3 ? 30 : 0, bottom: 0 }
-  const tableSize = players > 3 ? { xMin: -75, xMax: 75, yMin: -46, yMax: 46 } : { xMin: -75, xMax: 40, yMin: -46, yMax: 12 }
+  const xMax = players === 2 ? 40 : players === 3 ? 48 : 75
+  const yMax = players === 2 ? 12 : players === 3 ? 20 : 46
   return (
     <>
-      <GameTable
-        xMin={tableSize.xMin}
-        xMax={tableSize.xMax}
-        yMin={tableSize.yMin}
-        yMax={tableSize.yMax}
-        margin={margin}
-        css={process.env.NODE_ENV === 'development' && tableBorder}
-      >
-        <GameTableNavigation />
+      <GameTable xMin={-75} xMax={xMax} yMin={-46} yMax={yMax} margin={margin} css={process.env.NODE_ENV === 'development' && tableBorder}>
+        <GameTableNavigation css={navigationCss(players)} />
         <PlayerPanels />
       </GameTable>
     </>
@@ -29,4 +23,8 @@ export function GameDisplay({ players }: GameDisplayProps) {
 
 const tableBorder = css`
   border: 1px solid white;
+`
+
+const navigationCss = (players: number) => css`
+  top: ${players === 2 ? 10 : 20}em;
 `

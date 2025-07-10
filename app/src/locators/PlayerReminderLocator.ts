@@ -27,12 +27,12 @@ const coordinatesMap: Record<number, Partial<Coordinates>[]> = {
     { x: 63, y: -26 }
   ],
   3: [
-    { x: 0, y: 17 },
+    { x: -10, y: 17 },
     { x: -36, y: -39 },
     { x: 26, y: -39 }
   ],
   2: [
-    { x: 0, y: 9 },
+    { x: -10, y: 9 },
     { x: 0, y: -42 }
   ]
 }
