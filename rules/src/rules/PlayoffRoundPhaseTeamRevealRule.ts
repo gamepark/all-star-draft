@@ -1,4 +1,4 @@
-import { PlayerTurnRule, RuleMove, RuleStep, PlayMoveContext, MaterialMove } from '@gamepark/rules-api'
+import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
@@ -7,7 +7,7 @@ import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
 export class PlayoffRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const activePlayers = this.remind<PlayerColor[]>(Memorize.ActivePlayers)
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     moves.push(

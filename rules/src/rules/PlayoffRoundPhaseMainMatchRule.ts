@@ -1,14 +1,14 @@
-import { RuleMove, RuleStep, PlayMoveContext, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { LocationType } from '../material/LocationType'
-import { MaterialType } from '../material/MaterialType'
-import { PlayerColor } from '../PlayerColor'
-import { Memorize } from '../Memorize'
-import { getWeakestPlayersFromTeams } from '../material/MatchRanking'
+import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
+import { LocationType } from '../material/LocationType'
+import { getWeakestPlayersFromTeams } from '../material/MatchRanking'
+import { MaterialType } from '../material/MaterialType'
+import { Memorize } from '../Memorize'
+import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
 export class PlayoffRoundPhaseMainMatchRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const activePlayers = this.remind<PlayerColor[]>(Memorize.ActivePlayers)
     const lastPlayers = getWeakestPlayersFromTeams(
       activePlayers.map((player) => ({

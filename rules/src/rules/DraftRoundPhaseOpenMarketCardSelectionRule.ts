@@ -1,12 +1,12 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
-import { Memorize } from '../Memorize'
 
 export class DraftRoundPhaseOpenMarketCardSelectionRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerOpenMarketDraftLocator).getItems().length === 0)
       return this.material(MaterialType.HockeyPlayerCard)
         .location(LocationType.HockeyPlayerDeckSpot)

@@ -1,13 +1,13 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { PlayerColor } from '../PlayerColor'
-import { RuleId } from './RuleId'
 import { Memorize } from '../Memorize'
+import { PlayerColor } from '../PlayerColor'
 import { TwoPlayersMode } from '../TwoPlayersMode'
+import { RuleId } from './RuleId'
 
 export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const hasOneCardLeft = this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).length === this.game.players.length
     if (hasOneCardLeft)
       return [

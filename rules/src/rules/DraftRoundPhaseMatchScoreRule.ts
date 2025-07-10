@@ -1,16 +1,16 @@
-import { MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
-import { LocationType } from '../material/LocationType'
-import { MaterialType } from '../material/MaterialType'
-import { PlayerColor } from '../PlayerColor'
+import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { BusTokenId, busTokenValue, KnownBusTokenId } from '../material/BusToken'
-import { getPlayersNewFans, MatchState } from '../material/MatchRanking'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
-import { RuleId } from './RuleId'
-import { Memorize } from '../Memorize'
+import { LocationType } from '../material/LocationType'
+import { getPlayersNewFans, MatchState } from '../material/MatchRanking'
 import { MaterialRotation } from '../material/MaterialRotation'
+import { MaterialType } from '../material/MaterialType'
+import { Memorize } from '../Memorize'
+import { PlayerColor } from '../PlayerColor'
+import { RuleId } from './RuleId'
 
 export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const arenaIndex = busTokenValue(
       this.material(MaterialType.BusToken).location(LocationType.BusTokenSpotBelowBusStationBoard).getItem<KnownBusTokenId>()!.id.front
     )

@@ -1,16 +1,16 @@
-import { MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
-import { LocationType } from '../material/LocationType'
-import { MaterialType } from '../material/MaterialType'
-import { PlayerColor } from '../PlayerColor'
+import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { ArenaCard, arenaIrregularAttribute } from '../material/ArenaCard'
 import { busTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
-import { Memorize } from '../Memorize'
+import { LocationType } from '../material/LocationType'
+import { MaterialType } from '../material/MaterialType'
 import { getTeamStrength } from '../material/TeamStrength'
+import { Memorize } from '../Memorize'
+import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
-import { ArenaCard, arenaIrregularAttribute } from '../material/ArenaCard'
 
 export class DraftRoundPhaseMatchMoveToStadiumRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const playerCount = this.game.players.length
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.game.players.flatMap((player) => {
       const arenaIndex = busTokenValue(

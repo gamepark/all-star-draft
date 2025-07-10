@@ -1,14 +1,14 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
+import { busTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { LocationType } from '../material/LocationType'
+import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
+import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
-import { Memorize } from '../Memorize'
-import { busTokenValue, KnownBusTokenId } from '../material/BusToken'
-import { MaterialRotation } from '../material/MaterialRotation'
 
 export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return this.game.players.map((player) =>
       this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenReserveSpot).player(player).deck().shuffle()
     )

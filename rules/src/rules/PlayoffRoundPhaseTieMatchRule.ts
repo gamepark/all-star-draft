@@ -1,15 +1,15 @@
-import { RuleMove, RuleStep, PlayMoveContext, MaterialMove, SimultaneousRule, isMoveItemType, ItemMove } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
+import { difference, intersection } from 'lodash'
 import { LocationType } from '../material/LocationType'
+import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
+import { playoffFanPoint } from '../material/PlayoffPointCard'
 import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
-import { difference, intersection } from 'lodash'
-import { playoffFanPoint } from '../material/PlayoffPointCard'
-import { MaterialRotation } from '../material/MaterialRotation'
 import { RuleId } from './RuleId'
 
 export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(_move: RuleMove<PlayerColor>, _previousRule?: RuleStep, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     const currentLowestPosition = this.remind<PlayerColor[]>(Memorize.ActivePlayers).length
     const lastPlayers = this.remind<PlayerColor[]>(Memorize.LastPlayers)
