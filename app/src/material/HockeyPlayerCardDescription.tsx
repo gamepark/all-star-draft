@@ -298,12 +298,11 @@ function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolea
         RuleId.DraftRoundPhaseTeamExchange,
         RuleId.PlayoffRoundSetupPhase,
         RuleId.PlayoffRoundSetupPhase,
-        RuleId.PlayoffRoundPhaseInterMatchAddPlayers,
+        RuleId.PlayoffSubstitutePlayers,
         RuleId.PlayoffRoundPhaseTieMatch,
         RuleId.DraftRoundPhaseDiscardCardOverflow
       ].includes(ruleId)) ||
-    (locationType === LocationType.PlayerHockeyPlayerTeamSpot &&
-      [RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers].includes(ruleId)) ||
+    (locationType === LocationType.PlayerHockeyPlayerTeamSpot && [RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffSubstitutePlayers].includes(ruleId)) ||
     (locationType === LocationType.HockeyPlayerOpenMarketDraftLocator && ruleId === RuleId.DraftRoundPhaseOpenMarketCardSelection)
   )
 }

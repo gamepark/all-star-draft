@@ -1,24 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { ComponentType } from 'react'
-import { DraftRoundSetupDrawCardsHeader } from './DraftRoundSetupDrawCardsHeader'
-import { DraftRoundPhaseCardSelectionHeader } from './DraftRoundPhaseCardSelectionHeader'
-import { DraftRoundPhaseTeamExchangeHeader } from './DraftRoundPhaseTeamExchangeHeader'
-import { DraftRoundPhaseTeamCreationHeader } from './DraftRoundPhaseTeamCreationHeader'
+import { SimultaneousRuleHeaderComponent } from '../components/headers/SimultaneousRuleHeaderComponent'
 import { DraftRoundPhaseBusDispatchHeader } from './DraftRoundPhaseBusDispatchHeader'
-import { DraftRoundTeamRevealHeader } from './DraftRoundTeamRevealHeader'
-import { DraftRoundPhaseMatchScoreHeader } from './DraftRoundPhaseMatchScoreHeader'
-import { DraftRoundPhaseMatchMoveToStadiumHeader } from './DraftRoundPhaseMatchMoveToStadiumHeader'
-import { PlayoffRoundSetupPhaseHeader } from './PlayoffRoundSetupPhaseHeader'
-import { PlayoffRoundPhaseMainMatchHeader } from './PlayoffRoundPhaseMainMatchHeader'
-import { PlayoffRoundPhaseTeamRevealHeader } from './PlayoffRoundPhaseTeamRevealHeader'
-import { PlayoffRoundPhaseScoreHeader } from './PlayoffRoundPhaseScoreHeader'
-import { PlayoffRoundPhaseTieMatchHeader } from './PlayoffRoundPhaseTieMatchHeader'
-import { PlayoffRoundPhaseInterMatchAddPlayerHeader } from './PlayoffRoundPhaseInterMatchAddPlayerHeader'
-import { PlayoffRoundPhaseInterMatchDiscardPlayerHeader } from './PlayoffRoundPhaseInterMatchDiscardPlayerHeader'
-import { DraftRoundPhaseOpenMarketCardSelectionHeader } from './DraftRoundPhaseOpenMarketCardSelectionHeader'
-import { DraftRoundPhaseDiscardCardOverflowHeader } from './DraftRoundPhaseDiscardCardOverflowHeader'
+import { DraftRoundPhaseCardSelectionHeader } from './DraftRoundPhaseCardSelectionHeader'
 import { DraftRoundPhaseClashCardSelectionForOpponentHeader } from './DraftRoundPhaseClashCardSelectionForOpponentHeader'
+import { DraftRoundPhaseDiscardCardOverflowHeader } from './DraftRoundPhaseDiscardCardOverflowHeader'
+import { DraftRoundPhaseMatchMoveToStadiumHeader } from './DraftRoundPhaseMatchMoveToStadiumHeader'
+import { DraftRoundPhaseMatchScoreHeader } from './DraftRoundPhaseMatchScoreHeader'
+import { DraftRoundPhaseOpenMarketCardSelectionHeader } from './DraftRoundPhaseOpenMarketCardSelectionHeader'
+import { DraftRoundPhaseTeamCreationHeader } from './DraftRoundPhaseTeamCreationHeader'
+import { DraftRoundPhaseTeamExchangeHeader } from './DraftRoundPhaseTeamExchangeHeader'
+import { DraftRoundSetupDrawCardsHeader } from './DraftRoundSetupDrawCardsHeader'
+import { DraftRoundTeamRevealHeader } from './DraftRoundTeamRevealHeader'
+import { PlayoffRoundPhaseMainMatchHeader } from './PlayoffRoundPhaseMainMatchHeader'
+import { PlayoffRoundPhaseScoreHeader } from './PlayoffRoundPhaseScoreHeader'
+import { PlayoffRoundPhaseTeamRevealHeader } from './PlayoffRoundPhaseTeamRevealHeader'
+import { PlayoffRoundPhaseTieMatchHeader } from './PlayoffRoundPhaseTieMatchHeader'
+import { PlayoffRoundSetupPhaseHeader } from './PlayoffRoundSetupPhaseHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsHeader,
@@ -32,8 +31,7 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupPhaseHeader,
   [RuleId.PlayoffRoundPhaseTeamReveal]: PlayoffRoundPhaseTeamRevealHeader,
   [RuleId.PlayoffRoundPhaseMainMatch]: PlayoffRoundPhaseMainMatchHeader,
-  [RuleId.PlayoffRoundPhaseInterMatchAddPlayers]: PlayoffRoundPhaseInterMatchAddPlayerHeader,
-  [RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers]: PlayoffRoundPhaseInterMatchDiscardPlayerHeader,
+  [RuleId.PlayoffSubstitutePlayers]: () => <SimultaneousRuleHeaderComponent translationGroupKey="header.playoff.substitute" pass />,
   [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchHeader,
   [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreHeader,
   [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionHeader,

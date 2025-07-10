@@ -69,7 +69,7 @@ class HockeyPlayerDraftSpotLocator extends HandLocator<PlayerColor, MaterialType
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
     const coordArray = coordinatesMap[playerCount]
-    if (context.rules.game.rule?.id === RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers) {
+    if (context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
       const { x, y } = coordArray[index]
       return { x, y: y! + 4 }
     }

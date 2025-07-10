@@ -10,31 +10,30 @@ import {
   StackingStrategy,
   TimeLimit
 } from '@gamepark/rules-api'
+import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
+import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthersWhenRotatedFaceDown'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { PlayerColor } from './PlayerColor'
-import { DraftRoundSetupDrawCardsRule } from './rules/DraftRoundSetupDrawCardsRule'
-import { RuleId } from './rules/RuleId'
-import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
-import { DraftRoundPhaseTeamExchangeRule } from './rules/DraftRoundPhaseTeamExchangeRule'
-import { DraftRoundPhaseTeamCreationRule } from './rules/DraftRoundPhaseTeamCreationRule'
-import { DraftRoundPhaseBusDispatchRule } from './rules/DraftRoundPhaseBusDispatchRule'
-import { DraftRoundPhaseTeamRevealRule } from './rules/DraftRoundPhaseTeamRevealRule'
-import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScoreRule'
-import { DraftRoundPhaseMatchMoveToStadiumRule } from './rules/DraftRoundPhaseMatchMoveToStadiumRule'
-import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthersWhenRotatedFaceDown'
-import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
-import { PlayoffRoundSetupRule } from './rules/PlayoffRoundSetupRule'
-import { PlayoffRoundPhaseTeamRevealRule } from './rules/PlayoffRoundPhaseTeamRevealRule'
-import { PlayoffRoundPhaseMainMatchRule } from './rules/PlayoffRoundPhaseMainMatchRule'
-import { PlayoffRoundPhaseTieMatchRule } from './rules/PlayoffRoundPhaseTieMatchRule'
-import { PlayoffRoundPhaseScoreRule } from './rules/PlayoffRoundPhaseScoreRule'
-import { PlayoffRoundPhaseInterMatchDiscardPlayersRule } from './rules/PlayoffRoundPhaseInterMatchDiscardPlayersRule'
-import { PlayoffRoundPhaseInterMatchAddPlayersRule } from './rules/PlayoffRoundPhaseInterMatchAddPlayersRule'
-import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
-import { DraftRoundPhaseDiscardCardOverflowRule } from './rules/DraftRoundPhaseDiscardCardOverflowRule'
-import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
 import { Memorize } from './Memorize'
+import { PlayerColor } from './PlayerColor'
+import { DraftRoundPhaseBusDispatchRule } from './rules/DraftRoundPhaseBusDispatchRule'
+import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
+import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
+import { DraftRoundPhaseDiscardCardOverflowRule } from './rules/DraftRoundPhaseDiscardCardOverflowRule'
+import { DraftRoundPhaseMatchMoveToStadiumRule } from './rules/DraftRoundPhaseMatchMoveToStadiumRule'
+import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScoreRule'
+import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
+import { DraftRoundPhaseTeamCreationRule } from './rules/DraftRoundPhaseTeamCreationRule'
+import { DraftRoundPhaseTeamExchangeRule } from './rules/DraftRoundPhaseTeamExchangeRule'
+import { DraftRoundPhaseTeamRevealRule } from './rules/DraftRoundPhaseTeamRevealRule'
+import { DraftRoundSetupDrawCardsRule } from './rules/DraftRoundSetupDrawCardsRule'
+import { PlayoffRoundPhaseMainMatchRule } from './rules/PlayoffRoundPhaseMainMatchRule'
+import { PlayoffRoundPhaseScoreRule } from './rules/PlayoffRoundPhaseScoreRule'
+import { PlayoffRoundPhaseTeamRevealRule } from './rules/PlayoffRoundPhaseTeamRevealRule'
+import { PlayoffRoundPhaseTieMatchRule } from './rules/PlayoffRoundPhaseTieMatchRule'
+import { PlayoffRoundSetupRule } from './rules/PlayoffRoundSetupRule'
+import { PlayoffSubstitutePlayersRule } from './rules/PlayoffSubstitutePlayersRule'
+import { RuleId } from './rules/RuleId'
 
 /**
  * This class implements the rules of the board game.
@@ -73,8 +72,7 @@ export class AllStarDraftRules
     [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupRule,
     [RuleId.PlayoffRoundPhaseTeamReveal]: PlayoffRoundPhaseTeamRevealRule,
     [RuleId.PlayoffRoundPhaseMainMatch]: PlayoffRoundPhaseMainMatchRule,
-    [RuleId.PlayoffRoundPhaseInterMatchAddPlayers]: PlayoffRoundPhaseInterMatchAddPlayersRule,
-    [RuleId.PlayoffRoundPhaseInterMatchDiscardPlayers]: PlayoffRoundPhaseInterMatchDiscardPlayersRule,
+    [RuleId.PlayoffSubstitutePlayers]: PlayoffSubstitutePlayersRule,
     [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchRule,
     [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule,
     [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionRule,
