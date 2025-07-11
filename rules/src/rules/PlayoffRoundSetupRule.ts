@@ -1,10 +1,10 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, RuleMove, RuleStep, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
-import { MaterialType } from '../material/MaterialType'
-import { RuleId } from './RuleId'
-import { PlayerColor } from '../PlayerColor'
 import { MaterialRotation } from '../material/MaterialRotation'
+import { MaterialType } from '../material/MaterialType'
 import { Memorize } from '../Memorize'
+import { PlayerColor } from '../PlayerColor'
+import { RuleId } from './RuleId'
 
 export class PlayoffRoundSetupRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   public onRuleStart(
@@ -14,6 +14,7 @@ export class PlayoffRoundSetupRule extends SimultaneousRule<PlayerColor, Materia
   ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     this.memorize(Memorize.ActivePlayers, this.game.players)
     return [
+      this.material(MaterialType.BusToken).deleteItemsAtOnce(),
       this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).moveItemsAtOnce({
         type: LocationType.ArenaDiscardSpot
       }),
