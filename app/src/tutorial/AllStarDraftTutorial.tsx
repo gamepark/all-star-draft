@@ -840,8 +840,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       popup: {
         text: () => <Trans defaults="tuto.playoffsLoop" components={{ bold: <strong /> }} />
-      },
-      move: {}
+      }
     },
     {
       popup: {
