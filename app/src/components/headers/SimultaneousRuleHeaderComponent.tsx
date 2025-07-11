@@ -40,9 +40,9 @@ export const SimultaneousRuleHeaderComponent: FC<SimultaneousRuleHeaderComponent
         }
       />
     )
-  } else if (activePlayers.length > 1) {
-    return <Trans defaults={translationGroupKey + '.players'} values={{ ...interpolations }} />
-  } else {
+  } else if (activePlayers.length === 1) {
     return <Trans defaults={translationGroupKey + '.player'} values={{ ...interpolations, name: player }} />
+  } else {
+    return <Trans defaults={translationGroupKey + '.players'} values={{ ...interpolations }} />
   }
 }
