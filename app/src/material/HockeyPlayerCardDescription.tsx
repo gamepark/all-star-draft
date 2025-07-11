@@ -322,6 +322,13 @@ function moveTranslationKey(item: MaterialItem<PlayerColor, LocationType>, ruleI
       return 'card.play'
     }
   }
+  if (item.location.type === LocationType.PlayerHockeyPlayerTeamSpot) {
+    if (ruleId === RuleId.PlayoffSubstitutePlayers) {
+      return 'card.discard'
+    } else {
+      return 'card.substitute'
+    }
+  }
   return 'card.take'
 }
 
