@@ -34,6 +34,7 @@ import { PlayoffRoundPhaseTieMatchRule } from './rules/PlayoffRoundPhaseTieMatch
 import { PlayoffRoundSetupRule } from './rules/PlayoffRoundSetupRule'
 import { PlayoffSubstitutePlayersRule } from './rules/PlayoffSubstitutePlayersRule'
 import { RuleId } from './rules/RuleId'
+import { MultipleListStrategy } from './strategy/MultipleListStrategy'
 
 /**
  * This class implements the rules of the board game.
@@ -104,7 +105,8 @@ export class AllStarDraftRules
     },
     [MaterialType.BusToken]: {
       [LocationType.BusTokenSpotBelowBusStationBoard]: new StackingStrategy(),
-      [LocationType.PlayerBusTokenReserveSpot]: new FillGapStrategy()
+      [LocationType.PlayerBusTokenReserveSpot]: new FillGapStrategy(),
+      [LocationType.BusSpotOnArenaCardLadder]: new MultipleListStrategy()
     },
     [MaterialType.HockeyPlayerCard]: {
       [LocationType.HockeyPlayerDeckSpot]: new PositiveSequenceStrategy(),

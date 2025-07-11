@@ -8,14 +8,10 @@ export type MatchState = {
   teams: { player: PlayerColor; team: HockeyPlayerCard[] }[]
 }
 
-export function getPlayersNewFans(match: MatchState): Partial<Record<PlayerColor, number>> {
-  const newFans: Partial<Record<PlayerColor, number>> = {}
+export function getPlayersNewFans(match: MatchState): { player: PlayerColor; fans: number; rank: number }[] {
   const arenaFanPoints = arenasFanPoints[match.arena]
   const ranking = getPlayerRanking(match.teams, arenaIrregularAttribute[match.arena])
-  for (const player of Object.keys(ranking) as unknown as PlayerColor[]) {
-    newFans[player] = arenaFanPoints[(ranking[player] ?? 1) - 1]
-  }
-  return newFans
+  return Object.entries(ranking).map(([player, rank]) => ({ player: parseInt(player) as PlayerColor, fans: arenaFanPoints[rank - 1], rank: rank }))
 }
 
 export function getPlayerRanking(

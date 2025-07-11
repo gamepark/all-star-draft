@@ -1,11 +1,11 @@
 import { MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { minBy } from 'lodash'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { RuleId } from './RuleId'
-import { PlayerColor } from '../PlayerColor'
 import { Memorize } from '../Memorize'
+import { PlayerColor } from '../PlayerColor'
 import { TwoPlayersMode } from '../TwoPlayersMode'
-import { minBy } from 'lodash'
+import { RuleId } from './RuleId'
 
 export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   public onRuleStart(

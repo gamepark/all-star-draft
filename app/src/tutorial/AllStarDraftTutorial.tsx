@@ -1,25 +1,25 @@
+import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
+import { busTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
+import { getHockeyPlayerCardSymbol, HockeyPlayerCard, HockeyPlayerCardSymbolsType } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
+import { ClotheType, EyebrowType, EyeType, FacialHairType, MouthType, TopType } from '@gamepark/avataaars'
 import SkinColor from '@gamepark/avataaars/dist/avatar/SkinColor'
 import HairColorName from '@gamepark/avataaars/dist/avatar/top/HairColorName'
-import { TopType, FacialHairType, ClotheType, EyeType, EyebrowType, MouthType } from '@gamepark/avataaars'
 import { MaterialTutorial, Picture, TutorialStep } from '@gamepark/react-game'
+import { isMoveItemType, isMoveItemTypeAtOnce, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { SupportersIconComponent } from '../components/symbols/SupportersIconComponent'
-import { AllStarDraftTutorialSetup, me, opponent1, opponent2 } from './AllStarDraftTutorialSetup'
-import { getHockeyPlayerCardSymbol, HockeyPlayerCard, HockeyPlayerCardSymbolsType } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
-import { MaterialMove, MaterialGame, isMoveItemType, isMoveItemTypeAtOnce } from '@gamepark/rules-api'
-import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
-import { busTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
-import { busStationBoardDescription } from '../material/BusStationBoardDescription'
-import { tieBreakerCardDrescription } from '../material/TieBreakerCardDescription'
-import { playoffPointCardDescription } from '../material/PlayoffPointCardDescription'
-import whistle from '../images/Symbols/ArenaWhistle.png'
 import allGear from '../images/Symbols/ArenaAllGear.png'
+import whistle from '../images/Symbols/ArenaWhistle.png'
+import { busStationBoardDescription } from '../material/BusStationBoardDescription'
+import { playoffPointCardDescription } from '../material/PlayoffPointCardDescription'
+import { tieBreakerCardDrescription } from '../material/TieBreakerCardDescription'
+import { AllStarDraftTutorialSetup, me, opponent1, opponent2 } from './AllStarDraftTutorialSetup'
 
 export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, MaterialType, LocationType> {
-  version = 1
+  version = 2
   options = {
     players: [
       {
@@ -276,7 +276,9 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
         text: () => <Trans defaults="tuto.busExplanation" components={{ bold: <strong /> }} />,
         position: { x: 30 }
       },
-      move: { filter: (move) => isMoveItemType<number, MaterialType, LocationType>(MaterialType.BusToken)(move) },
+      move: {
+        filter: (move) => isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move)
+      },
       focus: (_game, _context) => ({
         materials: [
           this.material(_game, MaterialType.BusToken)
@@ -292,7 +294,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       move: {
         player: opponent2,
         interrupt: (move) =>
-          isMoveItemType<number, MaterialType, LocationType>(MaterialType.BusToken)(move) && move.location.type === LocationType.PlayerBusTokenReserveSpot
+          isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) && move.location.type === LocationType.BusSpotOnArenaCardLadder
       }
     },
     {
