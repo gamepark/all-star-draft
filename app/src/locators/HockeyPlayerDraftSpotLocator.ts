@@ -6,6 +6,7 @@ import { HandLocator, getRelativePlayerIndex, MaterialContext, ItemContext, Drop
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { orderBy } from 'lodash'
 import { PlayerDraftHelp } from '../components/help/PlayerDraftHelp'
+import { hockeyPlayerCardDescription } from '../material/HockeyPlayerCardDescription'
 
 const baseAngleMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
@@ -98,6 +99,7 @@ class HockeyPlayerDraftSpotDescription extends DropAreaDescription {
   help = PlayerDraftHelp
   height = 9
   width = 16
+  borderRadius = hockeyPlayerCardDescription.borderRadius
 }
 
 export const hockeyPlayerDraftSpotLocator = new HockeyPlayerDraftSpotLocator()
