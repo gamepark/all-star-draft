@@ -1,8 +1,8 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { ListLocator, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location } from '@gamepark/rules-api'
+import { ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 
 class CurrentArenasRowSpotLocator extends ListLocator<PlayerColor, MaterialType, LocationType> {
   getGap(_location: Location<PlayerColor, LocationType>, _context: MaterialContext<PlayerColor, MaterialType, LocationType>): Partial<Coordinates> {
@@ -22,8 +22,8 @@ class CurrentArenasRowSpotLocator extends ListLocator<PlayerColor, MaterialType,
     }
   }
 
-  getHoverTransform() {
-    return ['translateZ(10em)', 'scale(3)']
+  getHoverTransform(item: MaterialItem, context: ItemContext) {
+    return ['translateZ(10em)', `translateY(${item.location.x === 2 && context.rules.players.length < 4 ? -6 : 0}em)`, 'scale(3)']
   }
 }
 
