@@ -4,6 +4,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { Locator } from '@gamepark/react-game'
 import { arenaDeckSpotLocator } from './ArenaDeckSpotLocator'
 import { arenaDiscardSpotLocator } from './ArenaDiscardSpotLocator'
+import { busSpotOnArenaCardLadderLocator } from './BusSpotOnArenaCardLadderLocator'
 import { busStationBoardSpotLocator } from './BusStationBoardSpotLocatorf'
 import { busTokenSpotBelowBusStationBoardLocator } from './BusTokenSpotBelowBusStationBoardLocator'
 import { currentArenasRowSpotLocator } from './CurrentArenasRowSpotLocator'
@@ -35,5 +36,6 @@ export const Locators: Partial<Record<LocationType, Locator<PlayerColor, Materia
   [LocationType.PlayoffPointCardSpot]: playoffPointCardSpotLocator,
   [LocationType.TieBreakerCardSpot]: tieBreakerCardSpotLocator,
   [LocationType.HockeyPlayerOpenMarketDraftLocator]: hockeyPlayerOpenMarketDraftLocator,
-  [LocationType.PlayerReminderSpot]: playerReminderLocator
+  [LocationType.PlayerReminderSpot]: playerReminderLocator,
+  [LocationType.BusSpotOnArenaCardLadder]: busSpotOnArenaCardLadderLocator
 }

@@ -8,12 +8,6 @@ import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
 export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return this.game.players.map((player) =>
-      this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenReserveSpot).player(player).deck().shuffle()
-    )
-  }
-
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     return Array(this.remind(Memorize.RoundNumber))
       .fill(1)

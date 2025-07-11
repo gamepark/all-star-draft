@@ -14,9 +14,10 @@ export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, M
     const arenaIndex = busTokenValue(
       this.material(MaterialType.BusToken).location(LocationType.BusTokenSpotBelowBusStationBoard).getItem<KnownBusTokenId>()!.id.front
     )
-    const currentArena = this.material(MaterialType.ArenaCard)
-      .location((location) => location.x === arenaIndex - 1 && location.type === LocationType.CurrentArenasRowSpot)
-      .getItem()
+    const currentArenaMaterial = this.material(MaterialType.ArenaCard).location(
+      (location) => location.x === arenaIndex - 1 && location.type === LocationType.CurrentArenasRowSpot
+    )
+    const currentArena = currentArenaMaterial.getItem()
     const currentTeams: {
       player: PlayerColor
       team: HockeyPlayerCard[]
@@ -26,11 +27,30 @@ export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, M
       teams: currentTeams
     }
     const ranking = getPlayersNewFans(match)
-    this.game.players.forEach((player) => this.memorize<number>(Memorize.Score, (score) => score + (ranking[player] ?? 0), player))
-    const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.material(MaterialType.BusToken)
-      .location(LocationType.BusTokenSpotBelowBusStationBoard)
-      .moveItems((item) => ({ type: LocationType.PlayerBusTokenReserveSpot, player: (item.id as BusTokenId).back, rotation: MaterialRotation.FaceDown }))
+    this.game.players.forEach((player) =>
+      this.memorize<number>(Memorize.Score, (score) => score + (ranking.find((rank) => rank.player === player)?.fans ?? 0), player)
+    )
+    const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = ranking
+      .sort((a, b) => a.rank - b.rank)
+      .map((rank) => {
+        const playerBus = this.material(MaterialType.BusToken).location(LocationType.BusTokenSpotBelowBusStationBoard)
+        return playerBus
+          .id<BusTokenId>((id) => id.back === rank.player)
+          .moveItem({
+            type: LocationType.BusSpotOnArenaCardLadder,
+            id: rank.rank,
+            parent: currentArenaMaterial.getIndex()
+          })
+      })
+    moves.push(
+      ...this.material(MaterialType.BusToken)
+        .location(LocationType.BusTokenSpotBelowBusStationBoard)
+        .moveItems((item) => ({ type: LocationType.PlayerBusTokenReserveSpot, player: (item.id as BusTokenId).back, rotation: MaterialRotation.FaceDown }))
+    )
     const isLastBusToken = this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenTeamSpot).getItems().length === 0
+    if (isLastBusToken) {
+      moves.push(...this.game.players.map((player) => this.material(MaterialType.BusToken).player(player).shuffle()))
+    }
     moves.push(this.startSimultaneousRule(isLastBusToken ? RuleId.DraftRoundSetupDrawCards : RuleId.DraftRoundPhaseMatchMoveToStadium))
     return moves
   }

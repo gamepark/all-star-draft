@@ -50,15 +50,18 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
       if (this.game.players.length === 2 && this.remind<TwoPlayersMode>(Memorize.GameMode) === TwoPlayersMode.Clash) {
         return [this.startSimultaneousRule(RuleId.DraftRoundPhaseClashCardSelectionForOpponent)]
       }
-      const moveCards = this.game.players.map((player) => {
+      const moveCards = this.game.players.flatMap((player) => {
         const nextPlayer =
           this.remind(Memorize.RoundNumber) % 2 === 1
             ? this.game.players[(this.game.players.indexOf(player) + 1) % this.game.players.length]
             : this.game.players[(this.game.players.indexOf(player) + this.game.players.length - 1) % this.game.players.length]
-        return draftCards.player(player).moveItemsAtOnce({
-          type: LocationType.HockeyPlayerDraftSpot,
-          player: nextPlayer
-        })
+        return [
+          draftCards.player(player).moveItemsAtOnce({
+            type: LocationType.HockeyPlayerDraftSpot,
+            player: nextPlayer
+          }),
+          this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).shuffle()
+        ]
       })
       return [...moveCards, this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseCardSelection)]
     }
