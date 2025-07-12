@@ -15,6 +15,8 @@ import {
   MaterialGame,
   MaterialMove
 } from '@gamepark/rules-api'
+import { MaterialRotation } from '@gamepark/all-star-draft/material/MaterialRotation'
+import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { BusAssignedToTeamComponent } from '../components/log/BusAssignedToTeamComponent'
 import { BusRevealComponent } from '../components/log/BusRevealComponent'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
@@ -30,6 +32,8 @@ import { TeamMemberSentToBenchComponent } from '../components/log/TeamMemberSent
 import { TeamRevealComponent } from '../components/log/TeamRevealComponent'
 import { playerColorCode } from '../panels/PlayerPanels'
 import { CardDiscardedComponent } from '../components/log/CardDiscardedComponent'
+import { PlayerGiveCardComponent } from '../components/log/PlayerGiveCardComponent'
+import { PlayerReceivedCardComponent } from '../components/log/PlayerReceivedCardComponent'
 
 const REVEAL_RULE_IDS = [RuleId.DraftRoundPhaseTeamReveal, RuleId.PlayoffRoundPhaseTeamReveal, RuleId.PlayoffSubstitutePlayers]
 
@@ -68,6 +72,21 @@ export class AllStarDraftHistory
         move.location.type === LocationType.HockeyPlayerDraftSpot
       ) {
         return { Component: CardDiscardedComponent, player: move.location.player }
+      }
+    }
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseClashCardSelectionForOpponent) {
+      if (
+        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+        move.location.type === LocationType.PlayerHockeyPlayerHandSpot
+      ) {
+        if (move.location.rotation === MaterialRotation.FaceDown) {
+          const card = new Material(MaterialType.HockeyPlayerCard, context.game.items[MaterialType.HockeyPlayerCard])
+            .index(move.itemIndex)
+            .getItem<HockeyPlayerCard>()
+          return { Component: PlayerGiveCardComponent, player: card?.location.player }
+        } else {
+          return { Component: PlayerReceivedCardComponent, player: move.location.player }
+        }
       }
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.game.rule?.id === RuleId.PlayoffRoundSetupPhase) {

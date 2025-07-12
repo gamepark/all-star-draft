@@ -11,6 +11,7 @@ import {
   TimeLimit
 } from '@gamepark/rules-api'
 import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
+import { hideCardToEveryoneWhenRotatedFaceDown } from './material/HideCardToEveryoneWhenRotatedFaceDown'
 import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthersWhenRotatedFaceDown'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
@@ -92,7 +93,7 @@ export class AllStarDraftRules
     [MaterialType.HockeyPlayerCard]: {
       [LocationType.HockeyPlayerDeckSpot]: hideItemId,
       [LocationType.HockeyPlayerDraftSpot]: hideItemIdToOthers,
-      [LocationType.PlayerHockeyPlayerHandSpot]: hideItemIdToOthers,
+      [LocationType.PlayerHockeyPlayerHandSpot]: hideCardToEveryoneWhenRotatedFaceDown,
       [LocationType.PlayerHockeyPlayerTeamSpot]: hideCardToOthersWhenRotatedFaceDown
     }
   }
