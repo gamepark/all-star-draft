@@ -10,6 +10,9 @@ import { BusRevealComponent } from '../components/log/BusRevealComponent'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
 import { MatchResultComponent } from '../components/log/MatchResultComponent'
 import { TeamCreatedComponent } from '../components/log/TeamCreatedComponent'
+import { TeamMemberAddedFromBench } from '../components/log/TeamMemberAddedFromBench'
+import { TeamMemberRemovedComponent } from '../components/log/TeamMemberRemovedComponent'
+import { TeamMemberSentToBenchComponent } from '../components/log/TeamMemberSentToBenchComponent'
 import { TeamRevealComponent } from '../components/log/TeamRevealComponent'
 
 export class AllStarDraftHistory
@@ -44,6 +47,16 @@ export class AllStarDraftHistory
         return numberOfCardsInTeam === 5 ? { Component: TeamCreatedComponent, player: move.location.player } : undefined
       }
     }
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamExchange) {
+      if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+        if (move.location.type === LocationType.PlayerHockeyPlayerHandSpot) {
+          return { Component: TeamMemberSentToBenchComponent, player: move.location.player }
+        }
+        if (move.location.type === LocationType.PlayerHockeyPlayerTeamSpot) {
+          return { Component: TeamMemberAddedFromBench, player: move.location.player }
+        }
+      }
+    }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseBusDispatch) {
       if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) && move.location.type === LocationType.PlayerBusTokenTeamSpot) {
         return { Component: BusAssignedToTeamComponent, player: move.location.player }
@@ -66,6 +79,16 @@ export class AllStarDraftHistory
           .index(move.itemIndex)
           .getItem<KnownBusTokenId>()!.id.back
         return { Component: MatchResultComponent, player: player }
+      }
+    }
+    if (context.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
+      if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+        if (move.location.type === LocationType.PlayerHockeyPlayerTeamSpot) {
+          return { Component: TeamMemberAddedFromBench, player: move.location.player }
+        }
+        if (move.location.type === LocationType.HockeyPlayerDraftSpot) {
+          return { Component: TeamMemberRemovedComponent, player: move.location.player }
+        }
       }
     }
     return undefined
