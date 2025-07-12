@@ -29,6 +29,7 @@ import { TeamMemberRemovedComponent } from '../components/log/TeamMemberRemovedC
 import { TeamMemberSentToBenchComponent } from '../components/log/TeamMemberSentToBenchComponent'
 import { TeamRevealComponent } from '../components/log/TeamRevealComponent'
 import { playerColorCode } from '../panels/PlayerPanels'
+import { CardDiscardedComponent } from '../components/log/CardDiscardedComponent'
 
 const REVEAL_RULE_IDS = [RuleId.DraftRoundPhaseTeamReveal, RuleId.PlayoffRoundPhaseTeamReveal, RuleId.PlayoffSubstitutePlayers]
 
@@ -59,6 +60,14 @@ export class AllStarDraftHistory
         move.location.type === LocationType.PlayerHockeyPlayerHandSpot
       ) {
         return { Component: CardDraftedComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
+      }
+    }
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseDiscardCardOverflow) {
+      if (
+        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+        move.location.type === LocationType.HockeyPlayerDraftSpot
+      ) {
+        return { Component: CardDiscardedComponent, player: move.location.player }
       }
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.game.rule?.id === RuleId.PlayoffRoundSetupPhase) {
