@@ -5,6 +5,7 @@ import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
 import { isMoveItemType, isMoveItemTypeAtOnce, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { BusAssignedToTeamComponent } from '../components/log/BusAssignedToTeamComponent'
+import { BusRevealComponent } from '../components/log/BusRevealComponent'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
 import { TeamCreatedComponent } from '../components/log/TeamCreatedComponent'
 import { TeamRevealComponent } from '../components/log/TeamRevealComponent'
@@ -49,6 +50,9 @@ export class AllStarDraftHistory
     if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamReveal) {
       if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
         return { Component: TeamRevealComponent, player: move.location.player }
+      }
+      if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move)) {
+        return { Component: BusRevealComponent, player: move.location.player }
       }
     }
     return undefined
