@@ -4,16 +4,20 @@ import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
-import { isMoveItemType, isMoveItemTypeAtOnce, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { isDeleteItemType, isDeleteItemTypeAtOnce, isMoveItemType, isMoveItemTypeAtOnce, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { BusAssignedToTeamComponent } from '../components/log/BusAssignedToTeamComponent'
 import { BusRevealComponent } from '../components/log/BusRevealComponent'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
 import { MatchResultComponent } from '../components/log/MatchResultComponent'
+import { PlayerEliminatedComponent } from '../components/log/PlayerEliminatedComponent'
+import { PlayOffTicketLostComponent } from '../components/log/PlayOffTicketLostComponent'
 import { TeamCreatedComponent } from '../components/log/TeamCreatedComponent'
 import { TeamMemberAddedFromBench } from '../components/log/TeamMemberAddedFromBench'
 import { TeamMemberRemovedComponent } from '../components/log/TeamMemberRemovedComponent'
 import { TeamMemberSentToBenchComponent } from '../components/log/TeamMemberSentToBenchComponent'
 import { TeamRevealComponent } from '../components/log/TeamRevealComponent'
+
+const REVEAL_RULE_IDS = [RuleId.DraftRoundPhaseTeamReveal, RuleId.PlayoffRoundPhaseTeamReveal, RuleId.PlayoffSubstitutePlayers]
 
 export class AllStarDraftHistory
   implements LogDescription<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor, MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>>
@@ -62,7 +66,7 @@ export class AllStarDraftHistory
         return { Component: BusAssignedToTeamComponent, player: move.location.player }
       }
     }
-    if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamReveal || context.game.rule?.id === RuleId.PlayoffRoundPhaseTeamReveal) {
+    if (REVEAL_RULE_IDS.includes(context.game.rule?.id ?? RuleId.DraftRoundPhaseBusDispatch)) {
       if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
         return { Component: TeamRevealComponent, player: move.location.player }
       }
@@ -89,6 +93,14 @@ export class AllStarDraftHistory
         if (move.location.type === LocationType.HockeyPlayerDraftSpot) {
           return { Component: TeamMemberRemovedComponent, player: move.location.player }
         }
+      }
+    }
+    if (context.game.rule?.id === RuleId.PlayoffRoundPhaseScore) {
+      if (isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.PlayoffTicketToken)(move)) {
+        return { Component: PlayOffTicketLostComponent, player: context.game.items[MaterialType.PlayoffTicketToken]![move.itemIndex].location.player }
+      }
+      if (isDeleteItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+        return { Component: PlayerEliminatedComponent, player: context.game.items[MaterialType.HockeyPlayerCard]![move.indexes[0]].location.player }
       }
     }
     return undefined
