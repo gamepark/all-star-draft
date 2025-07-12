@@ -1,16 +1,17 @@
 /** @jsxImportSource @emotion/react */
-import { AttributeKind, getAttributeKindPriority, TeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
+import { AttributeKind, getAttributeKindPriority, IrregularAttribute, TeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
 import { FC } from 'react'
-import { getSpeciesValueComponent, getSymbolValueComponent } from '../util/valueComponents'
+import { getIrregularAttributeSymbol, getSpeciesValueComponent, getSymbolValueComponent } from '../util/valueComponents'
 import { MedalIconComponent } from '../symbols/MedalIconComponent'
 import { TeamStrengthIconComponent } from '../symbols/TeamStrengthIconComponent'
 
 type TeamStrengthLogComponentProps = {
   teamStrength: TeamStrength
   playerNumber: number
+  arenaIrregularRule?: IrregularAttribute
 }
 
-export const TeamStrengthLogComponent: FC<TeamStrengthLogComponentProps> = ({ teamStrength, playerNumber }) => {
+export const TeamStrengthLogComponent: FC<TeamStrengthLogComponentProps> = ({ teamStrength, playerNumber, arenaIrregularRule }) => {
   const medalNumber = getAttributeKindPriority(playerNumber).reverse().indexOf(teamStrength.attribute.kind) + 1
   const value =
     teamStrength.attribute.kind === AttributeKind.Symbol
@@ -20,9 +21,23 @@ export const TeamStrengthLogComponent: FC<TeamStrengthLogComponentProps> = ({ te
         : teamStrength.attribute.value
   return (
     <>
-      <TeamStrengthIconComponent strength={teamStrength.strength} />
-      <MedalIconComponent medalNumber={medalNumber} height={50} />
-      {value}
+      {arenaIrregularRule === undefined || !teamStrength.irregularsAttributes?.includes(arenaIrregularRule) ? (
+        <>
+          <TeamStrengthIconComponent strength={teamStrength.strength} />
+          <MedalIconComponent medalNumber={medalNumber} height={50} />
+          {value}
+          {(teamStrength.irregularsAttributes?.length ?? 0) > 0 && (
+            <>
+              {', '}
+              {teamStrength.irregularsAttributes?.map((irregularAttribute, index) =>
+                getIrregularAttributeSymbol(irregularAttribute, `player-${playerNumber}-team-irregular-${index}`)
+              )}
+            </>
+          )}
+        </>
+      ) : (
+        getIrregularAttributeSymbol(arenaIrregularRule)
+      )}
     </>
   )
 }

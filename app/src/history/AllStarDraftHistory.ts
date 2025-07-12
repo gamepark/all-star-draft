@@ -1,3 +1,4 @@
+import { KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
@@ -7,6 +8,7 @@ import { isMoveItemType, isMoveItemTypeAtOnce, Material, MaterialGame, MaterialM
 import { BusAssignedToTeamComponent } from '../components/log/BusAssignedToTeamComponent'
 import { BusRevealComponent } from '../components/log/BusRevealComponent'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
+import { MatchResultComponent } from '../components/log/MatchResultComponent'
 import { TeamCreatedComponent } from '../components/log/TeamCreatedComponent'
 import { TeamRevealComponent } from '../components/log/TeamRevealComponent'
 
@@ -53,6 +55,17 @@ export class AllStarDraftHistory
       }
       if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move)) {
         return { Component: BusRevealComponent, player: move.location.player }
+      }
+    }
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseMatchScore) {
+      if (
+        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
+        move.location.type === LocationType.BusSpotOnArenaCardLadder
+      ) {
+        const player = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken, context.game.items[MaterialType.BusToken])
+          .index(move.itemIndex)
+          .getItem<KnownBusTokenId>()!.id.back
+        return { Component: MatchResultComponent, player: player }
       }
     }
     return undefined

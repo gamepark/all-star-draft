@@ -1,5 +1,6 @@
 import { BusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { HockeyPlayerCardSpeciesType, HockeyPlayerCardSymbolsType } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
+import { IrregularAttribute } from '@gamepark/all-star-draft/material/TeamStrength'
 import { Picture } from '@gamepark/react-game'
 import { CSSProperties } from 'react'
 import glove from '../../images/Symbols/GearGlove.png'
@@ -19,6 +20,9 @@ import reindeer from '../../images/Symbols/SpeciesReindeer.png'
 import shark from '../../images/Symbols/SpeciesShark.png'
 import tiger from '../../images/Symbols/SpeciesTiger.png'
 import wolf from '../../images/Symbols/SpeciesWolf.png'
+import allGear from '../../images/Symbols/TeamStrengthAllGear.png'
+import fullHouse from '../../images/Symbols/TeamStrengthThreeAndPair.png'
+import straight from '../../images/Symbols/TeamStrengthStraight.png'
 import { busTokenDescription } from '../../material/BusTokenDescription'
 
 const verticalAlignMiddleStyle: CSSProperties = {
@@ -78,4 +82,19 @@ export const getBusValueComponent = (value: BusTokenId) => {
     return <Picture src={busTokenDescription.backImages[value.back]} height={50} style={verticalAlignMiddleStyle} />
   }
   return <Picture src={busTokenDescription.images[value.front]} height={50} style={verticalAlignMiddleStyle} />
+}
+
+const getIrregularAttributePictureSrc = (value: IrregularAttribute): string => {
+  switch (value) {
+    case IrregularAttribute.FullHouse:
+      return fullHouse
+    case IrregularAttribute.Straight:
+      return straight
+    case IrregularAttribute.OneOfEach:
+      return allGear
+  }
+}
+export const getIrregularAttributeSymbol = (value: IrregularAttribute, key?: string) => {
+  const srcValue = getIrregularAttributePictureSrc(value)
+  return <Picture key={key} src={srcValue} height={50} style={verticalAlignMiddleStyle} />
 }
