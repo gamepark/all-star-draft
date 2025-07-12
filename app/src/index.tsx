@@ -7,6 +7,7 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { gameAnimations } from './animations/GameAnimations'
 import App from './App'
+import { AllStarDraftHistory } from './history/AllStarDraftHistory'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
 import translations from './translations.json'
@@ -27,6 +28,7 @@ ReactDOM.render(
       animations={gameAnimations}
       tutorial={new AllStarDraftTutorial()}
       scoring={new AllStarDraftScoringDescription()}
+      logs={new AllStarDraftHistory()}
     >
       <App />
     </GameProvider>

@@ -1,9 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import { FailuresDialog, FullscreenDialog, LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, useGame } from '@gamepark/react-game'
+import { css } from '@emotion/react'
+import { FailuresDialog, FullscreenDialog, LiveLogContainer, LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'
 import { useEffect, useState } from 'react'
 import { GameDisplay } from './GameDisplay'
 import { Headers } from './headers/Headers'
+
+const liveLogCss = css`
+  position: absolute;
+  left: 1em;
+  bottom: 1em;
+  width: 45em;
+  pointer-events: none;
+`
 
 export default function App() {
   const game = useGame<MaterialGame>()
@@ -23,6 +32,7 @@ export default function App() {
         publisher="Palladis Games"
         developer={['Isilud', 'SwHawk']}
       />
+      {!loading && <LiveLogContainer css={liveLogCss} />}
       <MaterialHeader rulesStepsHeaders={Headers} loading={loading} />
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />
       <Menu />

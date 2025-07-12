@@ -168,6 +168,7 @@
       "tuto.mandatoryChanges": "Now, each player <bold>has to</bold> change between 2 and 4 players in their team. The removed players don’t return to the bench – they are permanently discarded.",
       "tuto.playoffsLoop": "Playoffs continue this way until only one player remains! That player is not necessarily the winner: The player with the most <bold>Supporter Points</bold> is declared the champion.",
       "tuto.playoffsEnd": "Now it’s your turn to finish the Playoffs. \nGood luck!",
+      "log.draftPhase.cardDrafted": "{name} drafted <card /> {cardValue} <gear />",
       "Menu": "Menu",
       "OK": "OK",
       "Validate": "Validate",
