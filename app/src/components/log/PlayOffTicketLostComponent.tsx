@@ -10,7 +10,15 @@ import { isDeleteItemType, Material, MaterialGame, MaterialMove } from '@gamepar
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { playoffTicketTokenDescription } from '../../material/PlayoffTicketTokenDescription'
+import { CardValueLogComponent } from './CardValueLogComponent'
 import { TeamStrengthLogComponent } from './TeamStrengthLogComponent'
+
+const getTranslationKey = (isShootOut: boolean, isLastPlayOffTicket: boolean) => {
+  if (isShootOut) {
+    return isLastPlayOffTicket ? 'history.playOffs.lastPlayOffTicketRemovedShootOut' : 'history.playOffs.playOffsTicketRemovedShootOut'
+  }
+  return isLastPlayOffTicket ? 'history.playOffs.lastPlayOffTicketRemoved' : 'history.playOffs.playOffsTicketRemoved'
+}
 
 export const PlayOffTicketLostComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
   if (!isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.PlayoffTicketToken)(move)) {
@@ -21,24 +29,34 @@ export const PlayOffTicketLostComponent: FC<MoveComponentProps<MaterialMove<Play
     PlayerColor,
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
+  const shootOutCardsMaterial = new Material<PlayerColor, MaterialType, LocationType>(
+    MaterialType.HockeyPlayerCard,
+    gameContext.game.items[MaterialType.HockeyPlayerCard]
+  )
+    .location(LocationType.PlayerHockeyPlayerTeamSpot)
+    .locationId(3)
+  const isShootOut = shootOutCardsMaterial.length > 0
   const playOffTicket = gameContext.game.items[MaterialType.PlayoffTicketToken]![move.itemIndex]
   const isLastPlayOffTicket =
     (gameContext.game.items[MaterialType.PlayoffTicketToken]?.filter((ticket) => ticket.location.player === playOffTicket.location.player).length ?? 0) === 1
   const playerName = usePlayerName(playOffTicket.location.player)
   const playerNumber = gameContext.game.players.length
-  const team = new Material(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard])
-    .location(LocationType.PlayerHockeyPlayerTeamSpot)
-    .player(playOffTicket.location.player)
+  const hockeyPlayerTeamsMaterial = new Material(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard]).location(
+    LocationType.PlayerHockeyPlayerTeamSpot
+  )
+  const team = (
+    isShootOut ? hockeyPlayerTeamsMaterial.locationId(3).player(playOffTicket.location.player) : hockeyPlayerTeamsMaterial.player(playOffTicket.location.player)
+  )
     .getItems<HockeyPlayerCard>()
     .map((card) => card.id)
   const teamStrength = getTeamStrength(team, playerNumber)
   return (
     <Trans
-      defaults={isLastPlayOffTicket ? 'history.playOffs.lastPlayOffTicketRemoved' : 'history.playOffs.playOffsTicketRemoved'}
+      defaults={getTranslationKey(isShootOut, isLastPlayOffTicket)}
       values={{ name: playerName }}
       components={{
         ticket: <Picture src={playoffTicketTokenDescription.image} height={50} />,
-        strength: <TeamStrengthLogComponent teamStrength={teamStrength} playerNumber={playerNumber} />
+        strength: isShootOut ? <CardValueLogComponent cardId={team[0]} /> : <TeamStrengthLogComponent teamStrength={teamStrength} playerNumber={playerNumber} />
       }}
     />
   )

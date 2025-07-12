@@ -11,7 +11,7 @@ export const SupportersIconComponent: FC = () => {
       height="51"
       viewBox="0 0 245.79992 253.58786"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ verticalAlign: 'middle' }}
+      style={{ verticalAlign: 'middle', margin: '0 0.25em' }}
     >
       <defs id="defs1" />
       <g id="g1" transform="translate(0.00260417,-0.00400967)">
