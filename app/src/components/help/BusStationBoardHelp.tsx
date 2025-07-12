@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { MaterialHelpProps, Picture } from '@gamepark/react-game'

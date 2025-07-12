@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { Picture } from '@gamepark/react-game'
 import { FC } from 'react'
 import goldMedal from '../../images/Symbols/MedalGold.png'

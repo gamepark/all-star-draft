@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { CSSProperties, FC } from 'react'
 
 export const SupportersIconComponent: FC = () => {

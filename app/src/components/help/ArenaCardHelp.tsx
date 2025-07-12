@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import {
   ArenaCard,
   arenaIrregularAttribute,

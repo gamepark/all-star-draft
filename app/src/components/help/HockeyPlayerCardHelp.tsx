@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import {
   getHockeyPlayerCardSpecie,
