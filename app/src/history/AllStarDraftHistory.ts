@@ -31,7 +31,7 @@ export class AllStarDraftHistory
         return { Component: CardDraftedComponent, player: move.location.player }
       }
     }
-    if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation) {
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.game.rule?.id === RuleId.PlayoffRoundSetupPhase) {
       if (
         isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
         move.location.type === LocationType.PlayerHockeyPlayerTeamSpot
@@ -49,7 +49,7 @@ export class AllStarDraftHistory
         return { Component: BusAssignedToTeamComponent, player: move.location.player }
       }
     }
-    if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamReveal) {
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamReveal || context.game.rule?.id === RuleId.PlayoffRoundPhaseTeamReveal) {
       if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
         return { Component: TeamRevealComponent, player: move.location.player }
       }

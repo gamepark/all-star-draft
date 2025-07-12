@@ -23,24 +23,14 @@ const getTeam = (
     MaterialType.HockeyPlayerCard,
     gameContext.game.items[MaterialType.HockeyPlayerCard]
   )
-  if (move.indexes.length === 5) {
-    return move.reveal === undefined
-      ? hockeyCardsMaterial
-          .index((index) => move.indexes.includes(index))
-          .getItems<HockeyPlayerCard>()
-          .map((card) => card.id)
-      : Object.values(move.reveal).map((value) => value.id as HockeyPlayerCard)
-  } else if (move.indexes.length === 1) {
-    const playerCards = hockeyCardsMaterial
-      .location(LocationType.PlayerHockeyPlayerTeamSpot)
-      .player(move.location.player)
-      .locationId(move.location.id)
-      .getItems<HockeyPlayerCard | undefined>()
-      .filter((card) => card.id !== undefined)
-      .map((card) => card.id!)
-    return move.reveal === undefined ? playerCards : playerCards.concat(move.reveal[move.indexes[0]].id as HockeyPlayerCard)
-  }
-  return []
+  const playerCards = hockeyCardsMaterial
+    .location(LocationType.PlayerHockeyPlayerTeamSpot)
+    .player(move.location.player)
+    .locationId(move.location.id)
+    .getItems<HockeyPlayerCard | undefined>()
+    .filter((card) => card.id !== undefined)
+    .map((card) => card.id!)
+  return move.reveal === undefined ? playerCards : playerCards.concat(...move.indexes.map((index) => move.reveal![index].id as HockeyPlayerCard))
 }
 
 export const TeamRevealComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
@@ -58,7 +48,7 @@ export const TeamRevealComponent: FC<MoveComponentProps<MaterialMove<PlayerColor
   const playerName = usePlayerName(move.location.player)
   return (
     <Trans
-      defaults="history.draftPhase.revealTeam"
+      defaults={gameContext.game.rule?.id === RuleId.DraftRoundPhaseTeamReveal ? 'history.draftPhase.revealTeam' : 'history.playOffsPhase.revealTeam'}
       values={{ name: playerName, teamNumber: move.location.id }}
       components={{ sup: <sup></sup>, strength: <TeamStrengthLogComponent teamStrength={teamStrength} playerNumber={playerNumber} /> }}
     />
