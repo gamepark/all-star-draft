@@ -11,5 +11,11 @@ type MedalIconComponentProps = {
 }
 
 export const MedalIconComponent: FC<MedalIconComponentProps> = ({ medalNumber, height }) => {
-  return <Picture src={medalNumber === 1 ? goldMedal : medalNumber === 2 ? silverMedal : bronzeMedal} style={{ verticalAlign: 'middle' }} height={height} />
+  return (
+    <Picture
+      src={medalNumber === 1 ? goldMedal : medalNumber === 2 ? silverMedal : bronzeMedal}
+      style={{ verticalAlign: 'middle', margin: '0 0.25em' }}
+      height={height}
+    />
+  )
 }

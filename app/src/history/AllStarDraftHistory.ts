@@ -3,10 +3,11 @@ import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
-import { isMoveItemType, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, isMoveItemTypeAtOnce, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { BusAssignedToTeamComponent } from '../components/log/BusAssignedToTeamComponent'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
 import { TeamCreatedComponent } from '../components/log/TeamCreatedComponent'
+import { TeamRevealComponent } from '../components/log/TeamRevealComponent'
 
 export class AllStarDraftHistory
   implements LogDescription<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor, MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>>
@@ -43,6 +44,11 @@ export class AllStarDraftHistory
     if (context.game.rule?.id === RuleId.DraftRoundPhaseBusDispatch) {
       if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) && move.location.type === LocationType.PlayerBusTokenTeamSpot) {
         return { Component: BusAssignedToTeamComponent, player: move.location.player }
+      }
+    }
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamReveal) {
+      if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+        return { Component: TeamRevealComponent, player: move.location.player }
       }
     }
     return undefined
