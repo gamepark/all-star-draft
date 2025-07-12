@@ -47,7 +47,10 @@ export class PlayoffRoundPhaseScoreRule extends PlayerTurnRule<PlayerColor, Mate
       moves.push(this.endGame())
     } else {
       this.memorize<PlayerColor[]>(Memorize.LastPlayers, [])
-      moves.push(this.startSimultaneousRule(RuleId.PlayoffSubstitutePlayers))
+      moves.push(
+        this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(3).deleteItemsAtOnce(),
+        this.startSimultaneousRule(RuleId.PlayoffSubstitutePlayers)
+      )
     }
     return moves
   }
