@@ -7,8 +7,9 @@ import bronzeMedal from '../../images/Symbols/MedalBronze.png'
 
 type MedalIconComponentProps = {
   medalNumber: number
+  height?: number
 }
 
-export const MedalIconComponent: FC<MedalIconComponentProps> = ({ medalNumber }) => {
-  return <Picture src={medalNumber === 1 ? goldMedal : medalNumber === 2 ? silverMedal : bronzeMedal} style={{ verticalAlign: 'middle' }} />
+export const MedalIconComponent: FC<MedalIconComponentProps> = ({ medalNumber, height }) => {
+  return <Picture src={medalNumber === 1 ? goldMedal : medalNumber === 2 ? silverMedal : bronzeMedal} style={{ verticalAlign: 'middle' }} height={height} />
 }

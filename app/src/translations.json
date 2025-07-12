@@ -169,6 +169,8 @@
       "tuto.playoffsLoop": "Playoffs continue this way until only one player remains! That player is not necessarily the winner: The player with the most <bold>Supporter Points</bold> is declared the champion.",
       "tuto.playoffsEnd": "Now it’s your turn to finish the Playoffs. \nGood luck!",
       "log.draftPhase.cardDrafted": "{name} drafted <card /> {cardValue} <gear />",
+      "log.draftPhase.teamCreated": "{name} completed their {teamNumber, plural, one{#<sup>st</sup>} =2{#<sup>nd</sup>} =3{#<sup>rd</sup>} other{#<sup>th</sup>}} team",
+      "log.draftPhase.teamCreatedWithStrength": "{name} completed their {teamNumber, plural, one{#<sup>st</sup>} =2{#<sup>nd</sup>} =3{#<sup>rd</sup>} other{#<sup>th</sup>}} team (<strength />)",
       "Menu": "Menu",
       "OK": "OK",
       "Validate": "Validate",

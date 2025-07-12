@@ -26,6 +26,19 @@ export class AllStarDraftHistory
         return { Component: CardDraftedComponent, player: move.location.player }
       }
     }
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation) {
+      if (
+        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+        move.location.type === LocationType.PlayerHockeyPlayerTeamSpot
+      ) {
+        const numberOfCardsInTeam =
+          new Material(MaterialType.HockeyPlayerCard, context.game.items[MaterialType.HockeyPlayerCard])
+            .location(LocationType.PlayerHockeyPlayerTeamSpot)
+            .player(move.location.player)
+            .locationId(move.location.id).length + 1
+        return numberOfCardsInTeam === 5 ? { Component: TeamCreatedComponent, player: move.location.player } : undefined
+      }
+    }
     return undefined
   }
 }
