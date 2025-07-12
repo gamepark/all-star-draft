@@ -4,6 +4,7 @@ import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
 import { isMoveItemType, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { BusAssignedToTeamComponent } from '../components/log/BusAssignedToTeamComponent'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
 import { TeamCreatedComponent } from '../components/log/TeamCreatedComponent'
 
@@ -37,6 +38,11 @@ export class AllStarDraftHistory
             .player(move.location.player)
             .locationId(move.location.id).length + 1
         return numberOfCardsInTeam === 5 ? { Component: TeamCreatedComponent, player: move.location.player } : undefined
+      }
+    }
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseBusDispatch) {
+      if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) && move.location.type === LocationType.PlayerBusTokenTeamSpot) {
+        return { Component: BusAssignedToTeamComponent, player: move.location.player }
       }
     }
     return undefined

@@ -17,7 +17,7 @@ import { MaterialHelpProps, usePlayerName, useRules } from '@gamepark/react-game
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { MedalIconComponent } from '../symbols/MedalIconComponent'
-import { getSpeciesValueComponent, getSymbolValueComponent } from './util/valueComponents'
+import { getSpeciesValueComponent, getSymbolValueComponent } from '../util/valueComponents'
 import { MaterialItem } from '@gamepark/rules-api'
 import { TFunction } from 'i18next'
 

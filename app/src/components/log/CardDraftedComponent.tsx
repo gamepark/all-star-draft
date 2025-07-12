@@ -11,21 +11,23 @@ import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { MoveComponentContext, MoveComponentProps, Picture, usePlayerName } from '@gamepark/react-game'
-import { Material, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
+import { isMoveItemType, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { hockeyPlayerCardDescription } from '../../material/HockeyPlayerCardDescription'
-import { getSpeciesValueComponent, getSymbolValueComponent } from '../help/util/valueComponents'
+import { getSpeciesValueComponent, getSymbolValueComponent } from '../util/valueComponents'
 
 export const CardDraftedComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
-  const cardMove = move as MoveItem<PlayerColor, MaterialType, LocationType>
+  if (!isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+    return <></>
+  }
   const gameContext = context as MoveComponentContext<
     MaterialMove<PlayerColor, MaterialType, LocationType>,
     PlayerColor,
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
   const draftedCard = new Material(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard])
-    .index(cardMove.itemIndex)
+    .index(move.itemIndex)
     .getItem<HockeyPlayerCard>()
   const logComponent = draftedCard?.id ? (
     getSpeciesValueComponent(getHockeyPlayerCardSpecie(draftedCard.id))!
@@ -39,8 +41,12 @@ export const CardDraftedComponent: FC<MoveComponentProps<MaterialMove<PlayerColo
     ) : (
       <></>
     )
-  const playerName = usePlayerName(cardMove.location.player)
+  const playerName = usePlayerName(move.location.player)
   return (
-    <Trans defaults="log.draftPhase.cardDrafted" values={{ name: playerName, cardValue: cardValue }} components={{ card: logComponent, gear: gearComponent }} />
+    <Trans
+      defaults="history.draftPhase.cardDrafted"
+      values={{ name: playerName, cardValue: cardValue }}
+      components={{ card: logComponent, gear: gearComponent }}
+    />
   )
 }
