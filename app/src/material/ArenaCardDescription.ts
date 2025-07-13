@@ -2,7 +2,7 @@ import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { CardDescription, ItemContext } from '@gamepark/react-game'
+import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { ArenaCardHelp } from '../components/help/ArenaCardHelp'
 import ArenaCardBack from '../images/Cards/Arena/ArenaCardBack.jpg'
@@ -49,6 +49,10 @@ class ArenaCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
   displayHelp(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>) {
     if (item.location.type === LocationType.ArenaDeckSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
     return super.displayHelp(item, context)
+  }
+
+  public isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, _context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+    return item.location?.type === LocationType.ArenaDeckSpot
   }
 }
 

@@ -3,10 +3,11 @@ import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
+import { MaterialRotation } from '@gamepark/all-star-draft/material/MaterialRotation'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
-import { CardDescription, ItemContext, ItemMenuButton } from '@gamepark/react-game'
+import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { ReactNode } from 'react'
 import { Trans } from 'react-i18next'
@@ -286,6 +287,19 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     if (item.id === undefined && item.location.type === LocationType.HockeyPlayerDraftSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
     if (item.id === undefined && item.location.type === LocationType.PlayerHockeyPlayerHandSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
     return super.displayHelp(item, context)
+  }
+
+  isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, _context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (item.location?.type === LocationType.HockeyPlayerDeckSpot) {
+      return true
+    }
+    if (item.location?.type === LocationType.PlayerHockeyPlayerHandSpot) {
+      if (_context.player === undefined) {
+        return true
+      }
+      return item.location.player !== _context.player || item.location.rotation === MaterialRotation.FaceDown
+    }
+    return super.isFlipped(item, _context)
   }
 }
 
