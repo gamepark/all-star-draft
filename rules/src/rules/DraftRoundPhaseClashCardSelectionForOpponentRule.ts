@@ -27,15 +27,16 @@ export class DraftRoundPhaseClashCardSelectionForOpponentRule extends Simultaneo
   }
 
   getMovesAfterPlayersDone() {
+    const revealMoves = this.game.players.map((player) =>
+      this.material(MaterialType.HockeyPlayerCard)
+        .location(LocationType.PlayerHockeyPlayerHandSpot)
+        .player(player)
+        .rotation(MaterialRotation.FaceDown)
+        .moveItem({ type: LocationType.PlayerHockeyPlayerHandSpot, player: player, rotation: MaterialRotation.FaceUp })
+    )
     if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).length > 0) {
       return [
-        ...this.game.players.map((player) =>
-          this.material(MaterialType.HockeyPlayerCard)
-            .location(LocationType.PlayerHockeyPlayerHandSpot)
-            .player(player)
-            .rotation(MaterialRotation.FaceDown)
-            .moveItem({ type: LocationType.PlayerHockeyPlayerHandSpot, player: player, rotation: MaterialRotation.FaceUp })
-        ),
+        ...revealMoves,
         ...this.game.players.map((player) => {
           const nextPlayer = this.game.players[(this.game.players.indexOf(player) + 1) % this.game.players.length]
           return this.material(MaterialType.HockeyPlayerCard)
@@ -46,6 +47,6 @@ export class DraftRoundPhaseClashCardSelectionForOpponentRule extends Simultaneo
         this.startSimultaneousRule(RuleId.DraftRoundPhaseCardSelection)
       ]
     }
-    return [this.startSimultaneousRule(RuleId.DraftRoundPhaseDiscardCardOverflow)]
+    return [...revealMoves, this.startSimultaneousRule(RuleId.DraftRoundPhaseDiscardCardOverflow)]
   }
 }
