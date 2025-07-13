@@ -2,12 +2,13 @@
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
+import { playoffFanPoint } from '@gamepark/all-star-draft/material/PlayoffPointCard'
 import { getTeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
 import { Memorize } from '@gamepark/all-star-draft/Memorize'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { MoveComponentContext, MoveComponentProps, Picture, usePlayerName } from '@gamepark/react-game'
-import { isDeleteItemTypeAtOnce, Material, MaterialGame, MaterialMove, PlayerMemory } from '@gamepark/rules-api'
+import { GameMemory, isDeleteItemTypeAtOnce, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { playoffTicketTokenDescription } from '../../material/PlayoffTicketTokenDescription'
@@ -47,7 +48,8 @@ export const PlayerEliminatedComponent: FC<MoveComponentProps<MaterialMove<Playe
     ? shootOutCardsMaterial.getItems<HockeyPlayerCard>().map((card) => card.id)
     : move.indexes.map((index) => gameContext.game.items[MaterialType.HockeyPlayerCard]![index].id as HockeyPlayerCard)
   const teamStrength = getTeamStrength(team, playerNumber)
-  const fanPoints = new PlayerMemory(gameContext.game, player).remind<number>(Memorize.ScorePlayoff)
+  const eliminationRank = new GameMemory(gameContext.game).remind<PlayerColor[]>(Memorize.ActivePlayers).length - 1
+  const fanPoints = playoffFanPoint[playerNumber][eliminationRank]
   const playerName = usePlayerName(player)
   return (
     <Trans
