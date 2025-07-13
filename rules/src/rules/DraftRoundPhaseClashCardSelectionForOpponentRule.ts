@@ -15,7 +15,11 @@ export class DraftRoundPhaseClashCardSelectionForOpponentRule extends Simultaneo
   }
 
   afterItemMove(move: ItemMove) {
-    if (isMoveItemType(MaterialType.HockeyPlayerCard)(move) && move.location.type === LocationType.PlayerHockeyPlayerHandSpot && move.location.rotation === MaterialRotation.FaceDown) {
+    if (
+      isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
+      move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
+      move.location.rotation === MaterialRotation.FaceDown
+    ) {
       const player = this.game.players.find((p) => p !== move.location.player)!
       return [this.endPlayerTurn(player)]
     }

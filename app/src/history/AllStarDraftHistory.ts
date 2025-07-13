@@ -58,7 +58,7 @@ export class AllStarDraftHistory
       MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
     >
   ): MovePlayedLogDescription<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor> | undefined {
-    if (context.game.rule?.id === RuleId.DraftRoundPhaseCardSelection) {
+    if (context.game.rule?.id === RuleId.DraftRoundPhaseCardSelection || context.game.rule?.id === RuleId.DraftRoundPhaseOpenMarketCardSelection) {
       if (
         isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
         move.location.type === LocationType.PlayerHockeyPlayerHandSpot
