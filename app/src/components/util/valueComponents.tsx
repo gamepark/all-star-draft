@@ -1,26 +1,33 @@
+import { BusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { HockeyPlayerCardSpeciesType, HockeyPlayerCardSymbolsType } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
+import { IrregularAttribute } from '@gamepark/all-star-draft/material/TeamStrength'
 import { Picture } from '@gamepark/react-game'
 import { CSSProperties } from 'react'
-import glove from '../../../images/Symbols/GearGlove.png'
-import goal from '../../../images/Symbols/GearGoal.png'
-import helmet from '../../../images/Symbols/GearHelmet.png'
-import puck from '../../../images/Symbols/GearPuck.png'
-import skates from '../../../images/Symbols/GearSkates.png'
-import beaver from '../../../images/Symbols/SpeciesBeaver.png'
-import duck from '../../../images/Symbols/SpeciesDuck.png'
-import eagle from '../../../images/Symbols/SpeciesEagle.png'
-import horse from '../../../images/Symbols/SpeciesHorse.png'
-import panda from '../../../images/Symbols/SpeciesPandaBear.png'
-import penguin from '../../../images/Symbols/SpeciesPenguin.png'
-import polarBear from '../../../images/Symbols/SpeciesPolarBear.png'
-import rabbit from '../../../images/Symbols/SpeciesRabbit.png'
-import reindeer from '../../../images/Symbols/SpeciesReindeer.png'
-import shark from '../../../images/Symbols/SpeciesShark.png'
-import tiger from '../../../images/Symbols/SpeciesTiger.png'
-import wolf from '../../../images/Symbols/SpeciesWolf.png'
+import glove from '../../images/Symbols/GearGlove.png'
+import goal from '../../images/Symbols/GearGoal.png'
+import helmet from '../../images/Symbols/GearHelmet.png'
+import puck from '../../images/Symbols/GearPuck.png'
+import skates from '../../images/Symbols/GearSkates.png'
+import beaver from '../../images/Symbols/SpeciesBeaver.png'
+import duck from '../../images/Symbols/SpeciesDuck.png'
+import eagle from '../../images/Symbols/SpeciesEagle.png'
+import horse from '../../images/Symbols/SpeciesHorse.png'
+import panda from '../../images/Symbols/SpeciesPandaBear.png'
+import penguin from '../../images/Symbols/SpeciesPenguin.png'
+import polarBear from '../../images/Symbols/SpeciesPolarBear.png'
+import rabbit from '../../images/Symbols/SpeciesRabbit.png'
+import reindeer from '../../images/Symbols/SpeciesReindeer.png'
+import shark from '../../images/Symbols/SpeciesShark.png'
+import tiger from '../../images/Symbols/SpeciesTiger.png'
+import wolf from '../../images/Symbols/SpeciesWolf.png'
+import allGear from '../../images/Symbols/TeamStrengthAllGear.png'
+import fullHouse from '../../images/Symbols/TeamStrengthThreeAndPair.png'
+import straight from '../../images/Symbols/TeamStrengthStraight.png'
+import { busTokenDescription } from '../../material/BusTokenDescription'
 
 const verticalAlignMiddleStyle: CSSProperties = {
-  verticalAlign: 'middle'
+  verticalAlign: 'middle',
+  margin: '0 0.25em'
 }
 
 export const getSymbolValueComponent = (value: HockeyPlayerCardSymbolsType) => {
@@ -68,4 +75,26 @@ export const getSpeciesValueComponent = (value: HockeyPlayerCardSpeciesType) => 
     default:
       return undefined
   }
+}
+
+export const getBusValueComponent = (value: BusTokenId) => {
+  if (value.front === undefined) {
+    return <Picture src={busTokenDescription.backImages[value.back]} height={50} style={verticalAlignMiddleStyle} />
+  }
+  return <Picture src={busTokenDescription.images[value.front]} height={50} style={verticalAlignMiddleStyle} />
+}
+
+const getIrregularAttributePictureSrc = (value: IrregularAttribute): string => {
+  switch (value) {
+    case IrregularAttribute.FullHouse:
+      return fullHouse
+    case IrregularAttribute.Straight:
+      return straight
+    case IrregularAttribute.OneOfEach:
+      return allGear
+  }
+}
+export const getIrregularAttributeSymbol = (value: IrregularAttribute, key?: string) => {
+  const srcValue = getIrregularAttributePictureSrc(value)
+  return <Picture key={key} src={srcValue} height={50} style={verticalAlignMiddleStyle} />
 }

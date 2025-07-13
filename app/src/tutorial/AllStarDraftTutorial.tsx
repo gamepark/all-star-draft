@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
 import { busTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { getHockeyPlayerCardSymbol, HockeyPlayerCard, HockeyPlayerCardSymbolsType } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
@@ -19,7 +20,7 @@ import { tieBreakerCardDrescription } from '../material/TieBreakerCardDescriptio
 import { AllStarDraftTutorialSetup, me, opponent1, opponent2 } from './AllStarDraftTutorialSetup'
 
 export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, MaterialType, LocationType> {
-  version = 2
+  version = 3
   options = {
     players: [
       {

@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
@@ -17,7 +18,7 @@ import { sortBy } from 'lodash'
 import { Trans, useTranslation } from 'react-i18next'
 import { MedalIconComponent } from '../symbols/MedalIconComponent'
 import { TeamStrengthIconComponent } from '../symbols/TeamStrengthIconComponent'
-import { getSpeciesValueComponent, getSymbolValueComponent } from './util/valueComponents'
+import { getSpeciesValueComponent, getSymbolValueComponent } from '../util/valueComponents'
 import allGear from '../../images/Symbols/TeamStrengthAllGear.png'
 import straight from '../../images/Symbols/TeamStrengthStraight.png'
 import threeAndPair from '../../images/Symbols/TeamStrengthThreeAndPair.png'
@@ -58,19 +59,20 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
         style={{
           display: 'flex',
           listStyle: 'none',
-          width: `${4 + (cards.length - 1) * 2}em`,
+          gap: '1.3em',
           fontSize: '2em',
           padding: 0,
-          margin: 0
+          marginLeft: '6em',
+          marginRight: '1em'
         }}
       >
         {cards.map((card, index) => (
-          <li key={index} style={{ marginLeft: index === 0 ? 0 : '1.5em' }}>
+          <li key={index} style={{ minWidth: '0em', width: '0em' }}>
             <MaterialComponent
               type={MaterialType.HockeyPlayerCard}
               itemId={card.id}
               css={pointerCursorCss}
-              style={{ height: '9em' }}
+              style={{ height: '9em', justifySelf: 'right', transform: card.id === undefined ? 'rotateY(180deg)' : '' }}
               onClick={() => play(MaterialMoveBuilder.displayMaterialHelp(MaterialType.HockeyPlayerCard, card, index), { local: true })}
             />
           </li>

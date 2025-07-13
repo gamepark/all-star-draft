@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { fa1, fa2, fa3 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { BusToken, BusTokenId } from '@gamepark/all-star-draft/material/BusToken'

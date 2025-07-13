@@ -34,7 +34,7 @@ export class AllStarDraftTutorialSetup extends AllStarDraftSetup {
       .id((id) => getHockeyPlayerCardSymbol(id as HockeyPlayerCard) !== HockeyPlayerCardSymbolsType.None)
       .moveItem({ type: LocationType.HockeyPlayerDeckSpot, x: 53 })
     this.material(MaterialType.ArenaCard).location(LocationType.ArenaDeckSpot).id(ArenaCard.Polarena1).moveItem({ type: LocationType.ArenaDeckSpot, x: 14 })
-    this.material(MaterialType.ArenaCard).location(LocationType.ArenaDeckSpot).id(ArenaCard.DamStadium2).moveItem({ type: LocationType.ArenaDeckSpot, x: 13 })
+    this.material(MaterialType.ArenaCard).location(LocationType.ArenaDeckSpot).id(ArenaCard.DamStadium3).moveItem({ type: LocationType.ArenaDeckSpot, x: 13 })
     this.material(MaterialType.ArenaCard).location(LocationType.ArenaDeckSpot).id(ArenaCard.PuddlePark2).moveItem({ type: LocationType.ArenaDeckSpot, x: 12 })
     this.material(MaterialType.ArenaCard).location(LocationType.ArenaDeckSpot).id(ArenaCard.ComboStadium1).moveItem({ type: LocationType.ArenaDeckSpot, x: 11 })
   }

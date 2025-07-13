@@ -15,12 +15,6 @@ export class PlayoffRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor,
         // Move and reveal card changed by the player between matchs
         this.material(MaterialType.HockeyPlayerCard)
           .location(LocationType.PlayerHockeyPlayerTeamSpot)
-          .player(player)
-          .locationId(3)
-          .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, id: 2, player: player, rotation: MaterialRotation.FaceUp }),
-        // Reveal starter card
-        this.material(MaterialType.HockeyPlayerCard)
-          .location(LocationType.PlayerHockeyPlayerTeamSpot)
           .rotation(MaterialRotation.FaceDown)
           .player(player)
           .locationId(2)
