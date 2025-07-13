@@ -44,7 +44,7 @@ export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColo
         .locationId(currentTeamNumber)
         .player(move.location.player).length
       if (move.location.type === LocationType.PlayerHockeyPlayerHandSpot && currentCardInTeam < 5) {
-        return [this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(move.location.player).deck().shuffle()]
+        return [this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(move.location.player).shuffle()]
       }
       if (move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && currentCardInTeam === 5) {
         if (currentTeamNumber < this.remind<number>(Memorize.RoundNumber) - 1) {
