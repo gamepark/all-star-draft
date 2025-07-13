@@ -67,8 +67,9 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
         }}
       >
         {cards.map((card, index) => (
-          <li key={index} style={{ minWidth: '0em', width: '0em' }}>
+          <li key={`player-${location.player}-team-${location.id}-list-item-${index}`} style={{ minWidth: '0em', width: '0em' }}>
             <MaterialComponent
+              key={`player-${location.player}-team-${location.id}-card-item-${index}`}
               type={MaterialType.HockeyPlayerCard}
               itemId={card.id}
               css={pointerCursorCss}

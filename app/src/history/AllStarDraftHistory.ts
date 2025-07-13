@@ -124,7 +124,7 @@ export class AllStarDraftHistory
       }
     }
     if (REVEAL_RULE_IDS.includes(context.game.rule?.id ?? RuleId.DraftRoundPhaseBusDispatch)) {
-      if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) && move.indexes.length > 0) {
+      if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
         return { Component: TeamRevealComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
       if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move)) {
