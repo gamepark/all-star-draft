@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { Picture } from '@gamepark/react-game'
-import { PictureAttributes } from '@gamepark/react-game/src/components/Picture/Picture'
+import { Picture, PictureAttributes } from '@gamepark/react-game'
 import { FC } from 'react'
 import bronzeMedal from '../../images/Symbols/MedalBronze.png'
 import goldMedal from '../../images/Symbols/MedalGold.png'

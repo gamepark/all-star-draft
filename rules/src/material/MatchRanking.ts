@@ -18,27 +18,19 @@ export function getPlayerRanking(
   teams: { player: PlayerColor; team: HockeyPlayerCard[] }[],
   irregularAttribute?: IrregularAttribute
 ): Partial<Record<PlayerColor, number>> {
-  const ranking: [PlayerColor, number][] = teams.map((team) => [team.player, 1])
   const playerCount = teams.length
-  teams.forEach((mainTeam, index) => {
-    for (let i = index + 1; i < playerCount; i++) {
-      const concurrentTeam = teams[i]
-      const matchResult = compareTeam(
-        getTeamStrength(mainTeam.team, playerCount),
-        getTeamStrength(concurrentTeam.team, playerCount),
-        playerCount,
-        irregularAttribute
-      )
-      if (matchResult > 0) {
-        const lossConcurrentTeamIndex = ranking.findIndex(([player, _]) => player === concurrentTeam.player)
-        ranking[lossConcurrentTeamIndex][1] = ranking[lossConcurrentTeamIndex][1] + 1
-      } else if (matchResult < 0) {
-        const lossMainTeamIndex = ranking.findIndex(([player, _]) => player === mainTeam.player)
-        ranking[lossMainTeamIndex][1] = ranking[lossMainTeamIndex][1] + 1
-      }
-    }
-  })
-  return Object.fromEntries(ranking) as Partial<Record<PlayerColor, number>>
+  let currentRank = 1
+  return Object.fromEntries(
+    teams
+      .map((playerTeam) => ({ player: playerTeam.player, strength: getTeamStrength(playerTeam.team, playerCount) }))
+      .sort((a, b) => compareTeam(b.strength, a.strength, playerCount, irregularAttribute))
+      .map((currentPlayerStrength, index, playerStrengthsArray) => {
+        if (index !== 0 && compareTeam(currentPlayerStrength.strength, playerStrengthsArray[index - 1].strength, playerCount, irregularAttribute) !== 0) {
+          currentRank = index + 1
+        }
+        return [currentPlayerStrength.player, currentRank]
+      })
+  ) as Partial<Record<PlayerColor, number>>
 }
 
 export const getWeakestPlayersFromTeams = (teams: { player: PlayerColor; team: HockeyPlayerCard[] }[], playerCount: number): PlayerColor[] => {
