@@ -2,12 +2,15 @@ import { css } from '@emotion/react'
 import { KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
+import { Memorize } from '@gamepark/all-star-draft/Memorize'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
 import {
+  GameMemory,
   isDeleteItemType,
   isDeleteItemTypeAtOnce,
+  isEndGame,
   isMoveItemType,
   isMoveItemTypeAtOnce,
   isStartSimultaneousRule,
@@ -23,6 +26,7 @@ import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
 import { MatchResultComponent } from '../components/log/MatchResultComponent'
 import { PlayerEliminatedComponent } from '../components/log/PlayerEliminatedComponent'
 import { PlayOffTicketLostComponent } from '../components/log/PlayOffTicketLostComponent'
+import { PlayOffsWinnerComponent } from '../components/log/PlayOffsWinnerComponent'
 import { RevealShootOutCardComponent } from '../components/log/RevealShootOutCardComponent'
 import { ShootOutPlayersComponent } from '../components/log/ShootOutPlayersComponent'
 import { TeamCreatedComponent } from '../components/log/TeamCreatedComponent'
@@ -120,7 +124,7 @@ export class AllStarDraftHistory
       }
     }
     if (REVEAL_RULE_IDS.includes(context.game.rule?.id ?? RuleId.DraftRoundPhaseBusDispatch)) {
-      if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+      if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) && move.indexes.length > 0) {
         return { Component: TeamRevealComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
       if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move)) {
@@ -155,6 +159,7 @@ export class AllStarDraftHistory
       }
       if (
         isDeleteItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+        move.indexes.length > 0 &&
         context.game.items[MaterialType.HockeyPlayerCard]![move.indexes[0]].location.id !== 3
       ) {
         const player = context.game.items[MaterialType.HockeyPlayerCard]![move.indexes[0]].location.player!
@@ -168,6 +173,10 @@ export class AllStarDraftHistory
       if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) && move.location.id === 3) {
         return { Component: RevealShootOutCardComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
+    }
+    if (isEndGame<PlayerColor, MaterialType, LocationType>(move)) {
+      const winningPlayer = new GameMemory(context.game).remind<PlayerColor[]>(Memorize.ActivePlayers)[0]
+      return { Component: PlayOffsWinnerComponent, player: winningPlayer, css: panelBackground(playerColorCode[winningPlayer]) }
     }
     return undefined
   }
