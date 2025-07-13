@@ -23,10 +23,11 @@ export const PlayerGiveCardComponent: FC<MoveComponentProps<MaterialMove<PlayerC
     .index(move.itemIndex)
     .getItem<HockeyPlayerCard>()
   const playerName = usePlayerName(givenCard?.location.player)
+  const recipientName = usePlayerName(move.location.player)
   return (
     <Trans
       defaults="history.draftPhase.cardGiven"
-      values={{ name: playerName }}
+      values={{ name: playerName, recipient: recipientName }}
       components={{ card: <CardValueLogComponent cardId={givenCard === undefined ? undefined : givenCard.id} /> }}
     />
   )

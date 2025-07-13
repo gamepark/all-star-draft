@@ -75,7 +75,7 @@ export class AllStarDraftHistory
         isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
         move.location.type === LocationType.HockeyPlayerDraftSpot
       ) {
-        return { Component: CardDiscardedComponent, player: move.location.player }
+        return { Component: CardDiscardedComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseClashCardSelectionForOpponent) {
@@ -86,10 +86,10 @@ export class AllStarDraftHistory
         if (move.location.rotation === MaterialRotation.FaceDown) {
           const card = new Material(MaterialType.HockeyPlayerCard, context.game.items[MaterialType.HockeyPlayerCard])
             .index(move.itemIndex)
-            .getItem<HockeyPlayerCard>()
-          return { Component: PlayerGiveCardComponent, player: card?.location.player }
-        } else {
-          return { Component: PlayerReceivedCardComponent, player: move.location.player }
+            .getItem<HockeyPlayerCard>()!
+          return { Component: PlayerGiveCardComponent, player: card.location.player, css: panelBackground(playerColorCode[card.location.player!]) }
+        } else if (move.reveal !== undefined) {
+          return { Component: PlayerReceivedCardComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
         }
       }
     }

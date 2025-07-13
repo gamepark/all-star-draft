@@ -5,7 +5,7 @@ import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepark/react-game'
-import { isMoveItemType, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { CardValueLogComponent } from './CardValueLogComponent'
@@ -19,15 +19,15 @@ export const PlayerReceivedCardComponent: FC<MoveComponentProps<MaterialMove<Pla
     PlayerColor,
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
-  const receivedCard = new Material(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard])
-    .index(move.itemIndex)
-    .getItem<HockeyPlayerCard>()
+  const receivedCardId = move.reveal!.id as HockeyPlayerCard
   const playerName = usePlayerName(move.location.player)
+  const givingPlayer = gameContext.game.players.find((player) => player !== move.location.player)
+  const givingPlayerName = usePlayerName(givingPlayer)
   return (
     <Trans
       defaults="history.draftPhase.cardReceived"
-      values={{ name: playerName }}
-      components={{ card: <CardValueLogComponent cardId={receivedCard === undefined ? undefined : receivedCard.id} /> }}
+      values={{ name: playerName, givingPlayerName: givingPlayerName }}
+      components={{ card: <CardValueLogComponent cardId={receivedCardId} /> }}
     />
   )
 }
