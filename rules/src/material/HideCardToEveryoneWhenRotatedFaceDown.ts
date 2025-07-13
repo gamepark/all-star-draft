@@ -9,5 +9,5 @@ export const hideCardToEveryoneWhenRotatedFaceDown: HidingSecretsStrategy<number
   if (item.location.rotation === MaterialRotation.FaceDown) {
     return ['id']
   }
-  return [player !== item.location.player ? 'id' : '']
+  return player !== item.location.player ? ['id'] : []
 }
