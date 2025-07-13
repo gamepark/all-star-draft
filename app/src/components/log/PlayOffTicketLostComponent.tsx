@@ -55,7 +55,7 @@ export const PlayOffTicketLostComponent: FC<MoveComponentProps<MaterialMove<Play
       defaults={getTranslationKey(isShootOut, isLastPlayOffTicket)}
       values={{ name: playerName }}
       components={{
-        ticket: <Picture src={playoffTicketTokenDescription.image} height={50} />,
+        ticket: <Picture src={playoffTicketTokenDescription.image} style={{ height: '2.5em' }} />,
         strength: isShootOut ? <CardValueLogComponent cardId={team[0]} /> : <TeamStrengthLogComponent teamStrength={teamStrength} playerNumber={playerNumber} />
       }}
     />

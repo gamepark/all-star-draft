@@ -17,7 +17,7 @@ type CardValueLogComponentProps = {
 
 export const CardValueLogComponent: FC<CardValueLogComponentProps> = ({ cardId }) => {
   if (cardId === undefined) {
-    return <Picture src={hockeyPlayerCardDescription.backImage} height={75} style={{ borderRadius: 5 }} />
+    return <Picture src={hockeyPlayerCardDescription.backImage} style={{ borderRadius: 5, height: '3em' }} />
   }
   const species = getHockeyPlayerCardSpecie(cardId)
   const symbol = getHockeyPlayerCardSymbol(cardId)

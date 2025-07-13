@@ -36,7 +36,7 @@ export const TeamStrengthIconComponent: FC<TeamStrengthIconComponentProps> = ({ 
       height="50"
       viewBox="0 0 132.09544 82.845948"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ verticalAlign: 'middle' }}
+      style={{ verticalAlign: 'middle', height: '2.5em' }}
     >
       <defs id="defs1" />
       <g id="g1" transform="translate(-0.008153,7.9826195e-4)">

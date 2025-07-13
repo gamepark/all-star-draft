@@ -1,21 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import { Picture } from '@gamepark/react-game'
+import { PictureAttributes } from '@gamepark/react-game/src/components/Picture/Picture'
 import { FC } from 'react'
+import bronzeMedal from '../../images/Symbols/MedalBronze.png'
 import goldMedal from '../../images/Symbols/MedalGold.png'
 import silverMedal from '../../images/Symbols/MedalSilver.png'
-import bronzeMedal from '../../images/Symbols/MedalBronze.png'
 
 type MedalIconComponentProps = {
   medalNumber: number
   height?: number
-}
+} & PictureAttributes
 
-export const MedalIconComponent: FC<MedalIconComponentProps> = ({ medalNumber, height }) => {
+export const MedalIconComponent: FC<MedalIconComponentProps> = ({ medalNumber, height, ...props }) => {
   return (
     <Picture
       src={medalNumber === 1 ? goldMedal : medalNumber === 2 ? silverMedal : bronzeMedal}
       style={{ verticalAlign: 'middle', margin: '0 0.25em' }}
       height={height}
+      {...props}
     />
   )
 }

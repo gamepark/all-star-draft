@@ -60,7 +60,7 @@ export const PlayerEliminatedComponent: FC<MoveComponentProps<MaterialMove<Playe
         ) : (
           <TeamStrengthLogComponent teamStrength={teamStrength} playerNumber={playerNumber} />
         ),
-        ticket: <Picture src={playoffTicketTokenDescription.image} height={50} />
+        ticket: <Picture src={playoffTicketTokenDescription.image} style={{ height: '2.5em' }} />
       }}
     />
   )

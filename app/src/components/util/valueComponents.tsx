@@ -27,61 +27,51 @@ import { busTokenDescription } from '../../material/BusTokenDescription'
 
 const verticalAlignMiddleStyle: CSSProperties = {
   verticalAlign: 'middle',
-  margin: '0 0.25em'
+  margin: '0 0.25em',
+  height: '2.5em'
 }
 
 export const getSymbolValueComponent = (value: HockeyPlayerCardSymbolsType) => {
   switch (value) {
     case HockeyPlayerCardSymbolsType.Glove:
-      return <Picture src={glove} height={50} style={verticalAlignMiddleStyle} />
+      return <Picture src={glove} style={verticalAlignMiddleStyle} />
     case HockeyPlayerCardSymbolsType.Skate:
-      return <Picture src={skates} height={50} style={verticalAlignMiddleStyle} />
+      return <Picture src={skates} style={verticalAlignMiddleStyle} />
     case HockeyPlayerCardSymbolsType.Helmet:
-      return <Picture src={helmet} height={50} style={verticalAlignMiddleStyle} />
+      return <Picture src={helmet} style={verticalAlignMiddleStyle} />
     case HockeyPlayerCardSymbolsType.Goal:
-      return <Picture src={goal} height={50} style={verticalAlignMiddleStyle} />
+      return <Picture src={goal} style={verticalAlignMiddleStyle} />
     case HockeyPlayerCardSymbolsType.Puck:
-      return <Picture src={puck} height={50} style={verticalAlignMiddleStyle} />
-    default:
-      return undefined
-  }
-}
-export const getSpeciesValueComponent = (value: HockeyPlayerCardSpeciesType) => {
-  switch (value) {
-    case HockeyPlayerCardSpeciesType.Rabbit:
-      return <Picture src={rabbit} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Duck:
-      return <Picture src={duck} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Beaver:
-      return <Picture src={beaver} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Eagle:
-      return <Picture src={eagle} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Penguin:
-      return <Picture src={penguin} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Panda:
-      return <Picture src={panda} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Wolf:
-      return <Picture src={wolf} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Shark:
-      return <Picture src={shark} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Tiger:
-      return <Picture src={tiger} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Horse:
-      return <Picture src={horse} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.Reindeer:
-      return <Picture src={reindeer} height={50} style={verticalAlignMiddleStyle} />
-    case HockeyPlayerCardSpeciesType.PolarBear:
-      return <Picture src={polarBear} height={50} style={verticalAlignMiddleStyle} />
+      return <Picture src={puck} style={verticalAlignMiddleStyle} />
     default:
       return undefined
   }
 }
 
+const speciesImages: Record<HockeyPlayerCardSpeciesType, string> = {
+  [HockeyPlayerCardSpeciesType.Rabbit]: rabbit,
+  [HockeyPlayerCardSpeciesType.Duck]: duck,
+  [HockeyPlayerCardSpeciesType.Beaver]: beaver,
+  [HockeyPlayerCardSpeciesType.Eagle]: eagle,
+  [HockeyPlayerCardSpeciesType.Penguin]: penguin,
+  [HockeyPlayerCardSpeciesType.Panda]: panda,
+  [HockeyPlayerCardSpeciesType.Wolf]: wolf,
+  [HockeyPlayerCardSpeciesType.Shark]: shark,
+  [HockeyPlayerCardSpeciesType.Tiger]: tiger,
+  [HockeyPlayerCardSpeciesType.Horse]: horse,
+  [HockeyPlayerCardSpeciesType.Reindeer]: reindeer,
+  [HockeyPlayerCardSpeciesType.PolarBear]: polarBear
+}
+
+export const getSpeciesValueComponent = (value: HockeyPlayerCardSpeciesType) => {
+  return <Picture src={speciesImages[value]} style={verticalAlignMiddleStyle} />
+}
+
 export const getBusValueComponent = (value: BusTokenId) => {
   if (value.front === undefined) {
-    return <Picture src={busTokenDescription.backImages[value.back]} height={50} style={verticalAlignMiddleStyle} />
+    return <Picture src={busTokenDescription.backImages[value.back]} style={verticalAlignMiddleStyle} />
   }
-  return <Picture src={busTokenDescription.images[value.front]} height={50} style={verticalAlignMiddleStyle} />
+  return <Picture src={busTokenDescription.images[value.front]} style={verticalAlignMiddleStyle} />
 }
 
 const getIrregularAttributePictureSrc = (value: IrregularAttribute): string => {
@@ -96,5 +86,5 @@ const getIrregularAttributePictureSrc = (value: IrregularAttribute): string => {
 }
 export const getIrregularAttributeSymbol = (value: IrregularAttribute, key?: string) => {
   const srcValue = getIrregularAttributePictureSrc(value)
-  return <Picture key={key} src={srcValue} height={50} style={verticalAlignMiddleStyle} />
+  return <Picture key={key} src={srcValue} style={verticalAlignMiddleStyle} />
 }
