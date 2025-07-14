@@ -17,8 +17,10 @@ class PlayerBusTokenTeamSpotLocator extends Locator<PlayerColor, MaterialType, L
         return { x: x + 10, y }
       case 270:
         return { x: x - 6, y }
-      default:
-        return { x: x + 3, y: y + 7 }
+      default: {
+        const playerCount = context.rules.players.length
+        return playerCount > 4 ? { x: x - 3, y: y + 7 } : { x: x + 3, y: y + 7 }
+      }
     }
   }
 }
