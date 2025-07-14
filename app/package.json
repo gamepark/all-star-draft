@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/all-star-draft-app",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "description": "The user interface of All-Star Draft adaptation for Game Park",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
