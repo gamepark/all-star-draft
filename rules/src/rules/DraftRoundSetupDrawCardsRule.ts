@@ -1,4 +1,4 @@
-import { MaterialMove, PlayerTurnRule, PlayMoveContext, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { minBy } from 'lodash'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -8,14 +8,7 @@ import { TwoPlayersMode } from '../TwoPlayersMode'
 import { RuleId } from './RuleId'
 
 export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  public onRuleStart(
-    _move: RuleMove<PlayerColor, RuleId>,
-    _previousRule?: RuleStep,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    if (this.remind(Memorize.RoundNumber) >= 3) {
-      return [this.startSimultaneousRule(RuleId.PlayoffRoundSetupPhase)]
-    }
+  public onRuleStart() {
     this.memorize<number>(Memorize.RoundNumber, (roundNumber) => roundNumber + 1)
     const hockeyCardsDeck = this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDeckSpot).deck()
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = [

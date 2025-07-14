@@ -50,8 +50,10 @@ export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, M
     const isLastBusToken = this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenTeamSpot).getItems().length === 0
     if (isLastBusToken) {
       moves.push(...this.game.players.map((player) => this.material(MaterialType.BusToken).player(player).shuffle()))
+      moves.push(this.startSimultaneousRule(this.remind(Memorize.RoundNumber) < 3 ? RuleId.DraftRoundSetupDrawCards : RuleId.PlayoffRoundSetupPhase))
+    } else {
+      moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseMatchMoveToStadium))
     }
-    moves.push(this.startSimultaneousRule(isLastBusToken ? RuleId.DraftRoundSetupDrawCards : RuleId.DraftRoundPhaseMatchMoveToStadium))
     return moves
   }
 }
