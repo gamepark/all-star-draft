@@ -31,19 +31,12 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
       return moves
     }
 
-    moves.push(
-      ...Array(this.game.players.length === 2 ? 7 : 6)
-        .fill(1)
-        .flatMap((_) =>
-          this.game.players.map((player) =>
-            hockeyCardsDeck.dealOne({
-              type: LocationType.HockeyPlayerDraftSpot,
-              player: player
-            })
-          )
-        ),
-      this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseCardSelection)
-    )
+    const draftHandSize = this.game.players.length === 2 ? 7 : 6
+    for (const player of this.game.players) {
+      moves.push(hockeyCardsDeck.dealAtOnce({ type: LocationType.HockeyPlayerDraftSpot, player: player }, draftHandSize))
+    }
+
+    moves.push(this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseCardSelection))
     return moves
   }
 }
