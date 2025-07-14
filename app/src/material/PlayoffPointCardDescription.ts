@@ -1,12 +1,12 @@
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
-import { BoardDescription, MaterialContext } from '@gamepark/react-game'
+import { CardDescription, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import PlayoffPointCard from '../images/Cards/PlayoffPointCard.jpg'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { PlayoffPointCardHelp } from '../components/help/PlayoffPointCardHelp'
 
-class PlayoffPointCardDescription extends BoardDescription<PlayerColor, MaterialType, LocationType> {
+class PlayoffPointCardDescription extends CardDescription<PlayerColor, MaterialType, LocationType> {
   height = 5.6
   width = 8.7
   image = PlayoffPointCard
