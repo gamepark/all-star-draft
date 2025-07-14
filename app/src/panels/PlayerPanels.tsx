@@ -30,6 +30,7 @@ export const PlayerPanels = () => {
           player={player}
           color={playerColorCode[player.id]}
           css={[panelCss, panelBackground(playerColorCode[player.id]), panelPosition(index, players.length)]}
+          activeRing
         />
       ))}
     </>,
