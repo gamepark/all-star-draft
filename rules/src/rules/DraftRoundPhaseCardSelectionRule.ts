@@ -57,7 +57,8 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
         return [this.startSimultaneousRule(RuleId.DraftRoundPhaseClashCardSelectionForOpponent)]
       }
       const moves: MaterialMove[] = []
-      for (const player of this.game.players) {
+      const playersOrder = this.remind(Memorize.RoundNumber) % 2 === 1 ? this.game.players : [...this.game.players].reverse()
+      for (const player of playersOrder) {
         const playerDraftCards = draftCards.player(player)
         const nextPlayer = this.getNextPlayer(player)
         moves.push(playerDraftCards.moveItemsAtOnce({ type: LocationType.HockeyPlayerDraftSpot, player: nextPlayer }))
