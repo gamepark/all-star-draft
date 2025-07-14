@@ -8,10 +8,6 @@ import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
 export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return this.material(MaterialType.HockeyPlayerCard).selected(true).unselectItems()
-  }
-
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const currentTeamNumber = this.remind<number>(Memorize.CurrentTeamNumber, player)
     if (

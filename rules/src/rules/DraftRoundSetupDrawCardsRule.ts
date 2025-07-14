@@ -42,7 +42,6 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
             })
           )
         ),
-      ...this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).selectItems(),
       this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseCardSelection)
     )
     return moves

@@ -1,13 +1,17 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
-import { Memorize } from '../Memorize'
 
 export class DraftRoundPhaseDiscardCardOverflowRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const cardsDrafted = this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).selected(false)
+    const cardsDrafted = this.material(MaterialType.HockeyPlayerCard)
+      .location(LocationType.PlayerHockeyPlayerHandSpot)
+      .player(player)
+      .sort((item) => -item.location.x!)
+      .limit(7)
     return cardsDrafted.moveItems({ type: LocationType.HockeyPlayerDraftSpot, player: player })
   }
 
