@@ -9,7 +9,7 @@ import { RuleId } from './RuleId'
 
 export class DraftRoundPhaseTeamExchangeRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return this.material(MaterialType.HockeyPlayerCard).unselectItems()
+    return this.material(MaterialType.HockeyPlayerCard).selected(true).unselectItems()
   }
 
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
