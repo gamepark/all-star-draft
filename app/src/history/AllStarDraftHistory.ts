@@ -21,7 +21,6 @@ import {
 import { MaterialRotation } from '@gamepark/all-star-draft/material/MaterialRotation'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { BusAssignedToTeamComponent } from '../components/log/BusAssignedToTeamComponent'
-import { BusRevealComponent } from '../components/log/BusRevealComponent'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
 import { MatchResultComponent } from '../components/log/MatchResultComponent'
 import { PlayerEliminatedComponent } from '../components/log/PlayerEliminatedComponent'
@@ -131,9 +130,6 @@ export class AllStarDraftHistory
     if (REVEAL_RULE_IDS.includes(context.game.rule?.id ?? RuleId.DraftRoundPhaseBusDispatch)) {
       if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
         return { Component: TeamRevealComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
-      }
-      if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move)) {
-        return { Component: BusRevealComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseMatchScore) {
