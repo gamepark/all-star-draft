@@ -9,22 +9,16 @@ import { RuleId } from './RuleId'
 export class DraftRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
+    moves.push(this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenTeamSpot).moveItemsAtOnce({ rotation: MaterialRotation.FaceUp }))
     for (let teamNumber = 1; teamNumber <= this.remind(Memorize.RoundNumber); teamNumber++) {
       moves.push(
-        ...this.game.players.flatMap((player) => {
-          return [
-            this.material(MaterialType.BusToken)
-              .location(LocationType.PlayerBusTokenTeamSpot)
-              .player(player)
-              .locationId(teamNumber)
-              .rotateItem(MaterialRotation.FaceUp),
-            this.material(MaterialType.HockeyPlayerCard)
-              .location(LocationType.PlayerHockeyPlayerTeamSpot)
-              .player(player)
-              .locationId(teamNumber)
-              .rotation(MaterialRotation.FaceDown)
-              .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, id: teamNumber, player: player, rotation: MaterialRotation.FaceUp })
-          ]
+        ...this.game.players.map((player) => {
+          return this.material(MaterialType.HockeyPlayerCard)
+            .location(LocationType.PlayerHockeyPlayerTeamSpot)
+            .player(player)
+            .locationId(teamNumber)
+            .rotation(MaterialRotation.FaceDown)
+            .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, id: teamNumber, player: player, rotation: MaterialRotation.FaceUp })
         })
       )
     }
