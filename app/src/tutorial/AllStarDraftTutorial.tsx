@@ -143,7 +143,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       }
     },
     { move: { player: opponent1 } },
-    { move: { player: opponent2, interrupt: (move) => isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) && move.location.player === opponent1 } },
+    { move: { player: opponent2, interrupt: (move) => isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) } },
     {
       popup: {
         text: () => <Trans defaults="tuto.draftDefinition" components={{ bold: <strong /> }} />
@@ -350,7 +350,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       }
     },
     { move: { player: opponent1 } },
-    { move: { player: opponent2, interrupt: (move) => isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) && move.location.player === opponent2 } },
+    { move: { player: opponent2, interrupt: (move) => isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) } },
     {
       popup: {
         text: () => <Trans defaults="tuto.passDirection2" components={{ bold: <strong /> }} />
