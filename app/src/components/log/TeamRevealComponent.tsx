@@ -69,7 +69,16 @@ export const TeamRevealComponent: FC<MoveComponentProps<MaterialMove<PlayerColor
         arenaNumber: move.location.id,
         arena: arena === undefined ? undefined : t(`arena.${ArenaCard[arena.id]}`)
       }}
-      components={{ sup: <sup></sup>, strength: <TeamStrengthLogComponent teamStrength={teamStrength} playerNumber={playerNumber} /> }}
+      components={{
+        sup: <sup></sup>,
+        strength: (
+          <TeamStrengthLogComponent
+            teamStrength={teamStrength}
+            playerNumber={playerNumber}
+            displayIrregularAttribute={gameContext.game.rule?.id !== RuleId.PlayoffRoundPhaseTeamReveal}
+          />
+        )
+      }}
     />
   )
 }

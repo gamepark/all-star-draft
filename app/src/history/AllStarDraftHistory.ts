@@ -38,7 +38,7 @@ import { CardDiscardedComponent } from '../components/log/CardDiscardedComponent
 import { PlayerGiveCardComponent } from '../components/log/PlayerGiveCardComponent'
 import { PlayerReceivedCardComponent } from '../components/log/PlayerReceivedCardComponent'
 
-const REVEAL_RULE_IDS = [RuleId.DraftRoundPhaseTeamReveal, RuleId.PlayoffRoundPhaseTeamReveal, RuleId.PlayoffSubstitutePlayers]
+const REVEAL_RULE_IDS = [RuleId.DraftRoundPhaseTeamReveal, RuleId.PlayoffRoundPhaseTeamReveal]
 
 const getColor = (color: string) => {
   if (color === playerColorCode[PlayerColor.Black]) return 'white'
