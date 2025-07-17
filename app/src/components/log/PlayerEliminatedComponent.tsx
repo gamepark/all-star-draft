@@ -15,6 +15,8 @@ import { SupportersIconComponent } from '../symbols/SupportersIconComponent'
 import { CardValueLogComponent } from './CardValueLogComponent'
 import { TeamStrengthLogComponent } from './TeamStrengthLogComponent'
 
+const COLORS_NEEDING_CONTOUR = [PlayerColor.Green, PlayerColor.Yellow, PlayerColor.Blue]
+
 const getTranslationKey = (isShootOut: boolean, playerCount: number) => {
   if (isShootOut) {
     return playerCount > 3 ? 'history.playOffsPhase.playerEliminatedShootOut' : 'history.playOffsPhase.playerEliminatedShootOutNoTicket'
@@ -60,7 +62,7 @@ export const PlayerEliminatedComponent: FC<MoveComponentProps<MaterialMove<Playe
       defaults={getTranslationKey(isShootOut, playerNumber)}
       values={{ name: playerName, fanPoints: fanPoints }}
       components={{
-        supporterIcon: <SupportersIconComponent />,
+        supporterIcon: <SupportersIconComponent contour={COLORS_NEEDING_CONTOUR.includes(player)} />,
         strength: isShootOut ? (
           <CardValueLogComponent cardId={team[0]} />
         ) : (

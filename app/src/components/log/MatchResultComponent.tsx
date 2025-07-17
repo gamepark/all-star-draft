@@ -15,6 +15,8 @@ import { Trans, useTranslation } from 'react-i18next'
 import { SupportersIconComponent } from '../symbols/SupportersIconComponent'
 import { TeamStrengthLogComponent } from './TeamStrengthLogComponent'
 
+const COLORS_NEEDING_CONTOUR = [PlayerColor.Green, PlayerColor.Yellow, PlayerColor.Blue]
+
 export const MatchResultComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
   const { t } = useTranslation()
   const gameContext = context as MoveComponentContext<
@@ -71,7 +73,7 @@ export const MatchResultComponent: FC<MoveComponentProps<MaterialMove<PlayerColo
             arenaIrregularRule={arenaId in arenaIrregularAttribute ? arenaIrregularAttribute[arenaId] : undefined}
           />
         ),
-        supporterIcon: <SupportersIconComponent />
+        supporterIcon: <SupportersIconComponent contour={COLORS_NEEDING_CONTOUR.includes(busId.back)} />
       }}
     />
   )
