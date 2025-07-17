@@ -10,6 +10,8 @@ import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { SupportersIconComponent } from '../symbols/SupportersIconComponent'
 
+const COLORS_NEEDING_CONTOUR = [PlayerColor.Green, PlayerColor.Yellow, PlayerColor.Blue]
+
 export const PlayOffsWinnerComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
   if (!isEndGame<PlayerColor, MaterialType, LocationType>(move)) {
     return <></>
@@ -26,7 +28,7 @@ export const PlayOffsWinnerComponent: FC<MoveComponentProps<MaterialMove<PlayerC
     <Trans
       defaults="history.playOffsPhase.winner"
       values={{ name: winningPlayerName, fanPoints: fanPoints }}
-      components={{ supporterIcon: <SupportersIconComponent /> }}
+      components={{ supporterIcon: <SupportersIconComponent contour={COLORS_NEEDING_CONTOUR.includes(winningPlayer)} /> }}
     />
   )
 }

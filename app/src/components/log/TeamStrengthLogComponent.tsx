@@ -9,9 +9,10 @@ type TeamStrengthLogComponentProps = {
   teamStrength: TeamStrength
   playerNumber: number
   arenaIrregularRule?: IrregularAttribute
+  displayIrregularAttribute?: boolean
 }
 
-export const TeamStrengthLogComponent: FC<TeamStrengthLogComponentProps> = ({ teamStrength, playerNumber, arenaIrregularRule }) => {
+export const TeamStrengthLogComponent: FC<TeamStrengthLogComponentProps> = ({ teamStrength, playerNumber, arenaIrregularRule, displayIrregularAttribute }) => {
   const medalNumber = getAttributeKindPriority(playerNumber).reverse().indexOf(teamStrength.attribute.kind) + 1
   const value =
     teamStrength.attribute.kind === AttributeKind.Symbol
@@ -26,7 +27,7 @@ export const TeamStrengthLogComponent: FC<TeamStrengthLogComponentProps> = ({ te
           <TeamStrengthIconComponent strength={teamStrength.strength} />
           <MedalIconComponent medalNumber={medalNumber} style={{ height: '2.5em' }} />
           {value}
-          {(teamStrength.irregularsAttributes?.length ?? 0) > 0 && (
+          {displayIrregularAttribute && (teamStrength.irregularsAttributes?.length ?? 0) > 0 && (
             <>
               {', '}
               {teamStrength.irregularsAttributes?.map((irregularAttribute, index) =>

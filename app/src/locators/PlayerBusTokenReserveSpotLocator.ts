@@ -3,7 +3,7 @@ import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { getRelativePlayerIndex, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { Coordinates, Location, MaterialItem, XYCoordinates } from '@gamepark/rules-api'
 
 const rotationMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
@@ -12,42 +12,58 @@ const rotationMap: Record<number, number[]> = {
   3: [0, 180, 180]
 }
 
-const gapMap: Record<number, Partial<Coordinates>[]> = {
-  6: [{ y: 10 }, { x: -3 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
-  5: [{ y: 10 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
-  4: [{ y: 10 }, { x: -3 }, { y: -3 }, { x: 3 }],
-  3: [{ y: 12 }, { y: -3 }, { y: -3 }]
+const gapNearArena: Record<number, Partial<XYCoordinates>> = {
+  6: { y: 10 },
+  5: { y: 10 },
+  4: { y: 10 },
+  3: { y: 12 },
+  2: { y: 12 }
 }
 
-const coordinatesMap: Record<number, { x: number; y: number }[]> = {
+const gapMap: Record<number, Partial<Coordinates>[]> = {
+  6: [{ y: 3 }, { x: -3 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
+  5: [{ y: 3 }, { x: -3 }, { y: -3 }, { x: 3 }, { x: 3 }],
+  4: [{ y: 3 }, { x: -3 }, { y: -3 }, { x: 3 }],
+  3: [{ y: 3 }, { y: -3 }, { y: -3 }]
+}
+
+const coordinatesNearArena: Record<number, XYCoordinates> = {
+  6: { x: 22, y: -11 },
+  5: { x: 22, y: -11 },
+  4: { x: 22, y: -11 },
+  3: { x: -28, y: -12 },
+  2: { x: -28, y: -19 }
+}
+
+const coordinatesMap: Record<number, XYCoordinates[]> = {
   6: [
-    { x: 22, y: -11 },
+    { x: -29, y: 25 },
     { x: -55, y: 40 },
     { x: -55, y: -6 },
-    { x: -22, y: -25 },
-    { x: 55, y: -40 },
-    { x: 55, y: 6 }
+    { x: 22, y: -25 },
+    { x: 55, y: -42 },
+    { x: 55, y: 4 }
   ],
   5: [
-    { x: 22, y: -11 },
+    { x: -29, y: 25 },
     { x: -55, y: 22 },
-    { x: -22, y: -25 },
-    { x: 55, y: -40 },
-    { x: 55, y: 6 }
+    { x: 22, y: -25 },
+    { x: 55, y: -42 },
+    { x: 55, y: 4 }
   ],
   4: [
-    { x: 22, y: -11 },
+    { x: -29, y: 25 },
     { x: -55, y: 22 },
-    { x: -22, y: -25 },
+    { x: 26, y: -25 },
     { x: 55, y: -22 }
   ],
   3: [
-    { x: -28, y: -12 },
-    { x: -58, y: -25 },
-    { x: 2, y: -25 }
+    { x: -28, y: -1 },
+    { x: -15, y: -25 },
+    { x: 46, y: -25 }
   ],
   2: [
-    { x: -28, y: -19 },
+    { x: -28, y: -9 },
     { x: -22, y: -25 }
   ]
 }
@@ -64,7 +80,7 @@ class PlayerBusTokenReserveSpotLocator extends ListLocator<PlayerColor, Material
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
     const gapArray = gapMap[playerCount] ?? gapMap[3]
-    return gapArray[index]
+    return index === 0 && context.player !== undefined ? gapNearArena[playerCount] : gapArray[index]
   }
 
   getCoordinates(
@@ -74,7 +90,7 @@ class PlayerBusTokenReserveSpotLocator extends ListLocator<PlayerColor, Material
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
     const coordArray = coordinatesMap[playerCount]
-    return coordArray[index]
+    return index === 0 && context.player !== undefined ? coordinatesNearArena[playerCount] : coordArray[index]
   }
 
   getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {

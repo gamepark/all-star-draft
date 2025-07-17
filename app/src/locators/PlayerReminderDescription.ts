@@ -1,5 +1,5 @@
 import { LocationDescription } from '@gamepark/react-game'
-import { PlayerReminder } from './PlayerReminder'
+import { PlayerReminder } from '../components/reminder/PlayerReminder'
 
 export class PlayerReminderDescription extends LocationDescription {
   width = 25

@@ -71,10 +71,10 @@ export class PlayoffSubstitutePlayersRule extends SimultaneousRule<PlayerColor, 
     const moves: MaterialMove[] = []
     for (const player of this.game.players) {
       const newPlayers = this.material(MaterialType.HockeyPlayerCard).player(player).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(3)
-      moves.push(newPlayers.moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, player: player, id: 2, rotation: MaterialRotation.FaceUp }))
+      moves.push(newPlayers.moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, player: player, id: 2, rotation: MaterialRotation.FaceDown }))
     }
     moves.push(this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).deleteItemsAtOnce())
-    moves.push(this.startSimultaneousRule(RuleId.PlayoffRoundPhaseMainMatch))
+    moves.push(this.startSimultaneousRule(RuleId.PlayoffRoundPhaseTeamReveal))
     return moves
   }
 }

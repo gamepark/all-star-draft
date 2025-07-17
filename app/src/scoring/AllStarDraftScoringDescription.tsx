@@ -16,8 +16,10 @@ enum ScoringKeys {
 }
 
 export class AllStarDraftScoringDescription implements ScoringDescription<PlayerColor, AllStarDraftRules, ScoringKeys> {
-  getScoringKeys() {
-    return [ScoringKeys.DraftRound, ScoringKeys.PlayoffRound, ScoringKeys.PlayoffTicketTokens, ScoringKeys.Total]
+  public getScoringKeys(rules: AllStarDraftRules): ScoringKeys[] {
+    return rules.players.length > 3
+      ? [ScoringKeys.DraftRound, ScoringKeys.PlayoffRound, ScoringKeys.Total]
+      : [ScoringKeys.DraftRound, ScoringKeys.PlayoffRound, ScoringKeys.PlayoffTicketTokens, ScoringKeys.Total]
   }
 
   getScoringHeader(key: ScoringKeys) {

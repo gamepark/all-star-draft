@@ -17,31 +17,31 @@ const getTeamCoordinates = (playerCount: number, index: number, teamNumber: numb
       { x: teamCoordinates(teamNumber), y: 28 },
       { x: -58, y: 20 + teamCoordinates(teamNumber) },
       { x: -58, y: -26 + teamCoordinates(teamNumber) },
-      { x: teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: -20 + teamCoordinates(teamNumber) },
-      { x: 58, y: 26 + teamCoordinates(teamNumber) }
+      { x: -teamCoordinates(teamNumber), y: -28 },
+      { x: 54, y: -20 - teamCoordinates(teamNumber) },
+      { x: 54, y: 26 - teamCoordinates(teamNumber) }
     ],
     5: [
       { x: teamCoordinates(teamNumber), y: 28 },
       { x: -58, y: teamCoordinates(teamNumber) },
-      { x: teamCoordinates(teamNumber), y: -28 },
-      { x: 58, y: -20 + teamCoordinates(teamNumber) },
-      { x: 58, y: 26 + teamCoordinates(teamNumber) }
+      { x: -teamCoordinates(teamNumber), y: -28 },
+      { x: 54, y: -20 - teamCoordinates(teamNumber) },
+      { x: 54, y: 26 - teamCoordinates(teamNumber) }
     ],
     4: [
       { x: teamCoordinates(teamNumber), y: 28 },
       { x: -58, y: teamCoordinates(teamNumber) },
-      { x: teamCoordinates(teamNumber), y: -28 },
-      { x: 54, y: teamCoordinates(teamNumber) }
+      { x: -teamCoordinates(teamNumber), y: -28 },
+      { x: 54, y: -teamCoordinates(teamNumber) }
     ],
     3: [
       { x: teamCoordinates(teamNumber), y: 2 },
-      { x: teamCoordinates(teamNumber) - 36, y: -28 },
-      { x: teamCoordinates(teamNumber) + 26, y: -28 }
+      { x: -teamCoordinates(teamNumber) - 41, y: -28 },
+      { x: -teamCoordinates(teamNumber) + 20, y: -28 }
     ],
     2: [
       { x: teamCoordinates(teamNumber), y: -6 },
-      { x: teamCoordinates(teamNumber), y: -28 }
+      { x: -teamCoordinates(teamNumber), y: -28 }
     ]
   }
 
@@ -55,7 +55,13 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
 
   getGap(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
     const index = getRelativePlayerIndex(context, location.player)
-    return { x: index === 0 ? 2.2 : 1.2 }
+    const playerCount = context.rules.players.length
+    if (playerCount === 6) {
+      return context.player !== undefined ? { x: index === 3 ? -1.2 : index === 0 ? 2.2 : 1.2 } : { x: index === 3 ? -1.2 : 2.2 }
+    } else if (playerCount > 4) {
+      return context.player !== undefined ? { x: index === 2 ? -1.2 : index === 0 ? 2.2 : 1.2 } : { x: index === 3 ? -1.2 : 2.2 }
+    }
+    return context.player !== undefined ? { x: index === 0 ? 2.2 : 1.2 } : { x: 1.2 }
   }
 
   getCoordinates(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
