@@ -41,15 +41,20 @@ import { PlayerReceivedCardComponent } from '../components/log/PlayerReceivedCar
 
 const REVEAL_RULE_IDS = [RuleId.DraftRoundPhaseTeamReveal, RuleId.PlayoffRoundPhaseTeamReveal, RuleId.PlayoffSubstitutePlayers]
 
-const panelBackground = (color: string) =>
-  color !== 'yellow'
-    ? css`
-        background: linear-gradient(135deg, white 0%, ${color} 25%, ${color} 100%);
-      `
-    : css`
-        background: linear-gradient(135deg, white 0%, ${color} 25%, ${color} 100%);
-        color: dimgray;
-      `
+const getColor = (color: string) => {
+  if (color === playerColorCode[PlayerColor.Black]) return 'white'
+  if (color === playerColorCode[PlayerColor.Purple]) return 'white'
+  if (color === playerColorCode[PlayerColor.Red]) return 'white'
+  return 'black'
+}
+
+const panelBackground = (color: string) => css`
+  box-shadow: 0.2em 0.2em 0.2em black;
+  width: calc(100% - 0.4em);
+  color: ${getColor(color)};
+  //background: ${color};
+  background: linear-gradient(135deg, white 0%, ${color} 25%, ${color} 100%);
+`
 
 export class AllStarDraftHistory
   implements LogDescription<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor, MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>>
