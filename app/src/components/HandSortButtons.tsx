@@ -18,7 +18,9 @@ export const HandSortButtons = ({ xMin, yMin }: Props) => {
   const context = useMaterialContext()
   const player = context.player
   if (!player) return null
-  const transforms = playerHockeyPlayerHandSpotLocator.placeLocation({ type: LocationType.PlayerHockeyPlayerHandSpot, player, x: 0 }, context)
+  const location = { type: LocationType.PlayerHockeyPlayerHandSpot, player, x: 0 }
+  if (playerHockeyPlayerHandSpotLocator.countItems(location, context) < 2) return null
+  const transforms = playerHockeyPlayerHandSpotLocator.placeLocation(location, context)
   transforms.push('translateX(-5em)')
   const players = context.rules.players.length
   return (
