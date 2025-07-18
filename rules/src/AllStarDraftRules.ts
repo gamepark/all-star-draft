@@ -22,7 +22,6 @@ import { PlayerColor } from './PlayerColor'
 import { DraftRoundPhaseBusDispatchRule } from './rules/DraftRoundPhaseBusDispatchRule'
 import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
 import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
-import { DraftRoundPhaseDiscardCardOverflowRule } from './rules/DraftRoundPhaseDiscardCardOverflowRule'
 import { DraftRoundPhaseMatchMoveToStadiumRule } from './rules/DraftRoundPhaseMatchMoveToStadiumRule'
 import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScoreRule'
 import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
@@ -80,7 +79,6 @@ export class AllStarDraftRules
     [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchRule,
     [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule,
     [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionRule,
-    [RuleId.DraftRoundPhaseDiscardCardOverflow]: DraftRoundPhaseDiscardCardOverflowRule,
     [RuleId.DraftRoundPhaseClashCardSelectionForOpponent]: DraftRoundPhaseClashCardSelectionForOpponentRule
   }
 

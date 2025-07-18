@@ -1,5 +1,5 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { BusTokenId, busTokenValue, KnownBusTokenId } from '../material/BusToken'
+import { BusTokenId, getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
 import { getPlayersNewFans, MatchState } from '../material/MatchRanking'
@@ -11,7 +11,7 @@ import { RuleId } from './RuleId'
 
 export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
   onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const arenaIndex = busTokenValue(
+    const arenaIndex = getBusTokenValue(
       this.material(MaterialType.BusToken).location(LocationType.BusTokenSpotBelowBusStationBoard).getItem<KnownBusTokenId>()!.id.front
     )
     const currentArenaMaterial = this.material(MaterialType.ArenaCard).location(

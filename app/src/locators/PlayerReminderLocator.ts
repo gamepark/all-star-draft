@@ -41,7 +41,7 @@ export class PlayerReminderLocator extends Locator {
   locationDescription = new PlayerReminderDescription()
 
   getLocations(context: MaterialContext) {
-    return context.rules.players.map((player) => ({ type: LocationType.PlayerReminderSpot, player }))
+    return context.rules.players.filter((player) => player !== context.player).map((player) => ({ type: LocationType.PlayerReminderSpot, player }))
   }
 
   getCoordinates(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {

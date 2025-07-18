@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memorize } from '../Memorize'
@@ -25,7 +25,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
     })
   }
 
-  beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
       move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
@@ -42,42 +42,42 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
     return []
   }
 
+  public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+    if (
+      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      move.location.type === LocationType.PlayerHockeyPlayerHandSpot
+    ) {
+      return [this.material(MaterialType.HockeyPlayerCard).player(move.location.player).location(move.location.type).shuffle()]
+    }
+    return []
+  }
+
   getNextPlayer(player: PlayerColor) {
-    return this.remind(Memorize.RoundNumber) % 2 === 1
+    const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
+    return roundNumber % 2 === 1
       ? this.game.players[(this.game.players.indexOf(player) + 1) % this.game.players.length]
       : this.game.players[(this.game.players.indexOf(player) + this.game.players.length - 1) % this.game.players.length]
   }
 
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const draftCards = this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot)
-
-    // If cards are left in the draft
     if (draftCards.length > 0) {
       if (this.game.players.length === 2 && this.remind<TwoPlayersMode>(Memorize.GameMode) === TwoPlayersMode.Clash) {
         return [this.startSimultaneousRule(RuleId.DraftRoundPhaseClashCardSelectionForOpponent)]
       }
-      const moves: MaterialMove[] = []
-      const playersOrder = this.remind(Memorize.RoundNumber) % 2 === 1 ? this.game.players : [...this.game.players].reverse()
-      for (const player of playersOrder) {
-        const playerDraftCards = draftCards.player(player)
-        const nextPlayer = this.getNextPlayer(player)
-        moves.push(playerDraftCards.moveItemsAtOnce({ type: LocationType.HockeyPlayerDraftSpot, player: nextPlayer }))
-        if (playerDraftCards.length > 1) {
-          moves.push(playerDraftCards.shuffle())
-        }
-      }
-      moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseCardSelection))
-      return moves
-    }
-
-    // If no cards are left
-    const gameMode = this.remind<TwoPlayersMode>(Memorize.GameMode)
-    if (this.game.players.length === 2 && [TwoPlayersMode.Heritage, TwoPlayersMode.Clash].includes(gameMode)) {
-      return [this.startSimultaneousRule(RuleId.DraftRoundPhaseDiscardCardOverflow)]
-    }
-
-    if (this.remind(Memorize.RoundNumber) > 1) {
-      return [this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamExchange)]
+      const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
+      const playersOrder = roundNumber % 2 === 1 ? this.game.players : [...this.game.players].reverse()
+      return playersOrder
+        .flatMap((player): MaterialMove<PlayerColor, MaterialType, LocationType>[] => {
+          const playerDraftCards = draftCards.player(player)
+          const nextPlayer = this.getNextPlayer(player)
+          if (playerDraftCards.length > 1) {
+            return [playerDraftCards.moveItemsAtOnce({ type: LocationType.HockeyPlayerDraftSpot, player: nextPlayer }), playerDraftCards.shuffle()]
+          } else {
+            return [playerDraftCards.moveItem({ type: LocationType.PlayerHockeyPlayerHandSpot, player: nextPlayer })]
+          }
+        })
+        .concat(this.startSimultaneousRule(RuleId.DraftRoundPhaseCardSelection))
     }
     return [this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation)]
   }

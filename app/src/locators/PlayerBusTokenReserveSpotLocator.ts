@@ -1,4 +1,4 @@
-import { busTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
+import { getBusTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
@@ -95,7 +95,7 @@ class PlayerBusTokenReserveSpotLocator extends ListLocator<PlayerColor, Material
 
   getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
     if (context.player === item.location.player) {
-      return busTokenValue((item.id as KnownBusTokenId).front) - 1
+      return getBusTokenValue((item.id as KnownBusTokenId).front) - 1
     }
     return super.getItemIndex(item, context)
   }

@@ -74,14 +74,6 @@ export class AllStarDraftHistory
         return { Component: CardDraftedComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
     }
-    if (context.game.rule?.id === RuleId.DraftRoundPhaseDiscardCardOverflow) {
-      if (
-        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
-        move.location.type === LocationType.HockeyPlayerDraftSpot
-      ) {
-        return { Component: CardDiscardedComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
-      }
-    }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseClashCardSelectionForOpponent) {
       if (
         isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
@@ -98,6 +90,10 @@ export class AllStarDraftHistory
       }
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.game.rule?.id === RuleId.PlayoffRoundSetupPhase) {
+      if (isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+        const deletedCard = context.game.items[MaterialType.HockeyPlayerCard]![move.itemIndex]
+        return { Component: CardDiscardedComponent, player: deletedCard.location.player, css: panelBackground(playerColorCode[deletedCard.location.player!]) }
+      }
       if (
         isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
         move.location.type === LocationType.PlayerHockeyPlayerTeamSpot

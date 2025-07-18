@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
-import { busTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
+import { getBusTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { getHockeyPlayerCardSymbol, HockeyPlayerCard, HockeyPlayerCardSymbolsType } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -285,7 +285,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
           this.material(game, MaterialType.BusToken)
             .location(LocationType.PlayerBusTokenReserveSpot)
             .player(me)
-            .id((id) => busTokenValue((id as KnownBusTokenId).front) === 1)
+            .id((id) => getBusTokenValue((id as KnownBusTokenId).front) === 1)
         ],
         locations: [{ type: LocationType.PlayerBusTokenTeamSpot, player: me }]
       })

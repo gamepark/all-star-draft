@@ -47,6 +47,6 @@ export class DraftRoundPhaseClashCardSelectionForOpponentRule extends Simultaneo
         this.startSimultaneousRule(RuleId.DraftRoundPhaseCardSelection)
       ]
     }
-    return [...revealMoves, this.startSimultaneousRule(RuleId.DraftRoundPhaseDiscardCardOverflow)]
+    return [...revealMoves, this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation)]
   }
 }

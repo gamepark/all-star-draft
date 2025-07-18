@@ -1,6 +1,6 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { ArenaCard, arenaIrregularAttribute } from '../material/ArenaCard'
-import { busTokenValue, KnownBusTokenId } from '../material/BusToken'
+import { getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -13,7 +13,7 @@ export class DraftRoundPhaseMatchMoveToStadiumRule extends PlayerTurnRule<Player
   onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     const playerCount = this.game.players.length
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.game.players.flatMap((player) => {
-      const arenaIndex = busTokenValue(
+      const arenaIndex = getBusTokenValue(
         this.material(MaterialType.BusToken)
           .location(LocationType.PlayerBusTokenTeamSpot)
           .player(player)
@@ -23,7 +23,7 @@ export class DraftRoundPhaseMatchMoveToStadiumRule extends PlayerTurnRule<Player
       const busToken = this.material(MaterialType.BusToken)
         .location(LocationType.PlayerBusTokenTeamSpot)
         .player(player)
-        .id<KnownBusTokenId>((busId) => busTokenValue(busId.front) === arenaIndex)
+        .id<KnownBusTokenId>((busId) => getBusTokenValue(busId.front) === arenaIndex)
       const teamIndex = busToken.getItem()?.location.id as number
       const teamLineup = this.material(MaterialType.HockeyPlayerCard)
         .location(LocationType.PlayerHockeyPlayerTeamSpot)

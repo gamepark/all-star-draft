@@ -1,5 +1,5 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
-import { busTokenValue, KnownBusTokenId } from '../material/BusToken'
+import { getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { LocationType } from '../material/LocationType'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
@@ -21,7 +21,7 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
               .location(LocationType.PlayerBusTokenReserveSpot)
               .player(player)
               .filter((bus) => {
-                return busTokenValue((bus.id as KnownBusTokenId).front) <= this.remind(Memorize.RoundNumber)
+                return getBusTokenValue((bus.id as KnownBusTokenId).front) <= this.remind(Memorize.RoundNumber)
               })
               .moveItems({
                 type: LocationType.PlayerBusTokenTeamSpot,
