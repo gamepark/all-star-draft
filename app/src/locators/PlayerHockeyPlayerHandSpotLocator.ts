@@ -1,5 +1,12 @@
+import {
+  getHockeyPlayerCardSpecie,
+  getHockeyPlayerCardSymbol,
+  getHockeyPlayerCardValue,
+  HockeyPlayerCard
+} from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
+import { Memorize } from '@gamepark/all-star-draft/Memorize'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
@@ -73,7 +80,17 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     const { player, rules, index } = context
     if (item.location.player === player) {
       const hockeyPlayerCards = rules.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player)
-      const sorted = orderBy(hockeyPlayerCards.getIndexes(), (index) => hockeyPlayerCards.getItem(index).id)
+      const medalSort = context.rules.remind<number | undefined>(Memorize.SortMedal)
+      const sorted = orderBy(hockeyPlayerCards.getIndexes(), (index) => {
+        const cardId = hockeyPlayerCards.getItem<HockeyPlayerCard>(index).id
+        if (medalSort === 1) {
+          return getHockeyPlayerCardSymbol(cardId)
+        } else if ((medalSort === 2 && context.rules.players.length < 5) || (medalSort === 3 && context.rules.players.length > 4)) {
+          return getHockeyPlayerCardValue(cardId)
+        } else {
+          return getHockeyPlayerCardSpecie(cardId)
+        }
+      })
       return sorted.indexOf(index)
     }
     return item.location.x!

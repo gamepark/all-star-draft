@@ -4,7 +4,8 @@ import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
 
 export enum CustomMoveType {
-  Pass = 1
+  Pass = 1,
+  SortHand
 }
 
 export type PassMoveDataType = {

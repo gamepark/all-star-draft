@@ -8,5 +8,6 @@ export enum Memorize {
   GameMode,
   CardsAlreadyInHand,
   ScorePlayoff,
-  ScoreTicket
+  ScoreTicket,
+  SortMedal
 }

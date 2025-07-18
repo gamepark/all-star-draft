@@ -1,5 +1,6 @@
 import {
   CompetitiveScore,
+  CustomMove,
   FillGapStrategy,
   hideItemId,
   hideItemIdToOthers,
@@ -10,8 +11,9 @@ import {
   StackingStrategy,
   TimeLimit
 } from '@gamepark/rules-api'
-import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
+import { CustomMoveType } from './material/CustomMoveType'
 import { hideCardToEveryoneWhenRotatedFaceDown } from './material/HideCardToEveryoneWhenRotatedFaceDown'
+import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
 import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthersWhenRotatedFaceDown'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
@@ -123,5 +125,12 @@ export class AllStarDraftRules
 
   giveTime(): number {
     return 60
+  }
+
+  onCustomMove(move: CustomMove) {
+    if (move.type === CustomMoveType.SortHand) {
+      this.memorize(Memorize.SortMedal, move.data)
+    }
+    return []
   }
 }
