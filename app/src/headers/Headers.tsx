@@ -2,14 +2,12 @@
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { ComponentType } from 'react'
 import { SimultaneousRuleHeaderComponent } from '../components/headers/SimultaneousRuleHeaderComponent'
-import { DraftRoundPhaseBusDispatchHeader } from './DraftRoundPhaseBusDispatchHeader'
 import { DraftRoundPhaseCardSelectionHeader } from './DraftRoundPhaseCardSelectionHeader'
 import { DraftRoundPhaseClashCardSelectionForOpponentHeader } from './DraftRoundPhaseClashCardSelectionForOpponentHeader'
 import { DraftRoundPhaseMatchMoveToStadiumHeader } from './DraftRoundPhaseMatchMoveToStadiumHeader'
 import { DraftRoundPhaseMatchScoreHeader } from './DraftRoundPhaseMatchScoreHeader'
 import { DraftRoundPhaseOpenMarketCardSelectionHeader } from './DraftRoundPhaseOpenMarketCardSelectionHeader'
 import { DraftRoundPhaseTeamCreationHeader } from './DraftRoundPhaseTeamCreationHeader'
-import { DraftRoundPhaseTeamExchangeHeader } from './DraftRoundPhaseTeamExchangeHeader'
 import { DraftRoundSetupDrawCardsHeader } from './DraftRoundSetupDrawCardsHeader'
 import { DraftRoundTeamRevealHeader } from './DraftRoundTeamRevealHeader'
 import { PlayoffRoundPhaseMainMatchHeader } from './PlayoffRoundPhaseMainMatchHeader'
@@ -21,9 +19,7 @@ import { PlayoffRoundSetupPhaseHeader } from './PlayoffRoundSetupPhaseHeader'
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsHeader,
   [RuleId.DraftRoundPhaseCardSelection]: DraftRoundPhaseCardSelectionHeader,
-  [RuleId.DraftRoundPhaseTeamExchange]: DraftRoundPhaseTeamExchangeHeader,
   [RuleId.DraftRoundPhaseTeamCreation]: DraftRoundPhaseTeamCreationHeader,
-  [RuleId.DraftRoundPhaseBusDispatch]: DraftRoundPhaseBusDispatchHeader,
   [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundTeamRevealHeader,
   [RuleId.DraftRoundPhaseMatchScore]: DraftRoundPhaseMatchScoreHeader,
   [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumHeader,

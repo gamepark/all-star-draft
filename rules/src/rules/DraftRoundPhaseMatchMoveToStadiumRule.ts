@@ -9,8 +9,8 @@ import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
-export class DraftRoundPhaseMatchMoveToStadiumRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+export class DraftRoundPhaseMatchMoveToStadiumRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const playerCount = this.game.players.length
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = this.game.players.flatMap((player) => {
       const arenaIndex = getBusTokenValue(

@@ -6,8 +6,8 @@ import { PlayerColor } from '../PlayerColor'
 import { TwoPlayersMode } from '../TwoPlayersMode'
 import { RuleId } from './RuleId'
 
-export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const hasOneCardLeft = this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).length === this.game.players.length
     if (hasOneCardLeft)
       return [
@@ -18,14 +18,14 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
     return []
   }
 
-  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     return this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).player(player).moveItems({
       type: LocationType.PlayerHockeyPlayerHandSpot,
       player: player
     })
   }
 
-  beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
       move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
@@ -36,13 +36,12 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
         this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).player(move.location.player).length === 7
       )
         return []
-      this.memorize(Memorize.CurrentTeamNumber, 1, move.location.player)
       return [this.endPlayerTurn<PlayerColor>(move.location.player)]
     }
     return []
   }
 
-  public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
       move.location.type === LocationType.PlayerHockeyPlayerHandSpot
@@ -59,7 +58,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
       : this.game.players[(this.game.players.indexOf(player) + this.game.players.length - 1) % this.game.players.length]
   }
 
-  getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const draftCards = this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot)
     if (draftCards.length > 0) {
       if (this.game.players.length === 2 && this.remind<TwoPlayersMode>(Memorize.GameMode) === TwoPlayersMode.Clash) {
@@ -67,7 +66,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
       }
       const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
       const playersOrder = roundNumber % 2 === 1 ? this.game.players : [...this.game.players].reverse()
-      return playersOrder
+      const moves = playersOrder
         .flatMap((player): MaterialMove<PlayerColor, MaterialType, LocationType>[] => {
           const playerDraftCards = draftCards.player(player)
           const nextPlayer = this.getNextPlayer(player)
@@ -78,7 +77,8 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
           }
         })
         .concat(this.startSimultaneousRule(RuleId.DraftRoundPhaseCardSelection))
+      return draftCards.length !== this.game.players.length ? moves : moves.concat(this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation))
     }
-    return [this.startSimultaneousRule(RuleId.DraftRoundPhaseTeamCreation)]
+    return []
   }
 }

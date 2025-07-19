@@ -7,7 +7,7 @@ import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
-import { ItemButtonProps, ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
+import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { ReactNode } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
@@ -37,11 +37,7 @@ import Yellow2 from '../images/Tokens/Bus/Yellow2.png'
 import Yellow3 from '../images/Tokens/Bus/Yellow3.png'
 import YellowBack from '../images/Tokens/Bus/YellowBack.png'
 
-const dispatchButtonProps: { coordinates: Partial<ItemButtonProps>; icon: FontAwesomeIconProps['icon'] }[] = [
-  { coordinates: { x: 2.5, y: -3 }, icon: fa1 },
-  { coordinates: { x: 2.5, y: 0 }, icon: fa2 },
-  { coordinates: { x: 2.5, y: 3 }, icon: fa3 }
-]
+const dispatchButtonProps: { icon: FontAwesomeIconProps['icon'] }[] = [{ icon: fa1 }, { icon: fa2 }, { icon: fa3 }]
 
 class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, BusTokenId> {
   height = 2.2
@@ -117,7 +113,8 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
                     />
                   }
                   labelPosition="right"
-                  {...dispatchButtonProps[moveLocationIndex].coordinates}
+                  x={2.5}
+                  y={moveLocationIndex === 0 ? -3.5 : moveLocationIndex === 1 ? 0 : 3.5}
                 >
                   <FontAwesomeIcon icon={dispatchButtonProps[moveLocationIndex].icon} size="lg" />
                 </ItemMenuButton>

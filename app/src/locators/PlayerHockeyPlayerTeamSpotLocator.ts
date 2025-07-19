@@ -4,7 +4,6 @@ import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { DropAreaDescription, getRelativePlayerIndex, ItemContext, ListLocator, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, isMoveItemType, Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
-import { orderBy } from 'lodash'
 import { HockeyPlayerTeamHelp } from '../components/help/HockeyPlayerTeamHelp'
 import { hockeyPlayerCardDescription } from '../material/HockeyPlayerCardDescription'
 
@@ -72,7 +71,7 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
   }
 
   getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
-    const { rules, index } = context
+    const { rules } = context
     const roundNumber = rules.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     if (item.id !== undefined) {
       const hockeyPlayerCards = rules
@@ -80,8 +79,9 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
         .location(LocationType.PlayerHockeyPlayerTeamSpot)
         .locationId(item.location.id)
         .player(item.location.player)
-      const sorted = orderBy(hockeyPlayerCards.getIndexes(), (index) => hockeyPlayerCards.getItem(index).id)
-      return sorted.indexOf(index)
+        .sort((item) => item.id as number)
+        .getItems<HockeyPlayerCard>()
+      return hockeyPlayerCards.findIndex((card) => card.id === item.id)
     } else {
       if (roundNumber > 0) {
         return item.location.id < roundNumber ? 4 : item.location.x!
@@ -107,18 +107,7 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
     location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType> | ItemContext<PlayerColor, MaterialType, LocationType>
   ): LocationDescription<PlayerColor, MaterialType, LocationType> | undefined {
-    const roundNumber = context.rules.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
-    if (roundNumber === 0) {
-      return new NewTeamPlayerHockeyPlayerTeamSpotDescription()
-    } else {
-      if (
-        location.id < roundNumber &&
-        context.rules.material(MaterialType.HockeyPlayerCard).player(location.player).location(location.type).locationId(location.id).length === 4
-      ) {
-        return new NewTeamPlayerHockeyPlayerTeamSpotDescription()
-      }
-      return location.id === roundNumber ? new NewTeamPlayerHockeyPlayerTeamSpotDescription() : new PlayerHockeyPlayerTeamSpotDescription()
-    }
+    return location.x !== undefined ? new PlayerHockeyPlayerTeamSpotDescription() : super.getLocationDescription(location, context)
   }
 }
 
@@ -128,34 +117,43 @@ class PlayerHockeyPlayerTeamSpotDescription extends DropAreaDescription<PlayerCo
   borderRadius = hockeyPlayerCardDescription.borderRadius
   help = HockeyPlayerTeamHelp
 
-  public canDrop(
+  public isMoveToLocation(
     move: MaterialMove<PlayerColor, MaterialType, LocationType>,
     location: Location<PlayerColor, LocationType>,
-    context: ItemContext<PlayerColor, MaterialType, LocationType>
+    context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): boolean {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
       move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+      move.location.id === location.id &&
       move.location.x !== undefined
     ) {
-      const itemAtLocation = context.rules
+      const itemAtMoveLocationMaterial = context.rules
         .material(move.itemType)
         .player(move.location.player)
         .location(move.location.type)
+        .location((l) => l.x === move.location.x)
         .locationId(move.location.id)
-        .filter<HockeyPlayerCard>((item) => playerHockeyPlayerTeamSpotLocator.getItemIndex(item, context) === location.x)
-        .getItem<HockeyPlayerCard>()
-      return itemAtLocation?.location.x === move.location.x
+      const itemAtMoveLocationIndex = itemAtMoveLocationMaterial.getIndex()
+      const itemAtMoveLocation = itemAtMoveLocationMaterial.getItem<HockeyPlayerCard>()!
+      const itemContext: ItemContext<PlayerColor, MaterialType, LocationType> = {
+        ...context,
+        index: itemAtMoveLocationIndex,
+        displayIndex: 0,
+        type: MaterialType.HockeyPlayerCard
+      }
+      const itemAtMoveLocationLocatorIndex = playerHockeyPlayerTeamSpotLocator.getItemIndex(itemAtMoveLocation, itemContext)
+      return itemAtMoveLocationLocatorIndex === location.x
     }
-    return super.canDrop(move, location, context)
+    return super.isMoveToLocation(move, location, context)
   }
 }
 
-class NewTeamPlayerHockeyPlayerTeamSpotDescription extends DropAreaDescription<PlayerColor, MaterialType, LocationType> {
-  width = hockeyPlayerCardDescription.width + 2.2 * 4
-  height = hockeyPlayerCardDescription.height
-  borderRadius = hockeyPlayerCardDescription.borderRadius
-  help = HockeyPlayerTeamHelp
-}
+// class NewTeamPlayerHockeyPlayerTeamSpotDescription extends DropAreaDescription<PlayerColor, MaterialType, LocationType> {
+//   width = hockeyPlayerCardDescription.width + 2.2 * 4
+//   height = hockeyPlayerCardDescription.height
+//   borderRadius = hockeyPlayerCardDescription.borderRadius
+//   help = HockeyPlayerTeamHelp
+// }
 
 export const playerHockeyPlayerTeamSpotLocator = new PlayerHockeyPlayerTeamSpotLocator()

@@ -1,15 +1,15 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { LocationType } from '../material/LocationType'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
-import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
-export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    return Array(this.remind(Memorize.RoundNumber))
+export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
+    return Array(roundNumber)
       .fill(1)
       .flatMap((_, index) =>
         this.material(MaterialType.BusToken)
@@ -20,9 +20,7 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
           ? this.material(MaterialType.BusToken)
               .location(LocationType.PlayerBusTokenReserveSpot)
               .player(player)
-              .filter((bus) => {
-                return getBusTokenValue((bus.id as KnownBusTokenId).front) <= this.remind(Memorize.RoundNumber)
-              })
+              .filter<KnownBusTokenId>((bus) => getBusTokenValue(bus.id.front) <= roundNumber)
               .moveItems({
                 type: LocationType.PlayerBusTokenTeamSpot,
                 player: player,
@@ -33,23 +31,21 @@ export class DraftRoundPhaseBusDispatchRule extends SimultaneousRule<PlayerColor
       )
   }
 
-  afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
       move.location.type === LocationType.PlayerBusTokenTeamSpot &&
       move.location.player !== undefined
     ) {
-      if (
-        this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenReserveSpot).player(move.location.player).getItems().length ===
-        3 - this.remind(Memorize.RoundNumber)
-      ) {
+      const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
+      if (this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenTeamSpot).player(move.location.player).getItems().length === roundNumber) {
         return [this.endPlayerTurn(move.location.player)]
       }
     }
     return []
   }
 
-  getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseTeamReveal)]
   }
 }

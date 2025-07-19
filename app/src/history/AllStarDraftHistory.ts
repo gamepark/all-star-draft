@@ -2,15 +2,14 @@ import { css } from '@emotion/react'
 import { KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
-import { Memorize } from '@gamepark/all-star-draft/Memorize'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
 import {
-  GameMemory,
+  // GameMemory,
   isDeleteItemType,
   isDeleteItemTypeAtOnce,
-  isEndGame,
+  // isEndGame,
   isMoveItemType,
   isMoveItemTypeAtOnce,
   isStartSimultaneousRule,
@@ -20,18 +19,15 @@ import {
 } from '@gamepark/rules-api'
 import { MaterialRotation } from '@gamepark/all-star-draft/material/MaterialRotation'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
-import { BusAssignedToTeamComponent } from '../components/log/BusAssignedToTeamComponent'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
 import { MatchResultComponent } from '../components/log/MatchResultComponent'
 import { PlayerEliminatedComponent } from '../components/log/PlayerEliminatedComponent'
 import { PlayOffTicketLostComponent } from '../components/log/PlayOffTicketLostComponent'
-import { PlayOffsWinnerComponent } from '../components/log/PlayOffsWinnerComponent'
 import { RevealShootOutCardComponent } from '../components/log/RevealShootOutCardComponent'
 import { ShootOutPlayersComponent } from '../components/log/ShootOutPlayersComponent'
 import { TeamCreatedComponent } from '../components/log/TeamCreatedComponent'
 import { TeamMemberAddedFromBench } from '../components/log/TeamMemberAddedFromBench'
 import { TeamMemberRemovedComponent } from '../components/log/TeamMemberRemovedComponent'
-import { TeamMemberSentToBenchComponent } from '../components/log/TeamMemberSentToBenchComponent'
 import { TeamRevealComponent } from '../components/log/TeamRevealComponent'
 import { playerColorCode } from '../panels/PlayerPanels'
 import { CardDiscardedComponent } from '../components/log/CardDiscardedComponent'
@@ -108,22 +104,7 @@ export class AllStarDraftHistory
           : undefined
       }
     }
-    if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamExchange) {
-      if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
-        if (move.location.type === LocationType.PlayerHockeyPlayerHandSpot) {
-          return { Component: TeamMemberSentToBenchComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
-        }
-        if (move.location.type === LocationType.PlayerHockeyPlayerTeamSpot) {
-          return { Component: TeamMemberAddedFromBench, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
-        }
-      }
-    }
-    if (context.game.rule?.id === RuleId.DraftRoundPhaseBusDispatch) {
-      if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) && move.location.type === LocationType.PlayerBusTokenTeamSpot) {
-        return { Component: BusAssignedToTeamComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
-      }
-    }
-    if (REVEAL_RULE_IDS.includes(context.game.rule?.id ?? RuleId.DraftRoundPhaseBusDispatch)) {
+    if (REVEAL_RULE_IDS.includes(context.game.rule?.id ?? RuleId.DraftRoundPhaseMatchScore)) {
       if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
         return { Component: TeamRevealComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
@@ -170,10 +151,6 @@ export class AllStarDraftHistory
       if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) && move.location.id === 3) {
         return { Component: RevealShootOutCardComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
-    }
-    if (isEndGame<PlayerColor, MaterialType, LocationType>(move)) {
-      const winningPlayer = new GameMemory(context.game).remind<PlayerColor[]>(Memorize.ActivePlayers)[0]
-      return { Component: PlayOffsWinnerComponent, player: winningPlayer, css: panelBackground(playerColorCode[winningPlayer]) }
     }
     return undefined
   }

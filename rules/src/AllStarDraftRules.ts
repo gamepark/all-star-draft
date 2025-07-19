@@ -19,14 +19,12 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Memorize } from './Memorize'
 import { PlayerColor } from './PlayerColor'
-import { DraftRoundPhaseBusDispatchRule } from './rules/DraftRoundPhaseBusDispatchRule'
 import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
 import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
 import { DraftRoundPhaseMatchMoveToStadiumRule } from './rules/DraftRoundPhaseMatchMoveToStadiumRule'
 import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScoreRule'
 import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
 import { DraftRoundPhaseTeamCreationRule } from './rules/DraftRoundPhaseTeamCreationRule'
-import { DraftRoundPhaseTeamExchangeRule } from './rules/DraftRoundPhaseTeamExchangeRule'
 import { DraftRoundPhaseTeamRevealRule } from './rules/DraftRoundPhaseTeamRevealRule'
 import { DraftRoundSetupDrawCardsRule } from './rules/DraftRoundSetupDrawCardsRule'
 import { PlayoffRoundPhaseMainMatchRule } from './rules/PlayoffRoundPhaseMainMatchRule'
@@ -66,9 +64,7 @@ export class AllStarDraftRules
   rules = {
     [RuleId.DraftRoundSetupDrawCards]: DraftRoundSetupDrawCardsRule,
     [RuleId.DraftRoundPhaseCardSelection]: DraftRoundPhaseCardSelectionRule,
-    [RuleId.DraftRoundPhaseTeamExchange]: DraftRoundPhaseTeamExchangeRule,
     [RuleId.DraftRoundPhaseTeamCreation]: DraftRoundPhaseTeamCreationRule,
-    [RuleId.DraftRoundPhaseBusDispatch]: DraftRoundPhaseBusDispatchRule,
     [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundPhaseTeamRevealRule,
     [RuleId.DraftRoundPhaseMatchScore]: DraftRoundPhaseMatchScoreRule,
     [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumRule,

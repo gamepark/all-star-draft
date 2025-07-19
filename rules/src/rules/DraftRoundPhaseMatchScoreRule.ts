@@ -9,8 +9,9 @@ import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
-export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     const arenaIndex = getBusTokenValue(
       this.material(MaterialType.BusToken).location(LocationType.BusTokenSpotBelowBusStationBoard).getItem<KnownBusTokenId>()!.id.front
     )
@@ -50,7 +51,7 @@ export class DraftRoundPhaseMatchScoreRule extends PlayerTurnRule<PlayerColor, M
     const isLastBusToken = this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenTeamSpot).getItems().length === 0
     if (isLastBusToken) {
       moves.push(...this.game.players.map((player) => this.material(MaterialType.BusToken).player(player).shuffle()))
-      moves.push(this.startSimultaneousRule(this.remind(Memorize.RoundNumber) < 3 ? RuleId.DraftRoundSetupDrawCards : RuleId.PlayoffRoundSetupPhase))
+      moves.push(this.startSimultaneousRule(roundNumber === 3 ? RuleId.PlayoffRoundSetupPhase : RuleId.DraftRoundSetupDrawCards))
     } else {
       moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseMatchMoveToStadium))
     }
