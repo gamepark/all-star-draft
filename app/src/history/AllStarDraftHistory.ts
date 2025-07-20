@@ -19,7 +19,7 @@ import {
   MaterialMove
 } from '@gamepark/rules-api'
 import { CardDiscardedComponent } from '../components/history/common/CardDiscardedComponent'
-import { MatchResultComponent } from '../components/history/common/MatchResultComponent'
+import { DraftRoundMatchResultComponent } from '../components/history/draft/DraftRoundMatchResultComponent'
 import { TeamMemberAddedFromBench } from '../components/history/common/TeamMemberAddedFromBench'
 import { TeamRevealComponent } from '../components/history/common/TeamRevealComponent'
 import { TeamRevealStartComponent } from '../components/history/common/TeamRevealStartComponent'
@@ -167,7 +167,7 @@ export class AllStarDraftHistory
     if (context.game.rule?.id === RuleId.DraftRoundPhaseMatchScore) {
       if (
         isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
-        move.location.type === LocationType.BusSpotOnArenaCardLadder
+        move.location.type === LocationType.BusTokenSpotBelowBusStationBoard
       ) {
         const busTokenMaterial = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken, context.game.items[MaterialType.BusToken])
         const matchNumber = getBusTokenValue(busTokenMaterial.index(move.itemIndex).getItem<KnownBusTokenId>()!.id.front)
@@ -176,13 +176,18 @@ export class AllStarDraftHistory
           context.action.consequences.findIndex(
             (m) =>
               isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(m) &&
-              m.location.type === LocationType.BusSpotOnArenaCardLadder &&
+              m.location.type === LocationType.BusStationBoardSpot &&
               getBusTokenValue(busTokenMaterial.index(m.itemIndex).getItem<KnownBusTokenId>()!.id.front) === matchNumber
           )
         const player = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken, context.game.items[MaterialType.BusToken])
           .index(move.itemIndex)
           .getItem<KnownBusTokenId>()!.id.back
-        return { Component: MatchResultComponent, player: player, css: panelBackground(playerColorCode[player]), depth: isFirstBusMove ? undefined : 1 }
+        return {
+          Component: DraftRoundMatchResultComponent,
+          player: player,
+          css: panelBackground(playerColorCode[player]),
+          depth: isFirstBusMove ? undefined : 1
+        }
       }
     }
     if (context.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
@@ -226,8 +231,10 @@ export class AllStarDraftHistory
         MaterialType.HockeyPlayerCard,
         context.game.items[MaterialType.HockeyPlayerCard]
       )
-      const winningPlayer = context.game.players.find((p) => hockeyPlayerCardsMaterial.player(p).length > 0)!
-      return { Component: PlayOffsWinnerComponent, player: winningPlayer, css: panelBackground(playerColorCode[winningPlayer]) }
+      const winningPlayer = context.game.players.find((p) => hockeyPlayerCardsMaterial.player(p).length > 0)
+      if (winningPlayer !== undefined) {
+        return { Component: PlayOffsWinnerComponent, player: winningPlayer, css: panelBackground(playerColorCode[winningPlayer]) }
+      }
     }
     return undefined
   }

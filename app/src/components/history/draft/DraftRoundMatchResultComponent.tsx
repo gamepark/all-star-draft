@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { ArenaCard, arenaIrregularAttribute, arenasFanPoints } from '@gamepark/all-star-draft/material/ArenaCard'
 import { getBusTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
-import { isMatchResultCustomMove } from '@gamepark/all-star-draft/material/CustomMoveType'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -17,36 +16,40 @@ import { TeamStrengthLogComponent } from '../util/TeamStrengthLogComponent'
 
 const COLORS_NEEDING_CONTOUR = [PlayerColor.Green, PlayerColor.Yellow, PlayerColor.Blue]
 
-export const MatchResultComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
+export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({
+  move,
+  context
+}) => {
   const { t } = useTranslation()
+  if (
+    !isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) ||
+    move.location.type !== LocationType.BusTokenSpotBelowBusStationBoard
+  ) {
+    return <></>
+  }
   const gameContext = context as MoveComponentContext<
     MaterialMove<PlayerColor, MaterialType, LocationType>,
     PlayerColor,
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
-  if (!isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) || move.location.type !== LocationType.BusSpotOnArenaCardLadder) {
-    return <></>
-  }
-  const matchResultCustomMoves = gameContext.action.consequences.filter(isMatchResultCustomMove)
-  const isTied =
-    gameContext.action.consequences
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken))
-      .filter(
-        (m) =>
-          m.location.type === LocationType.BusSpotOnArenaCardLadder &&
-          m.location.id === move.location.id &&
-          m.itemIndex !== move.itemIndex &&
-          m.location.parent === move.location.parent
-      ).length > 0
-  const busId = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken, gameContext.game.items[MaterialType.BusToken])
-    .index(move.itemIndex)
-    .getItem<KnownBusTokenId>()!.id
-  const matchNumber = getBusTokenValue(busId.front)
   const playerNumber = gameContext.game.players.length
-  const matchResult = matchResultCustomMoves[matchNumber - 1].data
-  const playerResult = matchResult.find((result) => result.player === busId.back)!
-  const rank = move.location.id as number
-  const teamNumber = playerResult.teamNumber
+  const busItem = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken, gameContext.game.items[MaterialType.BusToken])
+    .index(move.itemIndex)
+    .getItem<KnownBusTokenId>()!
+  const busId = busItem.id
+  const matchNumber = getBusTokenValue(busId.front)
+  const busTokenMoveToArenaLadderConsequences = gameContext.action.consequences
+    .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken))
+    .filter((move) => move.location.type === LocationType.BusSpotOnArenaCardLadder)
+  const moveToArenaLadderForBus = busTokenMoveToArenaLadderConsequences.find((m) => m.itemIndex === move.itemIndex)!
+  const isTied = busTokenMoveToArenaLadderConsequences.some(
+    (m) =>
+      m.location.id === moveToArenaLadderForBus.location.id &&
+      m.location.parent === moveToArenaLadderForBus.location.parent &&
+      m.itemIndex !== moveToArenaLadderForBus.itemIndex
+  )
+  const rank = moveToArenaLadderForBus.location.id as number
+  const teamNumber = busItem.location.id as number
   const team = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard])
     .location(LocationType.PlayerHockeyPlayerTeamSpot)
     .locationId(teamNumber)
@@ -55,7 +58,8 @@ export const MatchResultComponent: FC<MoveComponentProps<MaterialMove<PlayerColo
     .map((item) => item.id)
   const teamStrength = getTeamStrength(team, playerNumber)
   const arena = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.ArenaCard, gameContext.game.items[MaterialType.ArenaCard])
-    .index(move.location.parent)
+    .location(LocationType.CurrentArenasRowSpot)
+    .location((l) => l.x === matchNumber - 1)
     .getItem<ArenaCard>()!
   const arenaId = arena.id
   const playerName = usePlayerName(busId.back)

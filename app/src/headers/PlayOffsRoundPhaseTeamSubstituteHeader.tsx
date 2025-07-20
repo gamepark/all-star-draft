@@ -27,7 +27,7 @@ export const PlayOffsRoundPhaseTeamSubstituteHeader: FC = () => {
       .locationId(2)
       .rotation((r) => r !== MaterialRotation.FaceDown).length ?? 0) > 0
   ) {
-    return <SimultaneousRuleHeaderComponent translationGroupKey="header.playoff.substitue" />
+    return <SimultaneousRuleHeaderComponent translationGroupKey="header.playoff.substitute" />
   } else {
     return <SimultaneousRuleHeaderComponent translationGroupKey="header.playoff.assembleTeam" />
   }
