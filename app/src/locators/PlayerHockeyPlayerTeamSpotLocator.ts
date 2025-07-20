@@ -2,8 +2,9 @@ import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayer
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
+import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { DropAreaDescription, getRelativePlayerIndex, ItemContext, ListLocator, LocationDescription, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, isMoveItemType, Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { Coordinates, isMoveItemType, Location, MaterialItem, MaterialMove, MoveItem, MoveItemsAtOnce } from '@gamepark/rules-api'
 import { HockeyPlayerTeamHelp } from '../components/help/HockeyPlayerTeamHelp'
 import { hockeyPlayerCardDescription } from '../material/HockeyPlayerCardDescription'
 
@@ -61,6 +62,33 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
       return context.player !== undefined ? { x: index === 2 ? -1.2 : index === 0 ? 2.2 : 1.2 } : { x: index === 3 ? -1.2 : 2.2 }
     }
     return context.player !== undefined ? { x: index === 0 ? 2.2 : 1.2 } : { x: 1.2 }
+  }
+
+  public getDropLocations(
+    moves: (MoveItem<PlayerColor, MaterialType, LocationType> | MoveItemsAtOnce<PlayerColor, MaterialType, LocationType>)[],
+    context: ItemContext<PlayerColor, MaterialType, LocationType>
+  ): Location<PlayerColor, LocationType>[] {
+    if (context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
+      return moves
+        .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+        .filter((move) => move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id === 2 && move.location.x !== undefined)
+        .map((move) => {
+          const itemAtMoveDestination = context.rules
+            .material(MaterialType.HockeyPlayerCard)
+            .player(move.location.player)
+            .location(LocationType.PlayerHockeyPlayerTeamSpot)
+            .locationId(2)
+            .location((l) => l.x === move.location.x)
+            .getItem<HockeyPlayerCard>()!
+          const itemAtMoveDestinationLocatorIndex = this.getItemIndex(itemAtMoveDestination, context)
+          return {
+            ...move.location,
+            type: LocationType.PlayerHockeyPlayerTeamSpot,
+            x: itemAtMoveDestinationLocatorIndex
+          }
+        })
+    }
+    return super.getDropLocations(moves, context)
   }
 
   getCoordinates(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): Partial<Coordinates> {
