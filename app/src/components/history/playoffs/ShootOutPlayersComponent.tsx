@@ -9,7 +9,7 @@ import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepa
 import { isStartSimultaneousRule, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { TeamStrengthLogComponent } from './TeamStrengthLogComponent'
+import { TeamStrengthLogComponent } from '../util/TeamStrengthLogComponent'
 
 export const ShootOutPlayersComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
   if (!isStartSimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId>(move) || move.id !== RuleId.PlayoffRoundPhaseTieMatch) {

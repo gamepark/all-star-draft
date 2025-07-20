@@ -8,9 +8,12 @@ import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepa
 import { isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { CardValueLogComponent } from './CardValueLogComponent'
+import { CardValueLogComponent } from '../util/CardValueLogComponent'
 
-export const PlayerReceivedCardComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
+export const DraftRoundPlayerReceivedCardComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({
+  move,
+  context
+}) => {
   if (!isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
     return <></>
   }

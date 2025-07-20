@@ -17,9 +17,9 @@ function getHeadersWhenSpectating(
 ): ReactElement | null {
   const playersAbleToSwap = roundNumber === 1 ? [] : players.filter((p) => hockeyPlayerCardsInTeamsMaterial?.locationId(roundNumber).player(p).length === 0)
   if (playersAbleToSwap.length > 1) {
-    return <Trans defaults="header.draft.exchangeAssemble.players" />
+    return <Trans defaults="header.draft.exchangeAssemble.players" values={{ roundNumber: roundNumber }} />
   } else if (playersAbleToSwap.length === 1) {
-    return <Trans defaults="header.draft.exchangeAssemble.player" values={{ name: playerNames[playersAbleToSwap[0]] }} />
+    return <Trans defaults="header.draft.exchangeAssemble.player" values={{ name: playerNames[playersAbleToSwap[0]], roundNumber: roundNumber }} />
   }
   const playersCreatingTheirTeams = players.filter((p) => (hockeyPlayerCardsInTeamsMaterial?.locationId(roundNumber).player(p).length ?? 0) < 5)
   if (playersCreatingTheirTeams.length > 1) {

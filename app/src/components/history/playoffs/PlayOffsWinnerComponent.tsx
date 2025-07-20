@@ -9,7 +9,7 @@ import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepa
 import { isEndGame, Material, MaterialGame, MaterialMove, PlayerMemory } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { SupportersIconComponent } from '../symbols/SupportersIconComponent'
+import { SupportersIconComponent } from '../../symbols/SupportersIconComponent'
 
 const COLORS_NEEDING_CONTOUR = [PlayerColor.Green, PlayerColor.Yellow, PlayerColor.Blue]
 

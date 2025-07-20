@@ -9,8 +9,8 @@ import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepa
 import { isMoveItemTypeAtOnce, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { CardValueLogComponent } from './CardValueLogComponent'
-import { TeamStrengthLogComponent } from './TeamStrengthLogComponent'
+import { CardValueLogComponent } from '../util/CardValueLogComponent'
+import { TeamStrengthLogComponent } from '../util/TeamStrengthLogComponent'
 
 export const RevealShootOutCardComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
   if (

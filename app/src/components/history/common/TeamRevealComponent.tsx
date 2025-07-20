@@ -11,7 +11,7 @@ import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepa
 import { isMoveItemTypeAtOnce, Material, MaterialGame, MaterialMove, MoveItemsAtOnce } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import { TeamStrengthLogComponent } from './TeamStrengthLogComponent'
+import { TeamStrengthLogComponent } from '../util/TeamStrengthLogComponent'
 
 const getTeam = (
   move: MoveItemsAtOnce<PlayerColor, MaterialType, LocationType>,

@@ -8,9 +8,12 @@ import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepa
 import { isMoveItemType, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { CardValueLogComponent } from './CardValueLogComponent'
+import { CardValueLogComponent } from '../util/CardValueLogComponent'
 
-export const PlayerGiveCardComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
+export const DraftRoundCardDraftedComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({
+  move,
+  context
+}) => {
   if (!isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
     return <></>
   }
@@ -19,16 +22,15 @@ export const PlayerGiveCardComponent: FC<MoveComponentProps<MaterialMove<PlayerC
     PlayerColor,
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
-  const givenCard = new Material(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard])
+  const draftedCard = new Material(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard])
     .index(move.itemIndex)
     .getItem<HockeyPlayerCard>()
-  const playerName = usePlayerName(givenCard?.location.player)
-  const recipientName = usePlayerName(move.location.player)
+  const playerName = usePlayerName(move.location.player)
   return (
     <Trans
-      defaults="history.draftPhase.cardGiven"
-      values={{ name: playerName, recipient: recipientName }}
-      components={{ card: <CardValueLogComponent cardId={givenCard === undefined ? undefined : givenCard.id} /> }}
+      defaults="history.draftPhase.cardDrafted"
+      values={{ name: playerName }}
+      components={{ card: <CardValueLogComponent cardId={draftedCard === undefined ? undefined : draftedCard.id} /> }}
     />
   )
 }

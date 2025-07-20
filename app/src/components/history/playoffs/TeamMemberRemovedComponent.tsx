@@ -5,16 +5,13 @@ import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepark/react-game'
-import { isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { isDeleteItemType, MaterialGame, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { CardValueLogComponent } from './CardValueLogComponent'
+import { CardValueLogComponent } from '../util/CardValueLogComponent'
 
 export const TeamMemberRemovedComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
-  if (
-    !isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) ||
-    move.location.type !== LocationType.HockeyPlayerDraftSpot
-  ) {
+  if (!isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
     return <></>
   }
   const gameContext = context as MoveComponentContext<
@@ -22,8 +19,9 @@ export const TeamMemberRemovedComponent: FC<MoveComponentProps<MaterialMove<Play
     PlayerColor,
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
-  const cardId = gameContext.game.items[MaterialType.HockeyPlayerCard]![move.itemIndex].id as HockeyPlayerCard
-  const playerName = usePlayerName(move.location.player)
+  const card = gameContext.game.items[MaterialType.HockeyPlayerCard]![move.itemIndex] as MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>
+  const cardId = card.id
+  const playerName = usePlayerName(card.location.player)
   return (
     <Trans defaults="history.playOffsPhase.removeFromTeam" values={{ name: playerName }} components={{ card: <CardValueLogComponent cardId={cardId} /> }} />
   )

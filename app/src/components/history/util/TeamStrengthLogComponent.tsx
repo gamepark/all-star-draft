@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { AttributeKind, getAttributeKindPriority, IrregularAttribute, TeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
 import { FC } from 'react'
-import { MedalIconComponent } from '../symbols/MedalIconComponent'
-import { TeamStrengthIconComponent } from '../symbols/TeamStrengthIconComponent'
-import { getIrregularAttributeSymbol, getSpeciesValueComponent, getSymbolValueComponent } from '../util/valueComponents'
+import { MedalIconComponent } from '../../symbols/MedalIconComponent'
+import { TeamStrengthIconComponent } from '../../symbols/TeamStrengthIconComponent'
+import { getIrregularAttributeSymbol, getSpeciesValueComponent, getSymbolValueComponent } from '../../util/valueComponents'
 
 type TeamStrengthLogComponentProps = {
   teamStrength: TeamStrength

@@ -8,8 +8,8 @@ import {
 } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { Picture } from '@gamepark/react-game'
 import { FC } from 'react'
-import { hockeyPlayerCardDescription } from '../../material/HockeyPlayerCardDescription'
-import { getSpeciesValueComponent, getSymbolValueComponent } from '../util/valueComponents'
+import { hockeyPlayerCardDescription } from '../../../material/HockeyPlayerCardDescription'
+import { getSpeciesValueComponent, getSymbolValueComponent } from '../../util/valueComponents'
 
 type CardValueLogComponentProps = {
   cardId?: HockeyPlayerCard

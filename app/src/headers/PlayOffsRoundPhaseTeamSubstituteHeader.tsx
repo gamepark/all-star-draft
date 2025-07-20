@@ -17,7 +17,7 @@ export const PlayOffsRoundPhaseTeamSubstituteHeader: FC = () => {
     if (moves.every((move) => isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) && move.location.x === undefined)) {
       return <SimultaneousRuleHeaderComponent translationGroupKey="header.playoff.assembleTeam" />
     } else {
-      return <SimultaneousRuleHeaderComponent translationGroupKey="header.playoff.substitute" />
+      return <SimultaneousRuleHeaderComponent translationGroupKey="header.playoff.substitute" pass />
     }
   }
   if (

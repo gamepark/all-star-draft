@@ -9,9 +9,9 @@ import { MoveComponentContext, MoveComponentProps, Picture, usePlayerName } from
 import { isDeleteItemType, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { playoffTicketTokenDescription } from '../../material/PlayoffTicketTokenDescription'
-import { CardValueLogComponent } from './CardValueLogComponent'
-import { TeamStrengthLogComponent } from './TeamStrengthLogComponent'
+import { playoffTicketTokenDescription } from '../../../material/PlayoffTicketTokenDescription'
+import { CardValueLogComponent } from '../util/CardValueLogComponent'
+import { TeamStrengthLogComponent } from '../util/TeamStrengthLogComponent'
 
 const getTranslationKey = (isShootOut: boolean, isLastPlayOffTicket: boolean) => {
   if (isShootOut) {

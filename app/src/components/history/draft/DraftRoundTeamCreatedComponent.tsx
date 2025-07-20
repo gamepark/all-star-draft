@@ -9,7 +9,7 @@ import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepa
 import { isMoveItemType, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { TeamStrengthLogComponent } from './TeamStrengthLogComponent'
+import { TeamStrengthLogComponent } from '../util/TeamStrengthLogComponent'
 
 const getTranslationKey = (
   gameContext: MoveComponentContext<
@@ -25,7 +25,10 @@ const getTranslationKey = (
   return teamStrength === undefined ? 'history.playOffsPhase.teamCreated' : 'history.playOffsPhase.teamCreatedWithStrength'
 }
 
-export const TeamCreatedComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
+export const DraftRoundTeamCreatedComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({
+  move,
+  context
+}) => {
   if (!isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
     return <></>
   }
