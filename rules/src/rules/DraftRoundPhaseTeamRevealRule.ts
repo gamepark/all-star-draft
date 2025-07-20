@@ -22,7 +22,7 @@ export class DraftRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor, M
         })
       )
     }
-    moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseMatchMoveToStadium))
+    moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseMatchScore))
     return moves
   }
 }

@@ -21,7 +21,6 @@ import { Memorize } from './Memorize'
 import { PlayerColor } from './PlayerColor'
 import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
 import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
-import { DraftRoundPhaseMatchMoveToStadiumRule } from './rules/DraftRoundPhaseMatchMoveToStadiumRule'
 import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScoreRule'
 import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
 import { DraftRoundPhaseTeamCreationRule } from './rules/DraftRoundPhaseTeamCreationRule'
@@ -67,7 +66,6 @@ export class AllStarDraftRules
     [RuleId.DraftRoundPhaseTeamCreation]: DraftRoundPhaseTeamCreationRule,
     [RuleId.DraftRoundPhaseTeamReveal]: DraftRoundPhaseTeamRevealRule,
     [RuleId.DraftRoundPhaseMatchScore]: DraftRoundPhaseMatchScoreRule,
-    [RuleId.DraftRoundPhaseMatchMoveToStadium]: DraftRoundPhaseMatchMoveToStadiumRule,
     [RuleId.PlayoffRoundSetupPhase]: PlayoffRoundSetupRule,
     [RuleId.PlayoffRoundPhaseTeamReveal]: PlayoffRoundPhaseTeamRevealRule,
     [RuleId.PlayoffRoundPhaseMainMatch]: PlayoffRoundPhaseMainMatchRule,

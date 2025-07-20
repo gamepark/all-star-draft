@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
+// import { KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
@@ -20,7 +20,7 @@ import {
 import { MaterialRotation } from '@gamepark/all-star-draft/material/MaterialRotation'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { CardDraftedComponent } from '../components/log/CardDraftedComponent'
-import { MatchResultComponent } from '../components/log/MatchResultComponent'
+// import { MatchResultComponent } from '../components/log/MatchResultComponent'
 import { PlayerEliminatedComponent } from '../components/log/PlayerEliminatedComponent'
 import { PlayOffTicketLostComponent } from '../components/log/PlayOffTicketLostComponent'
 import { RevealShootOutCardComponent } from '../components/log/RevealShootOutCardComponent'
@@ -109,17 +109,17 @@ export class AllStarDraftHistory
         return { Component: TeamRevealComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
     }
-    if (context.game.rule?.id === RuleId.DraftRoundPhaseMatchScore) {
-      if (
-        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
-        move.location.type === LocationType.BusSpotOnArenaCardLadder
-      ) {
-        const player = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken, context.game.items[MaterialType.BusToken])
-          .index(move.itemIndex)
-          .getItem<KnownBusTokenId>()!.id.back
-        return { Component: MatchResultComponent, player: player, css: panelBackground(playerColorCode[player]) }
-      }
-    }
+    // if (context.game.rule?.id === RuleId.DraftRoundPhaseMatchScore) {
+    //   if (
+    //     isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
+    //     move.location.type === LocationType.BusSpotOnArenaCardLadder
+    //   ) {
+    //     const player = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken, context.game.items[MaterialType.BusToken])
+    //       .index(move.itemIndex)
+    //       .getItem<KnownBusTokenId>()!.id.back
+    //     return { Component: MatchResultComponent, player: player, css: panelBackground(playerColorCode[player]) }
+    //   }
+    // }
     if (context.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
       if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
         if (move.location.type === LocationType.PlayerHockeyPlayerTeamSpot) {
