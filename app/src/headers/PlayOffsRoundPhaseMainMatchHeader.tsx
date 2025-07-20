@@ -2,7 +2,7 @@
 
 import { useTranslation } from 'react-i18next'
 
-export const DraftRoundPhaseMatchMoveToStadiumHeader = () => {
+export const PlayOffsRoundPhaseMainMatchHeader = () => {
   const { t } = useTranslation()
-  return <>{t('header.draft.moveToArena')}</>
+  return <>{t('header.playoff.match')}</>
 }
