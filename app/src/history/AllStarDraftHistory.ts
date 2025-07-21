@@ -19,12 +19,12 @@ import {
   MaterialMove
 } from '@gamepark/rules-api'
 import { CardDiscardedComponent } from '../components/history/common/CardDiscardedComponent'
-import { DraftRoundMatchResultComponent } from '../components/history/draft/DraftRoundMatchResultComponent'
 import { TeamMemberAddedFromBench } from '../components/history/common/TeamMemberAddedFromBench'
 import { TeamRevealComponent } from '../components/history/common/TeamRevealComponent'
 import { TeamRevealStartComponent } from '../components/history/common/TeamRevealStartComponent'
 import { DrafRoundPlayerGiveCardComponent } from '../components/history/draft/DrafRoundPlayerGiveCardComponent'
 import { DraftRoundCardDraftedComponent } from '../components/history/draft/DraftRoundCardDraftedComponent'
+import { DraftRoundMatchResultComponent } from '../components/history/draft/DraftRoundMatchResultComponent'
 import { DraftRoundPhaseMatchStartComponent } from '../components/history/draft/DraftRoundPhaseMatchStartComponent'
 import { DraftRoundPlayerReceivedCardComponent } from '../components/history/draft/DraftRoundPlayerReceivedCardComponent'
 import { DraftRoundStartComponent } from '../components/history/draft/DraftRoundStartComponent'
@@ -33,6 +33,7 @@ import { DraftRoundTeamMemberSentToBenchComponent } from '../components/history/
 import { PlayOffsMatchStartComponent } from '../components/history/playoffs/PlayOffsMatchStartComponent'
 import { PlayOffsPhaseStartComponent } from '../components/history/playoffs/PlayOffsPhaseStartComponent'
 import { PlayOffsPlayerEliminatedComponent } from '../components/history/playoffs/PlayOffsPlayerEliminatedComponent'
+import { PlayOffsPlayerEliminatedNotEnoughCardsComponent } from '../components/history/playoffs/PlayOffsPlayerEliminatedNotEnoughCardsComponent'
 import { PlayOffsRoundStartComponent } from '../components/history/playoffs/PlayOffsRoundStartComponent'
 import { PlayOffsWinnerComponent } from '../components/history/playoffs/PlayOffsWinnerComponent'
 import { PlayOffTicketLostComponent } from '../components/history/playoffs/PlayOffTicketLostComponent'
@@ -218,6 +219,12 @@ export class AllStarDraftHistory
         context.game.items[MaterialType.HockeyPlayerCard]![move.indexes[0]].location.id !== 3
       ) {
         const player = context.game.items[MaterialType.HockeyPlayerCard]![move.indexes[0]].location.player!
+        const eliminationMovesForThisAction = context.action.consequences
+          .filter(isDeleteItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+          .filter((m) => m.indexes.length > 0)
+        if (eliminationMovesForThisAction.findIndex((m) => m === move) > 0) {
+          return { Component: PlayOffsPlayerEliminatedNotEnoughCardsComponent, player: player, css: panelBackground(playerColorCode[player]) }
+        }
         return { Component: PlayOffsPlayerEliminatedComponent, player: player, css: panelBackground(playerColorCode[player]) }
       }
     }

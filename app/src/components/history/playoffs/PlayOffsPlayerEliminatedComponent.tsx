@@ -2,12 +2,12 @@
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
-import { playoffFanPoint } from '@gamepark/all-star-draft/material/PlayoffPointCard'
 import { getTeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
+import { Memorize } from '@gamepark/all-star-draft/Memorize'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { MoveComponentContext, MoveComponentProps, Picture, usePlayerName } from '@gamepark/react-game'
-import { isDeleteItemTypeAtOnce, Material, MaterialGame, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isDeleteItemTypeAtOnce, Material, MaterialGame, MaterialItem, MaterialMove, PlayerMemory } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { playoffTicketTokenDescription } from '../../../material/PlayoffTicketTokenDescription'
@@ -28,14 +28,14 @@ export const PlayOffsPlayerEliminatedComponent: FC<MoveComponentProps<MaterialMo
   move,
   context
 }) => {
+  if (!isDeleteItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+    return <></>
+  }
   const gameContext = context as MoveComponentContext<
     MaterialMove<PlayerColor, MaterialType, LocationType>,
     PlayerColor,
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
-  if (!isDeleteItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
-    return <></>
-  }
   const player = gameContext.game.items[MaterialType.HockeyPlayerCard]![move.indexes[0]].location.player!
   const playerNumber = gameContext.game.players.length
   const shootOutCardsMaterial = new Material<PlayerColor, MaterialType, LocationType>(
@@ -52,13 +52,7 @@ export const PlayOffsPlayerEliminatedComponent: FC<MoveComponentProps<MaterialMo
         .filter((item) => item.location.type === LocationType.PlayerHockeyPlayerTeamSpot && item.location.id === 2)
         .map((item) => item.id)
   const teamStrength = getTeamStrength(team, playerNumber)
-  const eliminationRank = Math.floor(
-    new Material<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard])
-      .location(LocationType.PlayerHockeyPlayerTeamSpot)
-      .locationId(2)
-      .player((p) => p !== player).length / 5
-  )
-  const fanPoints = playoffFanPoint[playerNumber][eliminationRank]
+  const fanPoints = new PlayerMemory(gameContext.game, player).remind<number>(Memorize.ScorePlayoff)
   const playerName = usePlayerName(player)
   return (
     <Trans

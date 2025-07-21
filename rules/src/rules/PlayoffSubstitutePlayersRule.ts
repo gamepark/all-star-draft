@@ -3,26 +3,10 @@ import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
-import { playoffFanPoint } from '../material/PlayoffPointCard'
-import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
 export class PlayoffSubstitutePlayersRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).length !== 0) {
-      const playersToEliminate = this.activePlayers.filter(
-        (player) => this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).length < 2
-      )
-      const playersCount = this.game.players.length
-      return playersToEliminate.flatMap((player) => {
-        this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[playersCount][this.activePlayers.length])
-        return [this.material(MaterialType.HockeyPlayerCard).player(player).deleteItemsAtOnce(), this.endPlayerTurn(player)]
-      })
-    }
-    return []
-  }
-
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (this.isFirstPlayOffRound()) {
       return this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).moveItems({
