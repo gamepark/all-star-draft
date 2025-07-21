@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { SimultaneousRuleHeaderComponent } from '../components/headers/SimultaneousRuleHeaderComponent'
+import { Trans } from 'react-i18next'
 
 export const PlayOffsRoundSetupPhaseHeader = () => {
-  return <SimultaneousRuleHeaderComponent translationGroupKey="header.playoff.setup" />
+  return <Trans defaults="header.playoff.setup" />
 }
