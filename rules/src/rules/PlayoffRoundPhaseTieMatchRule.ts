@@ -16,20 +16,23 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
     const playersToBeEliminated = lastPlayers.filter(
       (player) => this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getItems().length === 0
     )
-    moves.push(
-      ...playersToBeEliminated.flatMap((player) => {
-        this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
-        return [this.material(MaterialType.HockeyPlayerCard).player(player).deleteItemsAtOnce(), this.endPlayerTurn(player)]
-      })
-    )
-    if (this.activePlayers.length - playersToBeEliminated.length < 2) {
+    if (playersToBeEliminated.length > 0) {
+      moves.push(
+        ...playersToBeEliminated.map((player) => {
+          this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
+          return this.material(MaterialType.HockeyPlayerCard).player(player).deleteItemsAtOnce()
+        })
+      )
+      const hockeyPlayerCardsMaterial = this.material(MaterialType.HockeyPlayerCard)
       const stillActivePlayers = this.game.players
         .filter((player) => !playersToBeEliminated.includes(player))
-        .filter((player) => this.material(MaterialType.HockeyPlayerCard).player(player).length > 0)
-      if (stillActivePlayers.length === 1) {
-        this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][0])
+        .filter((player) => hockeyPlayerCardsMaterial.player(player).length > 0)
+      if (stillActivePlayers.length - playersToBeEliminated.length < 2) {
+        if (stillActivePlayers.length === 1) {
+          this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][0], stillActivePlayers[0])
+        }
+        moves.push(stillActivePlayers.length > 1 ? this.startSimultaneousRule(RuleId.PlayoffSubstitutePlayers, stillActivePlayers) : this.endGame())
       }
-      moves.push(stillActivePlayers.length > 1 ? this.startSimultaneousRule(RuleId.PlayoffSubstitutePlayers, stillActivePlayers) : this.endGame())
     }
     return moves
   }

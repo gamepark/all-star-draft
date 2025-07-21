@@ -80,6 +80,13 @@ export class PlayoffSubstitutePlayersRule extends SimultaneousRule<PlayerColor, 
     return []
   }
 
+  public isFirstPlayOffRound(): boolean {
+    const allPlayersHaveAllCards = this.game.players.every((player) => this.material(MaterialType.HockeyPlayerCard).player(player).length === 18)
+    const playerCount = this.game.players.length
+    const playOffsTokensCount = this.material(MaterialType.PlayoffTicketToken).length
+    return allPlayersHaveAllCards && ((playerCount === 2 && playOffsTokensCount === 4) || (playerCount === 3 && playOffsTokensCount === 3) || playerCount > 3)
+  }
+
   private buildDeleteFaceUpCardsInPlayerHand(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     return this.material(MaterialType.HockeyPlayerCard)
       .location(LocationType.PlayerHockeyPlayerTeamSpot)
@@ -127,13 +134,6 @@ export class PlayoffSubstitutePlayersRule extends SimultaneousRule<PlayerColor, 
         .player(player)
         .rotation((r) => r !== MaterialRotation.FaceDown).length > 1
     )
-  }
-
-  private isFirstPlayOffRound(): boolean {
-    const allPlayersHaveAllCards = this.game.players.every((player) => this.material(MaterialType.HockeyPlayerCard).player(player).length === 18)
-    const playerCount = this.game.players.length
-    const playOffsTokensCount = this.material(MaterialType.PlayoffTicketToken).length
-    return allPlayersHaveAllCards && ((playerCount === 2 && playOffsTokensCount === 4) || (playerCount === 3 && playOffsTokensCount === 3) || playerCount > 3)
   }
 
   private isPlayerTeamValid(player: PlayerColor): boolean {

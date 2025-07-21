@@ -76,9 +76,9 @@ export class PlayoffRoundPhaseScoreRule extends SimultaneousRule<PlayerColor, Ma
         })
       )
       if (playersToEliminate.length > 0) {
-        if (activePlayers.length - playersToEliminate.length <= 1) {
+        if (activePlayers.length - playersToEliminate.length < 2) {
           if (activePlayers.length - playersToEliminate.length === 1) {
-            const playOffsWinner = this.activePlayers.find((p) => !playersToEliminate.includes(p))!
+            const playOffsWinner = activePlayers.find((p) => !playersToEliminate.includes(p))!
             this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[playersCount][0], playOffsWinner)
           }
           moves.push(this.endGame())

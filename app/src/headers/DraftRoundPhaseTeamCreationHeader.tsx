@@ -3,8 +3,9 @@ import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { useLegalMoves, usePlayerId, usePlayerIds, usePlayerName, useRules } from '@gamepark/react-game'
-import { isDeleteItemType, isMoveItemType, Material, MaterialMove } from '@gamepark/rules-api'
+import { DraftRoundPhaseTeamCreationRule } from '@gamepark/all-star-draft/rules/DraftRoundPhaseTeamCreationRule'
+import { usePlayerId, usePlayerIds, usePlayerName, useRules } from '@gamepark/react-game'
+import { Material } from '@gamepark/rules-api'
 import { FC, ReactElement } from 'react'
 import { Trans } from 'react-i18next'
 
@@ -38,38 +39,37 @@ function getHeadersWhenSpectating(
 
 export const DraftRoundPhaseTeamCreationHeader: FC = () => {
   const rules = useRules<AllStarDraftRules>()
+  const teamCreationRules = rules?.rulesStep as DraftRoundPhaseTeamCreationRule | undefined
   const players = usePlayerIds<PlayerColor>()
   const activePlayer = usePlayerId<PlayerColor>()
-  const moves = useLegalMoves<MaterialMove<PlayerColor, MaterialType, LocationType>>()
   const roundNumber = rules?.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length ?? 0
   const twoPlayersOpponent = players.find((player) => player !== activePlayer)!
   const playerNames = players.reduce((accumulator, player) => ({ ...accumulator, [player]: usePlayerName(player) }), {} as Record<PlayerColor, string>)
-  const hockeyPlayerCardsInHandsMaterial = rules?.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot)
-  const hockeyPlayerCardsInTeamsMaterial = rules?.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot)
+  const hockeyPlayerCardsMaterial = rules?.material(MaterialType.HockeyPlayerCard)
+  const hockeyPlayerCardsInHandsMaterial = hockeyPlayerCardsMaterial?.location(LocationType.PlayerHockeyPlayerHandSpot)
+  const hockeyPlayerCardsInTeamsMaterial = hockeyPlayerCardsMaterial?.location(LocationType.PlayerHockeyPlayerTeamSpot)
   if (activePlayer !== undefined) {
-    if (moves.length > 0) {
-      if (players.length === 2 && moves.some((move) => isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move))) {
-        return <Trans defaults="header.draft.discard.you" />
-      }
-      if (moves.some((move) => isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) && move.location.x !== undefined)) {
-        return <Trans defaults="header.draft.exchangeAssemble.you" values={{ roundNumber: roundNumber }} components={{ sup: <sup></sup> }} />
-      }
-      if (
-        moves.every((move) => isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) && move.location.id === roundNumber)
-      ) {
-        return <Trans defaults="header.draft.assembleTeam.you" />
-      }
-      if (moves.every((move) => isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move))) {
-        return <Trans defaults="header.draft.dispatch.you" />
-      }
-      return null
-    } else {
-      const opponentNeedsToDiscardCard = players.length === 2 && hockeyPlayerCardsInHandsMaterial?.player(twoPlayersOpponent).length === 6 + roundNumber
-      if (opponentNeedsToDiscardCard) {
-        return <Trans defaults="header.draft.discard.player" values={{ name: playerNames[twoPlayersOpponent] }} />
-      }
-      return getHeadersWhenSpectating(players, hockeyPlayerCardsInTeamsMaterial, roundNumber, playerNames, rules)
+    if (teamCreationRules?.is2PlayersGameAndNeedToDiscardACard(hockeyPlayerCardsInHandsMaterial?.player(activePlayer), roundNumber)) {
+      return <Trans defaults="header.draft.discard.you" />
     }
+    const currentRoundTeam = hockeyPlayerCardsInTeamsMaterial?.locationId(roundNumber).player(activePlayer)
+    if (teamCreationRules?.canSwapTeamMembers(roundNumber, activePlayer, currentRoundTeam)) {
+      return <Trans defaults="header.draft.exchangeAssemble.you" values={{ roundNumber: roundNumber }} components={{ sup: <sup></sup> }} />
+    }
+    if (!teamCreationRules?.canSwapTeamMembers(roundNumber, activePlayer, currentRoundTeam) && !teamCreationRules?.canSendBuses(currentRoundTeam)) {
+      return <Trans defaults="header.draft.assembleTeam.you" />
+    }
+    if (teamCreationRules.canSendBuses(currentRoundTeam)) {
+      return <Trans defaults="header.draft.dispatch.you" />
+    }
+    const opponentNeedsToDiscardCard = teamCreationRules.is2PlayersGameAndNeedToDiscardACard(
+      hockeyPlayerCardsInHandsMaterial?.player(twoPlayersOpponent),
+      roundNumber
+    )
+    if (opponentNeedsToDiscardCard) {
+      return <Trans defaults="header.draft.discard.player" values={{ name: playerNames[twoPlayersOpponent] }} />
+    }
+    return getHeadersWhenSpectating(players, hockeyPlayerCardsInTeamsMaterial, roundNumber, playerNames, rules)
   } else {
     if (players.length === 2) {
       const playersNeedingToDiscardACard = players.filter((p) => hockeyPlayerCardsInHandsMaterial?.player(p).length === 6 + roundNumber)

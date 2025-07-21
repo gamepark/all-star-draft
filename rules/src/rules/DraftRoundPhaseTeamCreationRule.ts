@@ -94,6 +94,28 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseTeamReveal)]
   }
 
+  public is2PlayersGameAndNeedToDiscardACard(playerHandCards: Material<PlayerColor, MaterialType, LocationType> | undefined, roundNumber: number): boolean {
+    return playerHandCards !== undefined && this.game.players.length === 2 && playerHandCards.length === 6 + roundNumber
+  }
+
+  public canSendBuses(currentRoundTeam: Material<PlayerColor, MaterialType, LocationType> | undefined): boolean {
+    return currentRoundTeam !== undefined && currentRoundTeam.length === 5
+  }
+
+  public canSwapTeamMembers(
+    roundNumber: number,
+    player: PlayerColor,
+    currentRoundTeam: Material<PlayerColor, MaterialType, LocationType> | undefined
+  ): boolean {
+    return (
+      currentRoundTeam !== undefined &&
+      roundNumber > 1 &&
+      currentRoundTeam.length === 0 &&
+      this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).rotation(MaterialRotation.FaceDown).player(player).length <
+        roundNumber
+    )
+  }
+
   private buildCurrentRoundTeamMoves(
     currentRoundTeam: Material<PlayerColor, MaterialType, LocationType>,
     playerHandCards: Material<PlayerColor, MaterialType, LocationType>,
@@ -116,7 +138,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     player: PlayerColor,
     roundNumber: number
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    return currentRoundTeam.length === 5
+    return this.canSendBuses(currentRoundTeam)
       ? validBusDestination.flatMap((destination) =>
           this.material(MaterialType.BusToken)
             .player(player)
@@ -151,7 +173,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     player: PlayerColor,
     lastSwappedTeam: number
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    return roundNumber > 1 && currentRoundTeam.length === 0
+    return this.canSwapTeamMembers(roundNumber, player, currentRoundTeam)
       ? this.material(MaterialType.HockeyPlayerCard)
           .player(player)
           .location(LocationType.PlayerHockeyPlayerTeamSpot)
@@ -171,7 +193,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     player: PlayerColor,
     playerHandCards: Material<PlayerColor, MaterialType, LocationType>
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    return roundNumber > 1 && currentRoundTeam.length === 0
+    return this.canSwapTeamMembers(roundNumber, player, currentRoundTeam)
       ? Array(numberOfAlreadyAssembledTeams - lastSwappedTeam)
           .fill(1)
           .flatMap((_, index) =>
@@ -203,9 +225,5 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
         .maxBy((item) => item.location.id as number)
         .getItem<HockeyPlayerCard>()?.location.id as number | undefined) ?? 0
     )
-  }
-
-  private is2PlayersGameAndNeedToDiscardACard(playerHandCards: Material<PlayerColor, MaterialType, LocationType>, roundNumber: number): boolean {
-    return this.game.players.length === 2 && playerHandCards.length === 6 + roundNumber
   }
 }
