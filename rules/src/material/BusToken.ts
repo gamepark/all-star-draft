@@ -31,7 +31,7 @@ export type KnownBusTokenId = Required<BusTokenId>
 
 export const busTokens = getEnumValues(BusToken)
 
-export const busTokenValue = (busId: BusToken): number => (busId % 10) + 1
+export const getBusTokenValue = (busId: BusToken): number => (busId % 10) + 1
 
 export const busTokensByPlayerColor: Record<PlayerColor, BusToken[]> = playerColors.reduce(
   (previousRecord, currentColor) => ({ ...previousRecord, [currentColor]: busTokens.slice((currentColor - 1) * 3, currentColor * 3) }),

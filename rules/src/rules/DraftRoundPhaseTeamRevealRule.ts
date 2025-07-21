@@ -2,15 +2,15 @@ import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
-import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
-export class DraftRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+export class DraftRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     moves.push(this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenTeamSpot).moveItemsAtOnce({ rotation: MaterialRotation.FaceUp }))
-    for (let teamNumber = 1; teamNumber <= this.remind(Memorize.RoundNumber); teamNumber++) {
+    for (let teamNumber = 1; teamNumber <= roundNumber; teamNumber++) {
       moves.push(
         ...this.game.players.map((player) => {
           return this.material(MaterialType.HockeyPlayerCard)
@@ -22,7 +22,7 @@ export class DraftRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor, M
         })
       )
     }
-    moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseMatchMoveToStadium))
+    moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseMatchScore))
     return moves
   }
 }

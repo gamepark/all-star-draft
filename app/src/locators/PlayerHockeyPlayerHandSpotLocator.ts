@@ -8,7 +8,7 @@ import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { Memorize } from '@gamepark/all-star-draft/Memorize'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
-import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { orderBy } from 'lodash'
 import { PlayerHandHelp } from '../components/help/PlayerHandHelp'
@@ -60,8 +60,6 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
   gapMaxAngle = 1
   clockwise = true
 
-  locationDescription = new PlayerHockeyPlayerHandSpotDescription()
-
   getBaseAngle(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): number {
     const index = getRelativePlayerIndex(context, location.player)
     const playerCount = context.rules.players.length
@@ -102,12 +100,49 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     hoverTransform.push('translateY(-7em)', 'scale(3)')
     return hoverTransform
   }
+
+  getLocationDescription(
+    _location: Location<PlayerColor, LocationType>,
+    context: MaterialContext<PlayerColor, MaterialType, LocationType> | ItemContext<PlayerColor, MaterialType, LocationType>
+  ): LocationDescription<PlayerColor, MaterialType, LocationType> | undefined {
+    const roundNumber = context.rules.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
+    if (roundNumber === 0) {
+      return new PlayOffsPlayerHockerPlayerHandSpotDescription()
+    } else if (roundNumber === 1) {
+      return new Round1PlayerHockeyPlayerHandSpotDescription()
+    } else if (roundNumber === 2) {
+      return new Round2PlayerHockeyPlayerHandSpotDescription()
+    } else {
+      return new Round3PlayerHockeyPlayerHandSpotDescription()
+    }
+  }
 }
 
-class PlayerHockeyPlayerHandSpotDescription extends DropAreaDescription {
+class Round1PlayerHockeyPlayerHandSpotDescription extends DropAreaDescription {
   help = PlayerHandHelp
-  height = 9
-  width = 16
+  height = hockeyPlayerCardDescription.height
+  width = hockeyPlayerCardDescription.width + 2.2 * 6
+  borderRadius = hockeyPlayerCardDescription.borderRadius
+}
+
+class Round2PlayerHockeyPlayerHandSpotDescription extends DropAreaDescription {
+  help = PlayerHandHelp
+  height = hockeyPlayerCardDescription.height
+  width = hockeyPlayerCardDescription.width + 2.2 * 7
+  borderRadius = hockeyPlayerCardDescription.borderRadius
+}
+
+class Round3PlayerHockeyPlayerHandSpotDescription extends DropAreaDescription {
+  help = PlayerHandHelp
+  height = hockeyPlayerCardDescription.height
+  width = hockeyPlayerCardDescription.width + 2.2 * 8
+  borderRadius = hockeyPlayerCardDescription.borderRadius
+}
+
+class PlayOffsPlayerHockerPlayerHandSpotDescription extends DropAreaDescription {
+  help = PlayerHandHelp
+  height = hockeyPlayerCardDescription.height
+  width = hockeyPlayerCardDescription.width + 2.2 * 18
   borderRadius = hockeyPlayerCardDescription.borderRadius
 }
 

@@ -1,17 +1,15 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
 import { getWeakestPlayersFromTeams } from '../material/MatchRanking'
 import { MaterialType } from '../material/MaterialType'
-import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
-export class PlayoffRoundPhaseMainMatchRule extends PlayerTurnRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const activePlayers = this.remind<PlayerColor[]>(Memorize.ActivePlayers)
+export class PlayoffRoundPhaseMainMatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const lastPlayers = getWeakestPlayersFromTeams(
-      activePlayers.map((player) => ({
+      this.activePlayers.map((player) => ({
         player: player,
         team: this.material(MaterialType.HockeyPlayerCard)
           .location(LocationType.PlayerHockeyPlayerTeamSpot)
@@ -22,8 +20,19 @@ export class PlayoffRoundPhaseMainMatchRule extends PlayerTurnRule<PlayerColor, 
       })),
       this.game.players.length
     )
-    this.memorize<PlayerColor[]>(Memorize.LastPlayers, lastPlayers)
-    if (lastPlayers.length > 1) return [this.startSimultaneousRule(RuleId.PlayoffRoundPhaseTieMatch)]
-    return [this.startSimultaneousRule(RuleId.PlayoffRoundPhaseScore)]
+    return [
+      this.startSimultaneousRule(
+        lastPlayers.length > 1 ? RuleId.PlayoffRoundPhaseTieMatch : RuleId.PlayoffRoundPhaseScore,
+        lastPlayers.length > 1 ? lastPlayers : this.activePlayers
+      )
+    ]
+  }
+
+  getActivePlayerLegalMoves(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
+  getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
   }
 }

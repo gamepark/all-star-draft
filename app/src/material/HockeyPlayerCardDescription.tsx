@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { faHandPointer } from '@fortawesome/free-solid-svg-icons'
+import { faHandPointer, faRightLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
@@ -8,7 +8,7 @@ import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
-import { isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { isDeleteItemType, isMoveItemType, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { ReactNode } from 'react'
 import { Trans } from 'react-i18next'
 import { HockeyPlayerCardHelp } from '../components/help/HockeyPlayerCardHelp'
@@ -236,50 +236,89 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     [HockeyPlayerCard.Wolf9]: Wolf9
   }
   backImage = HockeyPlayerCardBack
+  help = HockeyPlayerCardHelp
 
   getItemMenu(
     item: MaterialItem<PlayerColor, LocationType>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode {
-    if (
-      context.player !== undefined &&
-      (item.location.player === context.player || item.location.type === LocationType.HockeyPlayerOpenMarketDraftLocator) &&
-      context.rules.game.rule !== undefined
-    ) {
-      const ruleId = context.rules.game.rule.id
-      const locationType = item.location.type
-      const currentItemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
-      const movesForThisItem = legalMoves
-        .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
-        .filter((move) => move.itemIndex === currentItemIndex)
-      if (movesForThisItem.length > 0 && shouldButtonsAppear(ruleId, locationType)) {
-        return (
-          <>
-            {movesForThisItem.map((move, moveIndex) => (
-              <ItemMenuButton
-                key={`draft-card-move-${moveIndex}`}
-                move={move}
-                angle={-55 + (context.locators[locationType]?.getItemRotateZ(item, context) ?? 0)}
-                radius={2.1}
-                label={<Trans defaults={moveTranslationKey(item, ruleId)} />}
-                labelPosition={'right'}
-              >
-                <FontAwesomeIcon icon={faHandPointer} size="lg" />
-              </ItemMenuButton>
-            ))}
-            {this.getHelpButton(item, context, {
-              angle: -125 + (context.locators[locationType]?.getItemRotateZ(item, context) ?? 0),
-              radius: 2.1
-            })}
-          </>
-        )
+    if (context.player !== undefined) {
+      if (item.location.player === context.player) {
+        if (
+          (context.rules.game.rule?.id === RuleId.DraftRoundPhaseCardSelection ||
+            context.rules.game.rule?.id === RuleId.DraftRoundPhaseClashCardSelectionForOpponent) &&
+          item.location.type === LocationType.HockeyPlayerDraftSpot
+        ) {
+          return this.getItemMenuForHockeyPlayerCardInDraft(item, context, legalMoves)
+        }
+        if (context.rules.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
+          const roundNumber = context.rules.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
+          if (item.location.type === LocationType.PlayerHockeyPlayerHandSpot) {
+            const selectedPreviousTeamItemIndex = context.rules
+              .material(MaterialType.HockeyPlayerCard)
+              .player(context.player)
+              .location(LocationType.PlayerHockeyPlayerTeamSpot)
+              .selected(true)
+              .getIndex()
+            const selectedPreviousTeamItem = context.rules.material(MaterialType.HockeyPlayerCard).index(selectedPreviousTeamItemIndex).getItem()
+            if (selectedPreviousTeamItem?.selected) {
+              return this.getSwapItemMenuForHandCard(selectedPreviousTeamItem, item, context, legalMoves)
+            } else {
+              return this.getItemMenuButtonForNewTeamMoveForHandCard(roundNumber, item, context, legalMoves)
+            }
+          }
+          if (
+            item.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+            ((roundNumber === 0 && item.location.id === 2) || item.location.id < roundNumber)
+          ) {
+            const selectedHandItemIndex = context.rules
+              .material(MaterialType.HockeyPlayerCard)
+              .player(context.player)
+              .location(LocationType.PlayerHockeyPlayerHandSpot)
+              .selected(true)
+              .getIndex()
+            const selectedHandItem = context.rules.material(MaterialType.HockeyPlayerCard).index(selectedHandItemIndex).getItem()
+            if (selectedHandItem?.selected) {
+              return this.getSwapItemMenuForPreviousTeamCard(selectedHandItemIndex, item, context, legalMoves)
+            } else {
+              return this.getItemMenuForSelectedCardInPreviousTeam(item, context, legalMoves)
+            }
+          }
+        }
+      }
+      if (context.rules.game.rule?.id === RuleId.DraftRoundPhaseOpenMarketCardSelection) {
+        if (item.location.type === LocationType.HockeyPlayerOpenMarketDraftLocator) {
+          return this.getItemMenuForHockeyPlayerCardInDraft(item, context, legalMoves)
+        }
       }
     }
     return undefined
   }
 
-  help = HockeyPlayerCardHelp
+  public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+    if (context.player !== undefined) {
+      const roundNumber = context.rules.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
+      if (context.rules.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
+        if (
+          item.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+          ((roundNumber === 0 && item.location.id === 2) || item.location.id < roundNumber)
+        ) {
+          return (
+            context.rules.material(MaterialType.HockeyPlayerCard).player(context.player).location(LocationType.PlayerHockeyPlayerHandSpot).selected(true)
+              .length === 1
+          )
+        }
+        if (item.location.type === LocationType.PlayerHockeyPlayerHandSpot) {
+          return (
+            context.rules.material(MaterialType.HockeyPlayerCard).player(context.player).location(LocationType.PlayerHockeyPlayerTeamSpot).selected(true)
+              .length === 1
+          )
+        }
+      }
+    }
+    return super.isMenuAlwaysVisible(item, context)
+  }
 
   displayHelp(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>) {
     if (item.location.type === LocationType.PlayerHockeyPlayerTeamSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
@@ -301,50 +340,202 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     }
     return super.isFlipped(item, _context)
   }
-}
 
-function shouldButtonsAppear(ruleId: RuleId, locationType: LocationType): boolean {
-  return (
-    (locationType === LocationType.HockeyPlayerDraftSpot &&
-      [RuleId.DraftRoundPhaseCardSelection, RuleId.DraftRoundPhaseClashCardSelectionForOpponent].includes(ruleId)) ||
-    (locationType === LocationType.PlayerHockeyPlayerHandSpot &&
-      [
-        RuleId.DraftRoundPhaseTeamCreation,
-        RuleId.DraftRoundPhaseTeamExchange,
-        RuleId.PlayoffRoundSetupPhase,
-        RuleId.PlayoffRoundSetupPhase,
-        RuleId.PlayoffSubstitutePlayers,
-        RuleId.PlayoffRoundPhaseTieMatch,
-        RuleId.DraftRoundPhaseDiscardCardOverflow
-      ].includes(ruleId)) ||
-    (locationType === LocationType.PlayerHockeyPlayerTeamSpot && [RuleId.DraftRoundPhaseTeamExchange, RuleId.PlayoffSubstitutePlayers].includes(ruleId)) ||
-    (locationType === LocationType.HockeyPlayerOpenMarketDraftLocator && ruleId === RuleId.DraftRoundPhaseOpenMarketCardSelection)
-  )
-}
+  private getItemMenuForHockeyPlayerCardInDraft = (
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ) => {
+    const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
+    const moveToBenchForThisCard = legalMoves
+      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerHandSpot && move.location.player === context.player)
+    const itemRotateAngle = context.locators[LocationType.HockeyPlayerDraftSpot]?.getItemRotateZ(item, context) ?? 0
+    return moveToBenchForThisCard !== undefined ? (
+      <>
+        <ItemMenuButton
+          move={moveToBenchForThisCard}
+          angle={-45 + itemRotateAngle}
+          radius={2}
+          label={
+            <Trans
+              defaults={
+                context.rules.game.rule?.id === RuleId.DraftRoundPhaseClashCardSelectionForOpponent ? 'card.button.giveToOpponent' : 'card.button.addToBench'
+              }
+            />
+          }
+        >
+          <FontAwesomeIcon icon={faHandPointer} size="lg" />
+        </ItemMenuButton>
+        {this.getHelpButton(item, context, {
+          radius: 2,
+          angle: -135 + itemRotateAngle,
+          label: ''
+        })}
+      </>
+    ) : undefined
+  }
+  private getSwapItemMenuForHandCard = (
+    selectedItem: MaterialItem<PlayerColor, LocationType>,
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ): ReactNode => {
+    const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
+    const moveFromThisItemToSelected = legalMoves
+      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .find(
+        (move) =>
+          move.itemIndex === itemIndex &&
+          move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+          move.location.id === selectedItem.location.id &&
+          move.location.x === selectedItem.location.x
+      )
+    const locatorItemIndex = context.locators[LocationType.PlayerHockeyPlayerHandSpot]?.getItemIndex(item, context) ?? 0
+    const itemRotateAngle = context.locators[LocationType.PlayerHockeyPlayerHandSpot]?.getItemRotateZ(item, context) ?? 0
+    const numberOfCardsInHand = context.rules
+      .material(MaterialType.HockeyPlayerCard)
+      .player(moveFromThisItemToSelected?.location.player)
+      .location(LocationType.PlayerHockeyPlayerHandSpot).length
+    return moveFromThisItemToSelected !== undefined ? (
+      <>
+        <ItemMenuButton
+          move={moveFromThisItemToSelected}
+          angle={-45 + itemRotateAngle}
+          radius={2}
+          label={locatorItemIndex === numberOfCardsInHand - 1 ? <Trans defaults="card.button.swap" /> : undefined}
+        >
+          <FontAwesomeIcon icon={faRightLeft} size="lg" />
+        </ItemMenuButton>
+        {this.getHelpButton(item, context, {
+          angle: -135 + itemRotateAngle,
+          radius: 2,
+          label: ''
+        })}
+      </>
+    ) : undefined
+  }
 
-function moveTranslationKey(item: MaterialItem<PlayerColor, LocationType>, ruleId: RuleId): string {
-  if (item.location.type === LocationType.HockeyPlayerDraftSpot) {
-    if (ruleId === RuleId.DraftRoundPhaseClashCardSelectionForOpponent) {
-      return 'card.give'
-    } else {
-      return 'card.take'
+  private getItemMenuButtonForNewTeamMoveForHandCard = (
+    roundNumber: number,
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ): ReactNode => {
+    const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
+    const newTeamLocationId = roundNumber === 0 ? 2 : roundNumber
+    const moveToPreviousTeam = legalMoves
+      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id < roundNumber)
+    const moveToNewTeam = legalMoves
+      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id === newTeamLocationId)
+    const discardThisCardMove = legalMoves
+      .filter(isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .find((move) => move.itemIndex === itemIndex)
+    const itemRotateAngle = context.locators[LocationType.PlayerHockeyPlayerHandSpot]?.getItemRotateZ(item, context) ?? 0
+    const teamMove = moveToNewTeam ?? moveToPreviousTeam
+    if (teamMove !== undefined) {
+      return (
+        <>
+          <ItemMenuButton
+            move={teamMove}
+            radius={2}
+            angle={-45 + itemRotateAngle}
+            label={
+              <Trans
+                defaults={context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers ? 'card.button.addToPlayOffsTeam' : 'card.button.addToNewTeam'}
+                values={{ teamNumber: teamMove.location.id }}
+                components={{ sup: <sup></sup> }}
+              />
+            }
+          >
+            <FontAwesomeIcon icon={faHandPointer} size="lg" />
+          </ItemMenuButton>
+          {this.getHelpButton(item, context, {
+            radius: 2,
+            angle: -135 + itemRotateAngle,
+            label: ''
+          })}
+        </>
+      )
+    } else if (discardThisCardMove !== undefined) {
+      return (
+        <>
+          <ItemMenuButton move={discardThisCardMove} radius={2} angle={-45 + itemRotateAngle} label={<Trans defaults="card.button.discard" />}>
+            <FontAwesomeIcon icon={faTrashCan} size="lg" />
+          </ItemMenuButton>
+          {this.getHelpButton(item, context, {
+            radius: 2,
+            angle: -135 + itemRotateAngle,
+            label: ''
+          })}
+        </>
+      )
     }
+    return undefined
   }
-  if (item.location.type === LocationType.PlayerHockeyPlayerHandSpot) {
-    if (ruleId === RuleId.DraftRoundPhaseDiscardCardOverflow) {
-      return 'card.discard'
-    } else {
-      return 'card.play'
-    }
+
+  private getSwapItemMenuForPreviousTeamCard = (
+    selectedItemIndex: number,
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ): ReactNode => {
+    const moveToConsideredItem = legalMoves
+      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .find((move) => move.itemIndex === selectedItemIndex && move.location.id === item.location.id && move.location.x === item.location.x)
+    const locatorItemIndex = context.locators[LocationType.PlayerHockeyPlayerTeamSpot]?.getItemIndex(item, context) ?? 0
+    return moveToConsideredItem !== undefined ? (
+      <>
+        <ItemMenuButton move={moveToConsideredItem} angle={-45} radius={2.5} label={locatorItemIndex === 4 ? <Trans defaults="card.button.swap" /> : undefined}>
+          <FontAwesomeIcon icon={faRightLeft} size="lg" />
+        </ItemMenuButton>
+        {this.getHelpButton(item, context, {
+          radius: 2.5,
+          angle: -135,
+          label: ''
+        })}
+      </>
+    ) : undefined
   }
-  if (item.location.type === LocationType.PlayerHockeyPlayerTeamSpot) {
-    if (ruleId === RuleId.PlayoffSubstitutePlayers) {
-      return 'card.discard'
-    } else {
-      return 'card.substitute'
-    }
+
+  private getItemMenuForSelectedCardInPreviousTeam = (
+    item: MaterialItem<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
+  ): ReactNode => {
+    const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
+    const moveToHand = legalMoves
+      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerHandSpot)
+    const discardMove = legalMoves
+      .filter(isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .find((move) => move.itemIndex === itemIndex)
+    return moveToHand !== undefined ? (
+      <>
+        <ItemMenuButton move={moveToHand} angle={-45} radius={2.5} label={<Trans defaults="card.button.returnToHand" />}>
+          <FontAwesomeIcon icon={faHandPointer} size="lg" />
+        </ItemMenuButton>
+        {this.getHelpButton(item, context, {
+          radius: 2.5,
+          angle: -135,
+          label: ''
+        })}
+      </>
+    ) : discardMove !== undefined ? (
+      <>
+        <ItemMenuButton move={discardMove} angle={-45} radius={2.5} label={<Trans defaults="card.button.discard" />}>
+          <FontAwesomeIcon icon={faHandPointer} size="lg" />
+        </ItemMenuButton>
+        {this.getHelpButton(item, context, {
+          radius: 2.5,
+          angle: -135,
+          label: ''
+        })}
+      </>
+    ) : undefined
   }
-  return 'card.take'
 }
 
 export const hockeyPlayerCardDescription = new HockeyPlayerCardDescription()

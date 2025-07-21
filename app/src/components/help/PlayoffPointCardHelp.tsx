@@ -42,7 +42,13 @@ export const PlayoffPointCardHelp: FC<MaterialHelpProps<number, MaterialType, Lo
           </tr>
         </tbody>
       </table>
-      <p>{t('help.playoffCard.description2')}</p>
+      {playerCount > 3 ? (
+        ''
+      ) : (
+        <p>
+          <Trans defaults="help.playoffCard.description2" values={{ ticketNumber: playerCount === 3 ? 1 : playerCount === 2 ? 2 : undefined }} />
+        </p>
+      )}
     </>
   )
 }

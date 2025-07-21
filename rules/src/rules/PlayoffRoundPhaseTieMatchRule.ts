@@ -1,5 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
-import { difference, intersection } from 'lodash'
+import { isMoveItemType, ItemMove, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
@@ -8,28 +7,34 @@ import { Memorize } from '../Memorize'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
-export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
-    const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
-    const currentLowestPosition = this.remind<PlayerColor[]>(Memorize.ActivePlayers).length
-    const lastPlayers = this.remind<PlayerColor[]>(Memorize.LastPlayers)
-    difference(this.game.players, lastPlayers).forEach((player) => moves.push(this.endPlayerTurn(player))) // Non last players don't need to play the tie breaker
+export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
+  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    const moves: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] = []
+    const currentLowestPosition = this.game.players.filter((player) => this.material(MaterialType.HockeyPlayerCard).player(player).length > 0).length
+    const lastPlayers = this.activePlayers
     // Players who cannot participate score points and are eliminated
-    lastPlayers.forEach((player) => {
-      if (this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getItems().length === 0) {
+    const playersToBeEliminated = lastPlayers.filter(
+      (player) => this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getItems().length === 0
+    )
+    moves.push(
+      ...playersToBeEliminated.flatMap((player) => {
         this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
-        this.memorize<PlayerColor[]>(Memorize.ActivePlayers, (activePlayers) => activePlayers.filter((player) => player !== player))
-        moves.push(
-          this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).player(player).deleteItemsAtOnce(),
-          this.endPlayerTurn(player)
-        )
+        return [this.material(MaterialType.HockeyPlayerCard).player(player).deleteItemsAtOnce(), this.endPlayerTurn(player)]
+      })
+    )
+    if (this.activePlayers.length - playersToBeEliminated.length < 2) {
+      const stillActivePlayers = this.game.players
+        .filter((player) => !playersToBeEliminated.includes(player))
+        .filter((player) => this.material(MaterialType.HockeyPlayerCard).player(player).length > 0)
+      if (stillActivePlayers.length === 1) {
+        this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][0])
       }
-    })
-    this.memorize<PlayerColor[]>(Memorize.LastPlayers, intersection(lastPlayers, this.remind(Memorize.ActivePlayers)))
+      moves.push(stillActivePlayers.length > 1 ? this.startSimultaneousRule(RuleId.PlayoffSubstitutePlayers, stillActivePlayers) : this.endGame())
+    }
     return moves
   }
 
-  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     return this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).moveItems({
       type: LocationType.PlayerHockeyPlayerTeamSpot,
       id: 3,
@@ -38,7 +43,7 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
     })
   }
 
-  afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>, _context?: PlayMoveContext): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
       move.location.id === 3 &&
@@ -52,9 +57,12 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
     return []
   }
 
-  getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
+  getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
-    const lastPlayers = this.remind<PlayerColor[]>(Memorize.LastPlayers)
+    const activePlayers = this.game.players.filter((player) => this.material(MaterialType.HockeyPlayerCard).player(player).length > 0)
+    const lastPlayers = this.game.players.filter(
+      (player) => this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(3).player(player).length === 1
+    )
     moves.push(
       ...lastPlayers.flatMap((player) => [
         // Move and reveal card changed by the player between matchs
@@ -64,7 +72,7 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
           .locationId(3)
           .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, id: 3, player: player, rotation: MaterialRotation.FaceUp })
       ]),
-      this.startSimultaneousRule(RuleId.PlayoffRoundPhaseScore)
+      this.startSimultaneousRule(RuleId.PlayoffRoundPhaseScore, activePlayers)
     )
     return moves
   }

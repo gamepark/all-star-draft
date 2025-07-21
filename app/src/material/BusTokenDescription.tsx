@@ -1,14 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { fa1, fa2, fa3 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
-import { BusToken, BusTokenId } from '@gamepark/all-star-draft/material/BusToken'
+import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
+import { BusToken, BusTokenId, getBusTokenValue } from '@gamepark/all-star-draft/material/BusToken'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
-import { ItemButtonProps, ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
+import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { ReactNode } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { BusTokenHelp } from '../components/help/BusTokenHelp'
 import Black1 from '../images/Tokens/Bus/Black1.png'
 import Black2 from '../images/Tokens/Bus/Black2.png'
@@ -35,11 +37,7 @@ import Yellow2 from '../images/Tokens/Bus/Yellow2.png'
 import Yellow3 from '../images/Tokens/Bus/Yellow3.png'
 import YellowBack from '../images/Tokens/Bus/YellowBack.png'
 
-const dispatchButtonProps: { coordinates: Partial<ItemButtonProps>; icon: FontAwesomeIconProps['icon'] }[] = [
-  { coordinates: { x: 1, y: -1 }, icon: fa1 },
-  { coordinates: { x: 3.4, y: -1 }, icon: fa2 },
-  { coordinates: { x: 2.2, y: 1 }, icon: fa3 }
-]
+const dispatchButtonProps: { icon: FontAwesomeIconProps['icon'] }[] = [{ icon: fa1 }, { icon: fa2 }, { icon: fa3 }]
 
 class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, LocationType, BusTokenId> {
   height = 2.2
@@ -76,24 +74,48 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
   help = BusTokenHelp
 
   getItemMenu(
-    item: MaterialItem<PlayerColor, LocationType>,
+    item: MaterialItem<PlayerColor, LocationType, BusTokenId>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode {
-    if (context.player !== undefined && item.location.player === context.player && context.rules.game.rule !== undefined) {
-      const ruleId = context.rules.game.rule.id
-      const locationType = item.location.type
+    const { t } = useTranslation()
+    if (
+      context.player !== undefined &&
+      context.rules.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation &&
+      item.location.player === context.player &&
+      item.location.type === LocationType.PlayerBusTokenReserveSpot &&
+      item.id.front !== undefined
+    ) {
       const currentItemIndex = context.rules.material(MaterialType.BusToken).id(item.id).getIndex()
       const movesForThisItem = legalMoves
         .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken))
         .filter((move) => move.itemIndex === currentItemIndex)
-      if (ruleId === RuleId.DraftRoundPhaseBusDispatch && locationType === LocationType.PlayerBusTokenReserveSpot && movesForThisItem.length > 0) {
+      if (movesForThisItem.length > 0) {
+        const arenaNumber = getBusTokenValue(item.id.front)
         return (
           <>
             {movesForThisItem.map((move) => {
               const moveLocationIndex: number = move.location.id - 1
+              const arena = context.rules
+                .material(MaterialType.ArenaCard)
+                .location(LocationType.CurrentArenasRowSpot)
+                .location((l) => l.x === arenaNumber - 1)
+                .getItem<ArenaCard>()!
               return (
-                <ItemMenuButton key={`draft-card-move-${moveLocationIndex}`} move={move} {...dispatchButtonProps[moveLocationIndex].coordinates}>
+                <ItemMenuButton
+                  key={`draft-card-move-${moveLocationIndex}`}
+                  move={move}
+                  label={
+                    <Trans
+                      defaults="bus.button.sendTeamToArena"
+                      values={{ teamNumber: move.location.id, arena: t(`arena.${ArenaCard[arena.id]}`), arenaNumber: arenaNumber }}
+                      components={{ sup: <sup></sup> }}
+                    />
+                  }
+                  labelPosition="right"
+                  x={2.5}
+                  y={moveLocationIndex === 0 ? -3.5 : moveLocationIndex === 1 ? 0 : 3.5}
+                >
                   <FontAwesomeIcon icon={dispatchButtonProps[moveLocationIndex].icon} size="lg" />
                 </ItemMenuButton>
               )

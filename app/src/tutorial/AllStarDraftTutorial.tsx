@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
-import { busTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
+import { getBusTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { getHockeyPlayerCardSymbol, HockeyPlayerCard, HockeyPlayerCardSymbolsType } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -9,9 +9,10 @@ import { ClotheType, EyebrowType, EyeType, FacialHairType, MouthType, TopType } 
 import SkinColor from '@gamepark/avataaars/dist/avatar/SkinColor'
 import HairColorName from '@gamepark/avataaars/dist/avatar/top/HairColorName'
 import { MaterialTutorial, Picture, TutorialStep } from '@gamepark/react-game'
-import { isMoveItemType, isMoveItemTypeAtOnce, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, isMoveItemTypeAtOnce, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { SupportersIconComponent } from '../components/symbols/SupportersIconComponent'
+import { TeamStrengthIconComponent } from '../components/symbols/TeamStrengthIconComponent'
 import allGear from '../images/Symbols/ArenaAllGear.png'
 import whistle from '../images/Symbols/ArenaWhistle.png'
 import { busStationBoardDescription } from '../material/BusStationBoardDescription'
@@ -234,7 +235,16 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.powerExplanation" components={{ bold: <strong /> }} />
+        text: () => (
+          <Trans
+            defaults="tuto.powerExplanation"
+            components={{
+              bold: <strong />,
+              strengthSymbolMin: <TeamStrengthIconComponent strength={1} />,
+              strengthSymbolMax: <TeamStrengthIconComponent strength={5} />
+            }}
+          />
+        )
       }
     },
     {
@@ -285,7 +295,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
           this.material(game, MaterialType.BusToken)
             .location(LocationType.PlayerBusTokenReserveSpot)
             .player(me)
-            .id((id) => busTokenValue((id as KnownBusTokenId).front) === 1)
+            .id((id) => getBusTokenValue((id as KnownBusTokenId).front) === 1)
         ],
         locations: [{ type: LocationType.PlayerBusTokenTeamSpot, player: me }]
       })
@@ -438,33 +448,23 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
         margin: { top: 2, right: 5 }
       }),
       move: {
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game) && move.location.type === LocationType.PlayerHockeyPlayerHandSpot
       }
     },
     {
       move: {
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+        player: me
       }
     },
     {
       move: {
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game),
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game) && move.location.x !== undefined,
         player: opponent1
       }
     },
     {
       move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game),
-        player: opponent2
-      }
-    },
-    {
-      move: {
+        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game) && move.location.x !== undefined,
         player: opponent2
       }
     },
@@ -613,7 +613,10 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       },
       move: {
         player: me,
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+        filter: (move, game) =>
+          this.isMoveForHockeyPlayerCard(move, game) &&
+          move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
+          game.items[MaterialType.HockeyPlayerCard]![move.itemIndex].location.id === 1
       }
     },
     {
@@ -624,7 +627,10 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       move: {
         player: me,
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+        filter: (move, game) =>
+          this.isMoveForHockeyPlayerCard(move, game) &&
+          move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
+          game.items[MaterialType.HockeyPlayerCard]![move.itemIndex].location.id === 2
       }
     },
     {
@@ -635,45 +641,41 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     {
       move: {
         player: opponent1,
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
+        filter: (move, game) =>
+          this.isMoveForHockeyPlayerCard(move, game) &&
+          move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+          move.location.id === 1 &&
+          move.location.x !== undefined
       }
     },
     {
       move: {
         player: opponent1,
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
-      }
-    },
-    {
-      move: {
-        player: opponent1
-      }
-    },
-    {
-      move: {
-        player: opponent2,
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
-      }
-    },
-    {
-      move: {
-        player: opponent2
+        filter: (move, game) =>
+          this.isMoveForHockeyPlayerCard(move, game) &&
+          move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+          move.location.id === 2 &&
+          move.location.x !== undefined
       }
     },
     {
       move: {
         player: opponent2,
-        filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game)
+        filter: (move, game) =>
+          this.isMoveForHockeyPlayerCard(move, game) &&
+          move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+          move.location.id === 1 &&
+          move.location.x !== undefined
       }
     },
     {
       move: {
-        player: opponent2
+        player: opponent2,
+        filter: (move, game) =>
+          this.isMoveForHockeyPlayerCard(move, game) &&
+          move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+          move.location.id === 2 &&
+          move.location.x !== undefined
       }
     },
     {
@@ -837,7 +839,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.mandatoryChanges" components={{ bold: <strong /> }} />
+        text: () => <Trans defaults="tuto.mandatoryChanges" components={{ bold: <strong />, italic: <em /> }} />
       }
     },
     {
@@ -856,7 +858,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     move: MaterialMove<number, MaterialType, LocationType>,
     game: MaterialGame<number, MaterialType, LocationType>,
     cardId?: HockeyPlayerCard
-  ) {
+  ): move is MoveItem<PlayerColor, MaterialType, LocationType> {
     if (cardId === undefined) {
       return isMoveItemType<number, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)
     }
