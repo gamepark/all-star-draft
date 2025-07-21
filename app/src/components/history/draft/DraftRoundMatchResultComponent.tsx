@@ -8,13 +8,32 @@ import { getTeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepark/react-game'
-import { isMoveItemType, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItemType, Material, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { SupportersIconComponent } from '../../symbols/SupportersIconComponent'
 import { TeamStrengthLogComponent } from '../util/TeamStrengthLogComponent'
 
 const COLORS_NEEDING_CONTOUR = [PlayerColor.Green, PlayerColor.Yellow, PlayerColor.Blue]
+
+function getRankFromConsequences(
+  moveToArenaLadderForBus: MoveItem<PlayerColor, MaterialType, LocationType> | undefined,
+  gameContext: MoveComponentContext<
+    MaterialMove<PlayerColor, MaterialType, LocationType>,
+    PlayerColor,
+    MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
+  >,
+  move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>
+): number {
+  if (moveToArenaLadderForBus === undefined) {
+    const busMoves = gameContext.action.consequences
+      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken))
+      .filter((m) => m.location.type === LocationType.BusTokenSpotBelowBusStationBoard)
+    return busMoves.findIndex((m) => m === move) + 1
+  } else {
+    return moveToArenaLadderForBus.location.id as number
+  }
+}
 
 export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({
   move,
@@ -48,7 +67,7 @@ export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<
       m.location.parent === moveToArenaLadderForBus.location.parent &&
       m.itemIndex !== moveToArenaLadderForBus.itemIndex
   )
-  const rank = moveToArenaLadderForBus.location.id as number
+  const rank = getRankFromConsequences(moveToArenaLadderForBus, gameContext, move)
   const teamNumber = busItem.location.id as number
   const team = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard])
     .location(LocationType.PlayerHockeyPlayerTeamSpot)

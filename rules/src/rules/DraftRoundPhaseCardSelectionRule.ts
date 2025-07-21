@@ -42,9 +42,11 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
   }
 
   public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
-      move.location.type === LocationType.PlayerHockeyPlayerHandSpot
+      move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
+      this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(move.location.player).length === 5 + roundNumber
     ) {
       return [this.material(MaterialType.HockeyPlayerCard).player(move.location.player).location(move.location.type).shuffle()]
     }

@@ -424,6 +424,9 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   ): ReactNode => {
     const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
     const newTeamLocationId = roundNumber === 0 ? 2 : roundNumber
+    const moveToPreviousTeam = legalMoves
+      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id < roundNumber)
     const moveToNewTeam = legalMoves
       .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id === newTeamLocationId)
@@ -431,17 +434,18 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
       .filter(isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === itemIndex)
     const itemRotateAngle = context.locators[LocationType.PlayerHockeyPlayerHandSpot]?.getItemRotateZ(item, context) ?? 0
-    if (moveToNewTeam !== undefined) {
+    const teamMove = moveToNewTeam ?? moveToPreviousTeam
+    if (teamMove !== undefined) {
       return (
         <>
           <ItemMenuButton
-            move={moveToNewTeam}
+            move={teamMove}
             radius={2}
             angle={-45 + itemRotateAngle}
             label={
               <Trans
                 defaults={context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers ? 'card.button.addToPlayOffsTeam' : 'card.button.addToNewTeam'}
-                values={{ teamNumber: moveToNewTeam.location.id }}
+                values={{ teamNumber: teamMove.location.id }}
                 components={{ sup: <sup></sup> }}
               />
             }
