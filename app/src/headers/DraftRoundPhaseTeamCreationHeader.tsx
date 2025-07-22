@@ -49,7 +49,7 @@ export const DraftRoundPhaseTeamCreationHeader: FC = () => {
   const hockeyPlayerCardsInHandsMaterial = hockeyPlayerCardsMaterial?.location(LocationType.PlayerHockeyPlayerHandSpot)
   const hockeyPlayerCardsInTeamsMaterial = hockeyPlayerCardsMaterial?.location(LocationType.PlayerHockeyPlayerTeamSpot)
   if (activePlayer !== undefined) {
-    if (teamCreationRules?.is2PlayersGameAndNeedToDiscardACard(hockeyPlayerCardsInHandsMaterial?.player(activePlayer), roundNumber)) {
+    if (teamCreationRules?.is2PlayersGameAndNeedToDiscardACard(activePlayer, roundNumber)) {
       return <Trans defaults="header.draft.discard.you" />
     }
     const currentRoundTeam = hockeyPlayerCardsInTeamsMaterial?.locationId(roundNumber).player(activePlayer)
@@ -62,10 +62,7 @@ export const DraftRoundPhaseTeamCreationHeader: FC = () => {
     if (teamCreationRules.canSendBuses(currentRoundTeam)) {
       return <Trans defaults="header.draft.dispatch.you" />
     }
-    const opponentNeedsToDiscardCard = teamCreationRules.is2PlayersGameAndNeedToDiscardACard(
-      hockeyPlayerCardsInHandsMaterial?.player(twoPlayersOpponent),
-      roundNumber
-    )
+    const opponentNeedsToDiscardCard = teamCreationRules.is2PlayersGameAndNeedToDiscardACard(twoPlayersOpponent, roundNumber)
     if (opponentNeedsToDiscardCard) {
       return <Trans defaults="header.draft.discard.player" values={{ name: playerNames[twoPlayersOpponent] }} />
     }

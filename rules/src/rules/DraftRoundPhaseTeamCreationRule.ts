@@ -1,5 +1,5 @@
 import { isMoveItemType, ItemMove, Material, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
-import { difference } from 'lodash'
+import { difference, range } from 'lodash'
 import { getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
@@ -13,7 +13,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
   getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     const playerHandCards = this.material(MaterialType.HockeyPlayerCard).player(player).location(LocationType.PlayerHockeyPlayerHandSpot)
-    if (this.is2PlayersGameAndNeedToDiscardACard(playerHandCards, roundNumber)) {
+    if (this.is2PlayersGameAndNeedToDiscardACard(player, roundNumber)) {
       const previousRoundCards = this.remind<HockeyPlayerCard[]>(Memorize.PreviousRoundCards, player)
       return playerHandCards.id<HockeyPlayerCard>((id) => !previousRoundCards.includes(id)).deleteItems()
     }
@@ -94,8 +94,12 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseTeamReveal)]
   }
 
-  public is2PlayersGameAndNeedToDiscardACard(playerHandCards: Material<PlayerColor, MaterialType, LocationType> | undefined, roundNumber: number): boolean {
-    return playerHandCards !== undefined && this.game.players.length === 2 && playerHandCards.length === 6 + roundNumber
+  public is2PlayersGameAndNeedToDiscardACard(player: PlayerColor, roundNumber: number): boolean {
+    if (this.game.players.length !== 2) return false
+    const playerCards = this.material(MaterialType.HockeyPlayerCard).player(player)
+    const handCards = playerCards.location(LocationType.PlayerHockeyPlayerHandSpot)
+    const teamsCards = playerCards.location(LocationType.PlayerHockeyPlayerTeamSpot)
+    return handCards.length === 6 + roundNumber && !range(1, roundNumber).some((team) => teamsCards.locationId(team).length === 4)
   }
 
   public canSendBuses(currentRoundTeam: Material<PlayerColor, MaterialType, LocationType> | undefined): boolean {
