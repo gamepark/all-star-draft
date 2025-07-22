@@ -236,6 +236,11 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     [HockeyPlayerCard.Wolf9]: Wolf9
   }
   backImage = HockeyPlayerCardBack
+
+  getStockLocation(item: MaterialItem) {
+    return { type: LocationType.HockeyPlayerDraftSpot, player: item.location.player }
+  }
+
   help = HockeyPlayerCardHelp
 
   getItemMenu(
