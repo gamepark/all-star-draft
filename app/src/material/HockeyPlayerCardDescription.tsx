@@ -354,7 +354,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
     const moveToBenchForThisCard = legalMoves
       .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
-      .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerHandSpot && move.location.player === context.player)
+      .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerHandSpot)
     const itemRotateAngle = context.locators[LocationType.HockeyPlayerDraftSpot]?.getItemRotateZ(item, context) ?? 0
     return moveToBenchForThisCard !== undefined ? (
       <>
