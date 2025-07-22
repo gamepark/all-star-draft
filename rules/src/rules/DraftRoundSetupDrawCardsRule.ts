@@ -34,17 +34,10 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
 
     const draftHandSize = this.game.players.length === 2 ? 7 : 6
     if (this.game.players.length === 2) {
-      this.game.players.forEach((player) => {
-        this.memorize<HockeyPlayerCard[]>(
-          Memorize.PreviousRoundCards,
-          this.material(MaterialType.HockeyPlayerCard)
-            .location(LocationType.PlayerHockeyPlayerHandSpot)
-            .player(player)
-            .getItems<HockeyPlayerCard>()
-            .map((item) => item.id),
-          player
-        )
-      })
+      for (const player of this.game.players) {
+        const indexes = this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getIndexes()
+        this.memorize<HockeyPlayerCard[]>(Memorize.PreviousRoundCards, indexes, player)
+      }
     }
     moves.push(...this.game.players.map((player) => hockeyCardsDeck.dealAtOnce({ type: LocationType.HockeyPlayerDraftSpot, player: player }, draftHandSize)))
 
