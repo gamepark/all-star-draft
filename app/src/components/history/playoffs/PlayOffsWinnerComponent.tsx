@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
-import { Memorize } from '@gamepark/all-star-draft/Memorize'
+import { playoffFanPoint } from '@gamepark/all-star-draft/material/PlayoffPointCard'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepark/react-game'
-import { isEndGame, Material, MaterialGame, MaterialMove, PlayerMemory } from '@gamepark/rules-api'
+import { isEndGame, Material, MaterialGame, MaterialMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
 import { SupportersIconComponent } from '../../symbols/SupportersIconComponent'
@@ -22,14 +21,13 @@ export const PlayOffsWinnerComponent: FC<MoveComponentProps<MaterialMove<PlayerC
     PlayerColor,
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
-  const winningPlayer = new Material<PlayerColor, MaterialType, LocationType>(
+  const hockeyPlayerCardsMaterial = new Material<PlayerColor, MaterialType, LocationType>(
     MaterialType.HockeyPlayerCard,
     gameContext.game.items[MaterialType.HockeyPlayerCard]
   )
-    .location(LocationType.PlayerHockeyPlayerHandSpot)
-    .getItem<HockeyPlayerCard>()!.location.player!
+  const winningPlayer = gameContext.game.players.find((p) => hockeyPlayerCardsMaterial.player(p).length > 0)!
   const winningPlayerName = usePlayerName(winningPlayer)
-  const fanPoints = new PlayerMemory(gameContext.game, winningPlayer).remind<number>(Memorize.ScorePlayoff)
+  const fanPoints = playoffFanPoint[gameContext.game.players.length][0]
   return (
     <Trans
       defaults="history.playOffsPhase.winner"
