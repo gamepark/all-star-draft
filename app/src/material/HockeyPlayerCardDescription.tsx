@@ -434,7 +434,13 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
       .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id < roundNumber)
     const moveToNewTeam = legalMoves
       .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
-      .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id === newTeamLocationId)
+      .find(
+        (move) =>
+          move.itemIndex === itemIndex &&
+          move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+          move.location.id === newTeamLocationId &&
+          move.location.x === undefined
+      )
     const discardThisCardMove = legalMoves
       .filter(isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === itemIndex)
