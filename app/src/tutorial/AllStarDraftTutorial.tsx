@@ -21,7 +21,7 @@ import { tieBreakerCardDrescription } from '../material/TieBreakerCardDescriptio
 import { AllStarDraftTutorialSetup, me, opponent1, opponent2 } from './AllStarDraftTutorialSetup'
 
 export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, MaterialType, LocationType> {
-  version = 3
+  version = 4
   options = {
     players: [
       {
