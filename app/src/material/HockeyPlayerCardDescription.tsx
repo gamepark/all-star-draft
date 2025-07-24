@@ -497,9 +497,15 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
       .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === selectedItemIndex && move.location.id === item.location.id && move.location.x === item.location.x)
     const locatorItemIndex = context.locators[LocationType.PlayerHockeyPlayerTeamSpot]?.getItemIndex(item, context) ?? 0
+    const numberOfItemsInLocation = context.locators[LocationType.PlayerHockeyPlayerTeamSpot]?.countItems(item.location, context) ?? 0
     return moveToConsideredItem !== undefined ? (
       <>
-        <ItemMenuButton move={moveToConsideredItem} angle={-45} radius={2.5} label={locatorItemIndex === 4 ? <Trans defaults="card.button.swap" /> : undefined}>
+        <ItemMenuButton
+          move={moveToConsideredItem}
+          angle={-45}
+          radius={2.5}
+          label={locatorItemIndex === numberOfItemsInLocation - 1 ? <Trans defaults="card.button.swap" /> : undefined}
+        >
           <FontAwesomeIcon icon={faRightLeft} size="lg" />
         </ItemMenuButton>
         {this.getHelpButton(item, context, {

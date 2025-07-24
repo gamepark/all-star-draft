@@ -1,3 +1,4 @@
+import { DragEndEvent, DragMoveEvent } from '@dnd-kit/core'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -144,7 +145,11 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
     location: Location<PlayerColor, LocationType>,
     context: MaterialContext<PlayerColor, MaterialType, LocationType> | ItemContext<PlayerColor, MaterialType, LocationType>
   ): LocationDescription<PlayerColor, MaterialType, LocationType> | undefined {
-    return location.x !== undefined ? new PlayerHockeyPlayerTeamSpotDescription() : super.getLocationDescription(location, context)
+    return location.x !== undefined
+      ? new PlayerHockeyPlayerTeamSpotDescription()
+      : context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers
+        ? new PlayOffsHockeyPlayerTeamDescription()
+        : super.getLocationDescription(location, context)
   }
 }
 
@@ -183,6 +188,33 @@ class PlayerHockeyPlayerTeamSpotDescription extends DropAreaDescription<PlayerCo
       return itemAtMoveLocationLocatorIndex === location.x
     }
     return super.isMoveToLocation(move, location, context)
+  }
+}
+
+class PlayOffsHockeyPlayerTeamDescription extends DropAreaDescription<PlayerColor, MaterialType, LocationType, HockeyPlayerCard> {
+  width = hockeyPlayerCardDescription.width + 4 * 2.2
+  height = hockeyPlayerCardDescription.height
+  borderRadius = hockeyPlayerCardDescription.borderRadius
+
+  public getBestDropMove(
+    moves: MaterialMove<PlayerColor, MaterialType, LocationType>[],
+    location: Location<PlayerColor, LocationType>,
+    context: ItemContext<PlayerColor, MaterialType, LocationType>,
+    event: DragMoveEvent | DragEndEvent
+  ): MaterialMove<PlayerColor, MaterialType, LocationType> {
+    if (
+      context.player !== undefined &&
+      context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers &&
+      location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+      location.id === 2
+    ) {
+      const itemIndex = context.index
+      const moveToTeam = moves
+        .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+        .find((move) => move.itemIndex === itemIndex && move.location.x === undefined)
+      return moveToTeam ?? super.getBestDropMove(moves, location, context, event)
+    }
+    return super.getBestDropMove(moves, location, context, event)
   }
 }
 
