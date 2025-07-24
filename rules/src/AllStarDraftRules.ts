@@ -125,4 +125,9 @@ export class AllStarDraftRules
     }
     return []
   }
+
+  restoreTransientState(previousState: MaterialGame<PlayerColor, MaterialType, LocationType>) {
+    super.restoreTransientState(previousState)
+    this.memorize(Memorize.SortMedal, previousState.memory[Memorize.SortMedal])
+  }
 }
