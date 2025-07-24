@@ -20,7 +20,6 @@ import { MaterialType } from './material/MaterialType'
 import { Memory } from './Memory'
 import { PlayerColor } from './PlayerColor'
 import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
-import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
 import { DraftRoundPhaseMatchScoreRule } from './rules/DraftRoundPhaseMatchScoreRule'
 import { DraftRoundPhaseOpenMarketCardSelectionRule } from './rules/DraftRoundPhaseOpenMarketCardSelectionRule'
 import { DraftRoundPhaseTeamCreationRule } from './rules/DraftRoundPhaseTeamCreationRule'
@@ -72,8 +71,7 @@ export class AllStarDraftRules
     [RuleId.PlayoffSubstitutePlayers]: PlayoffSubstitutePlayersRule,
     [RuleId.PlayoffRoundPhaseTieMatch]: PlayoffRoundPhaseTieMatchRule,
     [RuleId.PlayoffRoundPhaseScore]: PlayoffRoundPhaseScoreRule,
-    [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionRule,
-    [RuleId.DraftRoundPhaseClashCardSelectionForOpponent]: DraftRoundPhaseClashCardSelectionForOpponentRule
+    [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionRule
   }
 
   hidingStrategies = {

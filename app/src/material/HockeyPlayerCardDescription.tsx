@@ -250,11 +250,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   ): ReactNode {
     if (context.player !== undefined) {
       if (item.location.player === context.player) {
-        if (
-          (context.rules.game.rule?.id === RuleId.DraftRoundPhaseCardSelection ||
-            context.rules.game.rule?.id === RuleId.DraftRoundPhaseClashCardSelectionForOpponent) &&
-          item.location.type === LocationType.HockeyPlayerDraftSpot
-        ) {
+        if (context.rules.game.rule?.id === RuleId.DraftRoundPhaseCardSelection && item.location.type === LocationType.HockeyPlayerDraftSpot) {
           return this.getItemMenuForHockeyPlayerCardInDraft(item, context, legalMoves)
         }
         if (context.rules.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
@@ -362,13 +358,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
           move={moveToBenchForThisCard}
           angle={-45 + itemRotateAngle}
           radius={2}
-          label={
-            <Trans
-              defaults={
-                context.rules.game.rule?.id === RuleId.DraftRoundPhaseClashCardSelectionForOpponent ? 'card.button.giveToOpponent' : 'card.button.addToBench'
-              }
-            />
-          }
+          label={<Trans defaults={moveToBenchForThisCard.location.player !== item.location.player ? 'card.button.giveToOpponent' : 'card.button.addToBench'} />}
         >
           <FontAwesomeIcon icon={faHandPointer} size="lg" />
         </ItemMenuButton>

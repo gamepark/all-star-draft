@@ -5,10 +5,13 @@ import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayer
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialRotation } from '@gamepark/all-star-draft/material/MaterialRotation'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
+import { Memory } from '@gamepark/all-star-draft/Memory'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
+import { TwoPlayersMode } from '@gamepark/all-star-draft/TwoPlayersMode'
 import { LogDescription, MoveComponentContext, MovePlayedLogDescription } from '@gamepark/react-game'
 import {
+  GameMemory,
   isDeleteItemType,
   isDeleteItemTypeAtOnce,
   isEndGame,
@@ -107,26 +110,28 @@ export class AllStarDraftHistory
         isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
         move.location.type === LocationType.PlayerHockeyPlayerHandSpot
       ) {
-        return { Component: DraftRoundCardDraftedComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
-      }
-    }
-    if (context.game.rule?.id === RuleId.DraftRoundPhaseClashCardSelectionForOpponent) {
-      if (
-        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
-        move.location.type === LocationType.PlayerHockeyPlayerHandSpot
-      ) {
-        if (move.location.rotation === MaterialRotation.FaceDown) {
-          const card = new Material(MaterialType.HockeyPlayerCard, context.game.items[MaterialType.HockeyPlayerCard])
-            .index(move.itemIndex)
-            .getItem<HockeyPlayerCard>()!
-          return { Component: DrafRoundPlayerGiveCardComponent, player: card.location.player, css: panelBackground(playerColorCode[card.location.player!]) }
-        } else if (move.reveal !== undefined) {
-          return {
-            Component: DraftRoundPlayerReceivedCardComponent,
-            player: move.location.player,
-            css: panelBackground(playerColorCode[move.location.player!])
+        if (
+          context.game.rule.id === RuleId.DraftRoundPhaseCardSelection &&
+          new GameMemory(context.game).remind<TwoPlayersMode>(Memory.GameMode) === TwoPlayersMode.Clash
+        ) {
+          if (move.location.rotation === MaterialRotation.FaceDown) {
+            const card = new Material(MaterialType.HockeyPlayerCard, context.game.items[MaterialType.HockeyPlayerCard])
+              .index(move.itemIndex)
+              .getItem<HockeyPlayerCard>()!
+            return {
+              Component: DrafRoundPlayerGiveCardComponent,
+              player: card.location.player,
+              css: panelBackground(playerColorCode[card.location.player!])
+            }
+          } else if (move.reveal !== undefined) {
+            return {
+              Component: DraftRoundPlayerReceivedCardComponent,
+              player: move.location.player,
+              css: panelBackground(playerColorCode[move.location.player!])
+            }
           }
         }
+        return { Component: DraftRoundCardDraftedComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.game.rule?.id === RuleId.PlayoffRoundSetupPhase) {
