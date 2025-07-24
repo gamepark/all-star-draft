@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
-import { Memorize } from '@gamepark/all-star-draft/Memorize'
+import { Memory } from '@gamepark/all-star-draft/Memory'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { Picture, ScoringDescription } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
@@ -25,19 +25,27 @@ export class AllStarDraftScoringDescription implements ScoringDescription<Player
   getScoringHeader(key: ScoringKeys) {
     switch (key) {
       case ScoringKeys.DraftRound:
-        return <Trans defaults="scoring.draft" />
+        return (
+          <div css={headerCss}>
+            <Trans defaults="scoring.draft" />
+          </div>
+        )
       case ScoringKeys.PlayoffRound:
-        return <Trans defaults="scoring.playoff" />
+        return (
+          <div css={headerCss}>
+            <Trans defaults="scoring.playoff" />
+          </div>
+        )
       case ScoringKeys.PlayoffTicketTokens:
         return (
-          <div style={{ display: 'flex', flexDirection: 'column', justifyItems: 'center', alignItems: 'center' }}>
+          <div css={flexHeaderCss}>
             <Picture src={playOffTicker} width={75} />
             <Trans defaults="scoring.ticketTokens" />
           </div>
         )
       case ScoringKeys.Total:
         return (
-          <div css={bold}>
+          <div css={[headerCss, bold]}>
             <Trans defaults="scoring.total" />
           </div>
         )
@@ -49,30 +57,28 @@ export class AllStarDraftScoringDescription implements ScoringDescription<Player
       case ScoringKeys.DraftRound:
         return (
           <>
-            {rules.remind<number>(Memorize.Score, player)}
+            {rules.remind<number>(Memory.Score, player)}
             <SupportersIconComponent />
           </>
         )
       case ScoringKeys.PlayoffRound:
         return (
           <>
-            {rules.remind<number>(Memorize.ScorePlayoff, player)}
+            {rules.remind<number>(Memory.ScorePlayoff, player)}
             <SupportersIconComponent />
           </>
         )
       case ScoringKeys.PlayoffTicketTokens:
         return (
           <>
-            {rules.remind<number>(Memorize.ScoreTicket, player)}
+            {rules.remind<number>(Memory.ScoreTicket, player)}
             <SupportersIconComponent />
           </>
         )
       case ScoringKeys.Total:
         return (
           <>
-            {rules.remind<number>(Memorize.Score, player) +
-              rules.remind<number>(Memorize.ScorePlayoff, player) +
-              rules.remind<number>(Memorize.ScoreTicket, player)}
+            {rules.remind<number>(Memory.Score, player) + rules.remind<number>(Memory.ScorePlayoff, player) + rules.remind<number>(Memory.ScoreTicket, player)}
             <SupportersIconComponent />
           </>
         )
@@ -82,4 +88,17 @@ export class AllStarDraftScoringDescription implements ScoringDescription<Player
 
 const bold = css`
   font-weight: bold;
+`
+
+const headerCss = css`
+  height: 100%;
+  text-align: center;
+  align-content: center;
+`
+
+const flexHeaderCss = css`
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
 `

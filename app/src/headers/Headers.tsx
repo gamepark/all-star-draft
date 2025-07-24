@@ -2,7 +2,6 @@
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { ComponentType } from 'react'
 import { DraftRoundPhaseCardSelectionHeader } from './DraftRoundPhaseCardSelectionHeader'
-import { DraftRoundPhaseClashCardSelectionForOpponentHeader } from './DraftRoundPhaseClashCardSelectionForOpponentHeader'
 import { DraftRoundPhaseMatchScoreHeader } from './DraftRoundPhaseMatchScoreHeader'
 import { DraftRoundPhaseOpenMarketCardSelectionHeader } from './DraftRoundPhaseOpenMarketCardSelectionHeader'
 import { DraftRoundPhaseTeamCreationHeader } from './DraftRoundPhaseTeamCreationHeader'
@@ -27,6 +26,5 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.PlayoffSubstitutePlayers]: PlayOffsRoundPhaseTeamSubstituteHeader,
   [RuleId.PlayoffRoundPhaseTieMatch]: PlayOffsRoundPhaseTieMatchHeader,
   [RuleId.PlayoffRoundPhaseScore]: PlayOffsRoundPhaseScoreHeader,
-  [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionHeader,
-  [RuleId.DraftRoundPhaseClashCardSelectionForOpponent]: DraftRoundPhaseClashCardSelectionForOpponentHeader
+  [RuleId.DraftRoundPhaseOpenMarketCardSelection]: DraftRoundPhaseOpenMarketCardSelectionHeader
 }

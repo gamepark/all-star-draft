@@ -6,7 +6,7 @@ import {
 } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
-import { Memorize } from '@gamepark/all-star-draft/Memorize'
+import { Memory } from '@gamepark/all-star-draft/Memory'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
@@ -78,7 +78,7 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     const { player, rules, index } = context
     if (item.location.player === player) {
       const hockeyPlayerCards = rules.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player)
-      const medalSort = context.rules.remind<number | undefined>(Memorize.SortMedal)
+      const medalSort = context.rules.remind<number | undefined>(Memory.SortMedal)
       const sorted = orderBy(hockeyPlayerCards.getIndexes(), (index) => {
         const cardId = hockeyPlayerCards.getItem<HockeyPlayerCard>(index).id
         if (medalSort === 1) {

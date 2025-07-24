@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
-import { Memorize } from '@gamepark/all-star-draft/Memorize'
+import { Memory } from '@gamepark/all-star-draft/Memory'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { StyledPlayerPanel, usePlayers, useRules } from '@gamepark/react-game'
 import { createPortal } from 'react-dom'
@@ -22,9 +22,9 @@ export const PlayerPanels = () => {
           mainCounter={{
             image: supportersIcon,
             value:
-              (rules?.remind<number>(Memorize.Score, player.id) ?? 0) +
-              (rules?.remind<number>(Memorize.ScorePlayoff, player.id) ?? 0) +
-              (rules?.remind<number>(Memorize.ScoreTicket, player.id) ?? 0)
+              (rules?.remind<number>(Memory.Score, player.id) ?? 0) +
+              (rules?.remind<number>(Memory.ScorePlayoff, player.id) ?? 0) +
+              (rules?.remind<number>(Memory.ScoreTicket, player.id) ?? 0)
           }}
           key={player.id}
           player={player}

@@ -7,7 +7,7 @@ import { selectHockeyPlayerCardsForRandomSpecies } from './material/HockeyPlayer
 import { LocationType } from './material/LocationType'
 import { MaterialRotation } from './material/MaterialRotation'
 import { MaterialType } from './material/MaterialType'
-import { Memorize } from './Memorize'
+import { Memory } from './Memory'
 import { PlayerColor } from './PlayerColor'
 import { RuleId } from './rules/RuleId'
 import { TwoPlayersMode } from './TwoPlayersMode'
@@ -21,14 +21,14 @@ export class AllStarDraftSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   setupMaterial(options: Partial<AllStarDraftOptions>) {
     const gameMode = options.gameMode ?? TwoPlayersMode.Clash
     if (this.players.length === 2) {
-      this.memorize<TwoPlayersMode>(Memorize.GameMode, gameMode)
+      this.memorize<TwoPlayersMode>(Memory.GameMode, gameMode)
     }
     this.setupCards(gameMode)
     this.setupTokens()
     this.game.players.forEach((player) => {
-      this.memorize<number>(Memorize.Score, 0, player)
-      this.memorize<number>(Memorize.ScorePlayoff, 0, player)
-      this.memorize<number>(Memorize.ScoreTicket, 0, player)
+      this.memorize<number>(Memory.Score, 0, player)
+      this.memorize<number>(Memory.ScorePlayoff, 0, player)
+      this.memorize<number>(Memory.ScoreTicket, 0, player)
     })
   }
 

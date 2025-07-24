@@ -3,7 +3,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
 import { playoffFanPoint } from '../material/PlayoffPointCard'
-import { Memorize } from '../Memorize'
+import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
@@ -19,7 +19,7 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
     if (playersToBeEliminated.length > 0) {
       moves.push(
         ...playersToBeEliminated.map((player) => {
-          this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
+          this.memorize<number>(Memory.ScorePlayoff, playoffFanPoint[this.game.players.length][currentLowestPosition - 1], player)
           return this.material(MaterialType.HockeyPlayerCard).player(player).deleteItemsAtOnce()
         })
       )
@@ -29,7 +29,7 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
         .filter((player) => hockeyPlayerCardsMaterial.player(player).length > 0)
       if (stillActivePlayers.length - playersToBeEliminated.length < 2) {
         if (stillActivePlayers.length === 1) {
-          this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[this.game.players.length][0], stillActivePlayers[0])
+          this.memorize<number>(Memory.ScorePlayoff, playoffFanPoint[this.game.players.length][0], stillActivePlayers[0])
         }
         moves.push(stillActivePlayers.length > 1 ? this.startSimultaneousRule(RuleId.PlayoffSubstitutePlayers, stillActivePlayers) : this.endGame())
       }
