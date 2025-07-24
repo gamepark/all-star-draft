@@ -3,7 +3,7 @@ import { minBy } from 'lodash'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { Memorize } from '../Memorize'
+import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { TwoPlayersMode } from '../TwoPlayersMode'
 import { RuleId } from './RuleId'
@@ -25,8 +25,8 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
     ]
 
     // Card are dealt as long as FreeAgency is not the selected mode
-    if (this.remind<TwoPlayersMode>(Memorize.GameMode) === TwoPlayersMode.FreeAgency) {
-      const scoreMap = this.game.players.map((player) => ({ player: player, score: this.remind<number>(Memorize.Score, player) }))
+    if (this.remind<TwoPlayersMode>(Memory.GameMode) === TwoPlayersMode.FreeAgency) {
+      const scoreMap = this.game.players.map((player) => ({ player: player, score: this.remind<number>(Memory.Score, player) }))
       const lastPlayer = minBy(scoreMap, 'score')?.player ?? this.game.players[0]
       moves.push(this.startPlayerTurn(RuleId.DraftRoundPhaseOpenMarketCardSelection, lastPlayer))
       return moves
@@ -36,7 +36,7 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
     if (this.game.players.length === 2) {
       for (const player of this.game.players) {
         const indexes = this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getIndexes()
-        this.memorize<HockeyPlayerCard[]>(Memorize.PreviousRoundCards, indexes, player)
+        this.memorize<HockeyPlayerCard[]>(Memory.PreviousRoundCards, indexes, player)
       }
     }
     moves.push(...this.game.players.map((player) => hockeyCardsDeck.dealAtOnce({ type: LocationType.HockeyPlayerDraftSpot, player: player }, draftHandSize)))

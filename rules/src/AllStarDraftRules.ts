@@ -17,7 +17,7 @@ import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthers
 import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthersWhenRotatedFaceDown'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { Memorize } from './Memorize'
+import { Memory } from './Memory'
 import { PlayerColor } from './PlayerColor'
 import { DraftRoundPhaseCardSelectionRule } from './rules/DraftRoundPhaseCardSelectionRule'
 import { DraftRoundPhaseClashCardSelectionForOpponentRule } from './rules/DraftRoundPhaseClashCardSelectionForOpponentRule'
@@ -47,15 +47,15 @@ export class AllStarDraftRules
 {
   getScore(playerId: PlayerColor): number {
     return (
-      this.getMemory(playerId).remind<number>(Memorize.Score) +
-      this.getMemory(playerId).remind<number>(Memorize.ScorePlayoff) +
-      this.getMemory(playerId).remind<number>(Memorize.ScoreTicket)
+      this.getMemory(playerId).remind<number>(Memory.Score) +
+      this.getMemory(playerId).remind<number>(Memory.ScorePlayoff) +
+      this.getMemory(playerId).remind<number>(Memory.ScoreTicket)
     )
   }
 
   getTieBreaker(tieBreaker: number, playerId: PlayerColor): number | undefined {
     if (tieBreaker === 1) {
-      return this.getMemory(playerId).remind<number>(Memorize.ScorePlayoff)
+      return this.getMemory(playerId).remind<number>(Memory.ScorePlayoff)
     }
     return
   }
@@ -121,13 +121,13 @@ export class AllStarDraftRules
 
   onCustomMove(move: CustomMove) {
     if (move.type === CustomMoveType.SortHand) {
-      this.memorize(Memorize.SortMedal, move.data)
+      this.memorize(Memory.SortMedal, move.data)
     }
     return []
   }
 
   restoreTransientState(previousState: MaterialGame<PlayerColor, MaterialType, LocationType>) {
     super.restoreTransientState(previousState)
-    this.memorize(Memorize.SortMedal, previousState.memory[Memorize.SortMedal])
+    this.memorize(Memory.SortMedal, previousState.memory[Memory.SortMedal])
   }
 }

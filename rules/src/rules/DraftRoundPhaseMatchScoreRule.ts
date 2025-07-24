@@ -7,7 +7,7 @@ import { getPlayersNewFans, MatchState } from '../material/MatchRanking'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
 import { getTeamStrength, IrregularAttribute } from '../material/TeamStrength'
-import { Memorize } from '../Memorize'
+import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
@@ -129,7 +129,7 @@ export class DraftRoundPhaseMatchScoreRule extends SimultaneousRule<PlayerColor,
   ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     return sortedRanking.map(({ player, fans: fanPoints }) => {
       const playerTeamStrength = getTeamStrength(currentTeams.find((playerTeam) => playerTeam.player === player)!.team, playerCount)
-      this.memorize<number>(Memorize.Score, (value) => value + fanPoints, player)
+      this.memorize<number>(Memory.Score, (value) => value + fanPoints, player)
       const playerBusTokenMaterial = busTokenPlayerTeamMaterial.locationId(playerTeamsNumbers[player]).player(player)
       return playerBusTokenMaterial.moveItem({
         type: LocationType.BusTokenSpotBelowBusStationBoard,

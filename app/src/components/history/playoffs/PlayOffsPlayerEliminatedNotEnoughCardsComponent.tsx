@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
-import { Memorize } from '@gamepark/all-star-draft/Memorize'
+import { Memory } from '@gamepark/all-star-draft/Memory'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { MoveComponentContext, MoveComponentProps, usePlayerName } from '@gamepark/react-game'
@@ -23,7 +23,7 @@ export const PlayOffsPlayerEliminatedNotEnoughCardsComponent: FC<MoveComponentPr
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
   const player = gameContext.game.items[MaterialType.HockeyPlayerCard]![move.indexes[0]].location.player!
-  const fanPoints = new PlayerMemory(gameContext.game, player).remind<number>(Memorize.ScorePlayoff)
+  const fanPoints = new PlayerMemory(gameContext.game, player).remind<number>(Memory.ScorePlayoff)
   const playerName = usePlayerName(player)
   return (
     <Trans

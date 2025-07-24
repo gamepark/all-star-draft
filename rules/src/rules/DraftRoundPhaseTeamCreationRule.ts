@@ -5,7 +5,7 @@ import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialRotation } from '../material/MaterialRotation'
 import { MaterialType } from '../material/MaterialType'
-import { Memorize } from '../Memorize'
+import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
@@ -14,7 +14,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     const playerHandCards = this.material(MaterialType.HockeyPlayerCard).player(player).location(LocationType.PlayerHockeyPlayerHandSpot)
     if (this.is2PlayersGameAndNeedToDiscardACard(player, roundNumber)) {
-      const previousRoundCards = this.remind<HockeyPlayerCard[]>(Memorize.PreviousRoundCards, player)
+      const previousRoundCards = this.remind<HockeyPlayerCard[]>(Memory.PreviousRoundCards, player)
       return playerHandCards.index((index) => !previousRoundCards.includes(index)).deleteItems()
     }
     const numberOfAlreadyAssembledTeams = roundNumber - 1
@@ -89,7 +89,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
 
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (this.game.players.length === 2) {
-      this.forget(Memorize.PreviousRoundCards)
+      this.forget(Memory.PreviousRoundCards)
     }
     return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseTeamReveal)]
   }

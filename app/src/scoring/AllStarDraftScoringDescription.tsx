@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
-import { Memorize } from '@gamepark/all-star-draft/Memorize'
+import { Memory } from '@gamepark/all-star-draft/Memory'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { Picture, ScoringDescription } from '@gamepark/react-game'
 import { Trans } from 'react-i18next'
@@ -49,30 +49,28 @@ export class AllStarDraftScoringDescription implements ScoringDescription<Player
       case ScoringKeys.DraftRound:
         return (
           <>
-            {rules.remind<number>(Memorize.Score, player)}
+            {rules.remind<number>(Memory.Score, player)}
             <SupportersIconComponent />
           </>
         )
       case ScoringKeys.PlayoffRound:
         return (
           <>
-            {rules.remind<number>(Memorize.ScorePlayoff, player)}
+            {rules.remind<number>(Memory.ScorePlayoff, player)}
             <SupportersIconComponent />
           </>
         )
       case ScoringKeys.PlayoffTicketTokens:
         return (
           <>
-            {rules.remind<number>(Memorize.ScoreTicket, player)}
+            {rules.remind<number>(Memory.ScoreTicket, player)}
             <SupportersIconComponent />
           </>
         )
       case ScoringKeys.Total:
         return (
           <>
-            {rules.remind<number>(Memorize.Score, player) +
-              rules.remind<number>(Memorize.ScorePlayoff, player) +
-              rules.remind<number>(Memorize.ScoreTicket, player)}
+            {rules.remind<number>(Memory.Score, player) + rules.remind<number>(Memory.ScorePlayoff, player) + rules.remind<number>(Memory.ScoreTicket, player)}
             <SupportersIconComponent />
           </>
         )

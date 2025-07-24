@@ -4,7 +4,7 @@ import { LocationType } from '../material/LocationType'
 import { getWeakestPlayerFromCards, getWeakestPlayersFromTeams } from '../material/MatchRanking'
 import { MaterialType } from '../material/MaterialType'
 import { playoffFanPoint } from '../material/PlayoffPointCard'
-import { Memorize } from '../Memorize'
+import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
@@ -45,7 +45,7 @@ export class PlayoffRoundPhaseScoreRule extends SimultaneousRule<PlayerColor, Ma
         moves.push(playoffTicketTokens.deleteItem())
       } else {
         isLastPlayerEliminated = true
-        this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[playersCount][currentLowestPosition - 1], lastPlayer)
+        this.memorize<number>(Memory.ScorePlayoff, playoffFanPoint[playersCount][currentLowestPosition - 1], lastPlayer)
         moves.push(this.material(MaterialType.HockeyPlayerCard).player(lastPlayer).deleteItemsAtOnce())
       }
     }
@@ -57,8 +57,8 @@ export class PlayoffRoundPhaseScoreRule extends SimultaneousRule<PlayerColor, Ma
           .location(LocationType.PlayerPlayoffTicketTokenSpot)
           .player(activePlayers[0])
           .getItems().length
-        this.memorize<number>(Memorize.ScoreTicket, ticketCount * playersCount, activePlayers[0])
-        this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[playersCount][0], activePlayers[0])
+        this.memorize<number>(Memory.ScoreTicket, ticketCount * playersCount, activePlayers[0])
+        this.memorize<number>(Memory.ScorePlayoff, playoffFanPoint[playersCount][0], activePlayers[0])
       }
       moves.push(this.endGame())
     } else {
@@ -71,7 +71,7 @@ export class PlayoffRoundPhaseScoreRule extends SimultaneousRule<PlayerColor, Ma
       )
       moves.concat(
         playersToEliminate.map((player) => {
-          this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[playersCount][activePlayers.length - 1], player)
+          this.memorize<number>(Memory.ScorePlayoff, playoffFanPoint[playersCount][activePlayers.length - 1], player)
           return this.material(MaterialType.HockeyPlayerCard).player(player).deleteItemsAtOnce()
         })
       )
@@ -79,7 +79,7 @@ export class PlayoffRoundPhaseScoreRule extends SimultaneousRule<PlayerColor, Ma
         if (activePlayers.length - playersToEliminate.length < 2) {
           if (activePlayers.length - playersToEliminate.length === 1) {
             const playOffsWinner = activePlayers.find((p) => !playersToEliminate.includes(p))!
-            this.memorize<number>(Memorize.ScorePlayoff, playoffFanPoint[playersCount][0], playOffsWinner)
+            this.memorize<number>(Memory.ScorePlayoff, playoffFanPoint[playersCount][0], playOffsWinner)
           }
           moves.push(this.endGame())
         } else {

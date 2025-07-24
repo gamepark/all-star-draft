@@ -3,7 +3,7 @@ import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayer
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { getTeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
-import { Memorize } from '@gamepark/all-star-draft/Memorize'
+import { Memory } from '@gamepark/all-star-draft/Memory'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { MoveComponentContext, MoveComponentProps, Picture, usePlayerName } from '@gamepark/react-game'
@@ -52,7 +52,7 @@ export const PlayOffsPlayerEliminatedComponent: FC<MoveComponentProps<MaterialMo
         .filter((item) => item.location.type === LocationType.PlayerHockeyPlayerTeamSpot && item.location.id === 2)
         .map((item) => item.id)
   const teamStrength = getTeamStrength(team, playerNumber)
-  const fanPoints = new PlayerMemory(gameContext.game, player).remind<number>(Memorize.ScorePlayoff)
+  const fanPoints = new PlayerMemory(gameContext.game, player).remind<number>(Memory.ScorePlayoff)
   const playerName = usePlayerName(player)
   return (
     <Trans

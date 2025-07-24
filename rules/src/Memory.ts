@@ -1,4 +1,4 @@
-export enum Memorize {
+export enum Memory {
   Score = 1,
   GameMode,
   ScorePlayoff,

@@ -1,7 +1,7 @@
 import { isMoveItemType, ItemMove, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { Memorize } from '../Memorize'
+import { Memory } from '../Memory'
 import { PlayerColor } from '../PlayerColor'
 import { TwoPlayersMode } from '../TwoPlayersMode'
 import { RuleId } from './RuleId'
@@ -32,7 +32,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
       move.location.player !== undefined
     ) {
       if (
-        this.remind<TwoPlayersMode>(Memorize.GameMode) === TwoPlayersMode.Clash &&
+        this.remind<TwoPlayersMode>(Memory.GameMode) === TwoPlayersMode.Clash &&
         this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot).player(move.location.player).length === 7
       )
         return []
@@ -63,7 +63,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const draftCards = this.material(MaterialType.HockeyPlayerCard).location(LocationType.HockeyPlayerDraftSpot)
     if (draftCards.length > 0) {
-      if (this.game.players.length === 2 && this.remind<TwoPlayersMode>(Memorize.GameMode) === TwoPlayersMode.Clash) {
+      if (this.game.players.length === 2 && this.remind<TwoPlayersMode>(Memory.GameMode) === TwoPlayersMode.Clash) {
         return [this.startSimultaneousRule(RuleId.DraftRoundPhaseClashCardSelectionForOpponent)]
       }
       const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
