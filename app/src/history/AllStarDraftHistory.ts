@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import { getBusTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
+import { isStartMatchCustomMove } from '@gamepark/all-star-draft/material/CustomMoveType'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialRotation } from '@gamepark/all-star-draft/material/MaterialRotation'
@@ -85,9 +86,6 @@ export class AllStarDraftHistory
       if (move.id === RuleId.DraftRoundPhaseTeamReveal || move.id === RuleId.PlayoffRoundPhaseTeamReveal) {
         return { Component: TeamRevealStartComponent, css: rulesPanelBackground }
       }
-      if (move.id === RuleId.DraftRoundPhaseMatchScore) {
-        return { Component: DraftRoundPhaseMatchStartComponent, css: rulesPanelBackground }
-      }
       if (move.id === RuleId.PlayoffRoundSetupPhase) {
         return { Component: PlayOffsPhaseStartComponent, css: rulesPanelBackground }
       }
@@ -100,6 +98,9 @@ export class AllStarDraftHistory
       if (move.id === RuleId.PlayoffRoundPhaseTieMatch) {
         return { Component: ShootOutPlayersComponent }
       }
+    }
+    if (isStartMatchCustomMove(move)) {
+      return { Component: DraftRoundPhaseMatchStartComponent, css: rulesPanelBackground }
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseCardSelection || context.game.rule?.id === RuleId.DraftRoundPhaseOpenMarketCardSelection) {
       if (
@@ -177,7 +178,7 @@ export class AllStarDraftHistory
           context.action.consequences.findIndex(
             (m) =>
               isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(m) &&
-              m.location.type === LocationType.BusStationBoardSpot &&
+              m.location.type === LocationType.BusTokenSpotBelowBusStationBoard &&
               getBusTokenValue(busTokenMaterial.index(m.itemIndex).getItem<KnownBusTokenId>()!.id.front) === matchNumber
           )
         const player = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken, context.game.items[MaterialType.BusToken])

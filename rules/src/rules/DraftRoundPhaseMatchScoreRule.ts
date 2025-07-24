@@ -1,6 +1,8 @@
-import { Material, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, Material, MaterialItem, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
+import { range } from 'lodash'
 import { ArenaCard, arenaIrregularAttribute } from '../material/ArenaCard'
 import { getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
+import { CustomMoveType } from '../material/CustomMoveType'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
 import { getPlayersNewFans, MatchState } from '../material/MatchRanking'
@@ -12,31 +14,94 @@ import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
 export class DraftRoundPhaseMatchScoreRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
-  onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const playerCount = this.game.players.length
     const currentArenasMaterial = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot)
     const roundNumber = currentArenasMaterial.length
     const busTokenPlayerTeamMaterial = this.material(MaterialType.BusToken).location(LocationType.PlayerBusTokenTeamSpot)
-    const arenaIndex = getBusTokenValue(
-      busTokenPlayerTeamMaterial.minBy((item) => getBusTokenValue((item.id as KnownBusTokenId).front)).getItem<KnownBusTokenId>()!.id.front
-    )
-    const currentArenaMaterial = currentArenasMaterial.location((l) => l.x === arenaIndex - 1)
-    const currentArena = currentArenaMaterial.getItem<ArenaCard>()!
-    const currentArenaIrregularAttribute = arenaIrregularAttribute[currentArena.id]
-    const playerTeamsNumbers = this.game.players.reduce(
-      (accumulator, player) => {
-        const busToken = busTokenPlayerTeamMaterial
-          .player(player)
-          .id<KnownBusTokenId>((id) => getBusTokenValue(id.front) === arenaIndex)
-          .getItem<KnownBusTokenId>()!
-        return { ...accumulator, [player]: busToken.location.id as number }
-      },
-      {} as Record<PlayerColor, number>
-    )
-    const currentTeams = this.game.players.map((player) => {
+    return range(1, roundNumber + 1).flatMap((matchNumber) => {
+      const arenaIndex = matchNumber - 1
+      const currentArenaMaterial = currentArenasMaterial.location((l) => l.x === arenaIndex)
+      const currentArena = currentArenaMaterial.getItem<ArenaCard>()!
+      const currentArenaIrregularAttribute = arenaIrregularAttribute[currentArena.id]
+      const playerTeamsNumbers = this.buildPlayerToTeamNumberMapForMatch(busTokenPlayerTeamMaterial, matchNumber)
+      const currentTeams = this.buildCurrentTeamsArrayForArena(busTokenPlayerTeamMaterial, matchNumber)
+      const sortedRanking = this.buildSortedPlayerRankingArray(currentArena, currentTeams)
+      const moves = [this.customMove<CustomMoveType>(CustomMoveType.StartMatch, matchNumber) as MaterialMove<PlayerColor, MaterialType, LocationType>]
+        .concat(
+          this.buildMovesToBusStationCard(
+            sortedRanking,
+            currentTeams,
+            playerCount,
+            playerTeamsNumbers,
+            busTokenPlayerTeamMaterial,
+            currentArenaIrregularAttribute
+          )
+        )
+        .concat(this.buildBusMovesToArenaLadder(sortedRanking, playerTeamsNumbers, currentArenaMaterial, busTokenPlayerTeamMaterial))
+      const isLastMatchForRound = roundNumber === matchNumber
+      if (isLastMatchForRound) {
+        const isLastRound = roundNumber === 3
+        const busToReserveMoves = isLastRound
+          ? []
+          : this.game.players.map((player) =>
+              busTokenPlayerTeamMaterial.player(player).moveItemsAtOnce({
+                type: LocationType.PlayerBusTokenReserveSpot,
+                player: player,
+                rotation: MaterialRotation.FaceDown
+              })
+            )
+        moves.push(...busToReserveMoves, this.startSimultaneousRule(isLastRound ? RuleId.PlayoffRoundSetupPhase : RuleId.DraftRoundSetupDrawCards))
+      }
+      return moves
+    })
+  }
+
+  public getActivePlayerLegalMoves(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
+  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return []
+  }
+
+  public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    if (
+      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
+      move.location.type === LocationType.PlayerBusTokenReserveSpot &&
+      move.location.player !== undefined
+    ) {
+      return [this.material(MaterialType.BusToken).player(move.location.player).shuffle()]
+    }
+    return []
+  }
+
+  private buildSortedPlayerRankingArray(
+    currentArena: MaterialItem<PlayerColor, LocationType, ArenaCard>,
+    currentTeams: {
+      player: PlayerColor
+      team: HockeyPlayerCard[]
+    }[]
+  ): { player: PlayerColor; fans: number; rank: number }[] {
+    const match: MatchState = {
+      arena: currentArena.id,
+      teams: currentTeams
+    }
+    const ranking = getPlayersNewFans(match)
+    return ranking.sort((a, b) => a.rank - b.rank)
+  }
+
+  private buildCurrentTeamsArrayForArena(
+    busTokenPlayerTeamMaterial: Material<PlayerColor, MaterialType, LocationType>,
+    matchNumber: number
+  ): {
+    player: PlayerColor
+    team: HockeyPlayerCard[]
+  }[] {
+    return this.game.players.map((player) => {
       const busToken = busTokenPlayerTeamMaterial
         .player(player)
-        .id<KnownBusTokenId>((id) => getBusTokenValue(id.front) === arenaIndex)
+        .id<KnownBusTokenId>((id) => getBusTokenValue(id.front) === matchNumber)
         .getItem<KnownBusTokenId>()!
       const teamCardIds = this.material(MaterialType.HockeyPlayerCard)
         .location(LocationType.PlayerHockeyPlayerTeamSpot)
@@ -49,55 +114,22 @@ export class DraftRoundPhaseMatchScoreRule extends SimultaneousRule<PlayerColor,
         team: teamCardIds
       }
     })
-    const match: MatchState = {
-      arena: currentArena.id,
-      teams: currentTeams
-    }
-    const ranking = getPlayersNewFans(match)
-    const sortedRanking = ranking.sort((a, b) => a.rank - b.rank)
-    const moves = this.buildMovesToBusStationCard(
-      sortedRanking,
-      currentTeams,
-      playerCount,
-      playerTeamsNumbers,
-      busTokenPlayerTeamMaterial,
-      currentArenaIrregularAttribute
+  }
+
+  private buildPlayerToTeamNumberMapForMatch(
+    busTokenPlayerTeamMaterial: Material<PlayerColor, MaterialType, LocationType>,
+    matchNumber: number
+  ): Record<PlayerColor, number> {
+    return this.game.players.reduce(
+      (accumulator, player) => {
+        const busToken = busTokenPlayerTeamMaterial
+          .player(player)
+          .id<KnownBusTokenId>((id) => getBusTokenValue(id.front) === matchNumber)
+          .getItem<KnownBusTokenId>()!
+        return { ...accumulator, [player]: busToken.location.id as number }
+      },
+      {} as Record<PlayerColor, number>
     )
-      .concat(this.buildBusMovesToArenaLadder(sortedRanking, playerTeamsNumbers, currentArenaMaterial, busTokenPlayerTeamMaterial))
-      .concat(this.buildBusMovesToPlayerReserves(sortedRanking, playerTeamsNumbers, busTokenPlayerTeamMaterial))
-    const isLastMatchForRound = roundNumber === arenaIndex
-    if (isLastMatchForRound) {
-      moves.push(
-        ...this.game.players.map((player) => this.material(MaterialType.BusToken).player(player).shuffle()),
-        this.startSimultaneousRule(roundNumber === 3 ? RuleId.PlayoffRoundSetupPhase : RuleId.DraftRoundSetupDrawCards)
-      )
-    } else {
-      moves.push(this.startSimultaneousRule(RuleId.DraftRoundPhaseMatchScore))
-    }
-    return moves
-  }
-
-  public getActivePlayerLegalMoves(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    return []
-  }
-
-  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    return []
-  }
-
-  private buildBusMovesToPlayerReserves(
-    sortedRanking: { player: PlayerColor; fans: number; rank: number }[],
-    playerTeamsNumbers: Record<PlayerColor, number>,
-    busTokenPlayerTeamMaterial: Material<PlayerColor, MaterialType, LocationType>
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    return sortedRanking.map(({ player }) => {
-      const playerBusTokenMaterial = busTokenPlayerTeamMaterial.locationId(playerTeamsNumbers[player]).player(player)
-      return playerBusTokenMaterial.moveItem({
-        type: LocationType.PlayerBusTokenReserveSpot,
-        player: player,
-        rotation: MaterialRotation.FaceDown
-      })
-    })
   }
 
   private buildBusMovesToArenaLadder(
