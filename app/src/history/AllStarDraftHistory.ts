@@ -129,6 +129,8 @@ export class AllStarDraftHistory
               player: move.location.player,
               css: panelBackground(playerColorCode[move.location.player!])
             }
+          } else if (context.game.rule.players?.length === 0) {
+            return undefined
           }
         }
         return { Component: DraftRoundCardDraftedComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
