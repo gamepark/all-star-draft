@@ -10,7 +10,6 @@ import { Memory } from '@gamepark/all-star-draft/Memory'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
-import { orderBy } from 'lodash'
 import { PlayerHandHelp } from '../components/help/PlayerHandHelp'
 import { hockeyPlayerCardDescription } from '../material/HockeyPlayerCardDescription'
 
@@ -74,22 +73,28 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     return coordArray[index]
   }
 
-  getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
-    const { player, rules, index } = context
+  getItemIndex(item: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
+    const { player, rules } = context
     if (item.location.player === player) {
       const hockeyPlayerCards = rules.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player)
       const medalSort = context.rules.remind<number | undefined>(Memory.SortMedal)
-      const sorted = orderBy(hockeyPlayerCards.getIndexes(), (index) => {
-        const cardId = hockeyPlayerCards.getItem<HockeyPlayerCard>(index).id
-        if (medalSort === 1) {
-          return getHockeyPlayerCardSymbol(cardId)
-        } else if ((medalSort === 2 && context.rules.players.length < 5) || (medalSort === 3 && context.rules.players.length > 4)) {
-          return getHockeyPlayerCardValue(cardId)
-        } else {
-          return getHockeyPlayerCardSpecie(cardId)
-        }
-      })
-      return sorted.indexOf(index)
+      const sorted = hockeyPlayerCards
+        .sort(
+          (card) => {
+            const cardId = card.id as HockeyPlayerCard
+            if (medalSort === 1) {
+              return getHockeyPlayerCardSymbol(cardId) as number
+            } else if ((medalSort === 2 && context.rules.players.length < 5) || (medalSort === 3 && context.rules.players.length > 4)) {
+              return getHockeyPlayerCardValue(cardId)
+            } else {
+              return getHockeyPlayerCardSpecie(cardId) as number
+            }
+          },
+          (card: MaterialItem<PlayerColor, LocationType>) => card.id as HockeyPlayerCard
+        )
+        .getItems<HockeyPlayerCard>()
+        .map((card) => card.id)
+      return sorted.indexOf(item.id)
     }
     return item.location.x!
   }
