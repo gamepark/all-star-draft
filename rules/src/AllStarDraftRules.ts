@@ -4,6 +4,9 @@ import {
   FillGapStrategy,
   hideItemId,
   hideItemIdToOthers,
+  isDeleteItemType,
+  isMoveItemType,
+  isStartSimultaneousRule,
   MaterialGame,
   MaterialMove,
   PositiveSequenceStrategy,
@@ -16,6 +19,7 @@ import { hideCardToEveryoneWhenRotatedFaceDown } from './material/HideCardToEver
 import { hideCardToOthersWhenRotatedFaceDown } from './material/HideCardToOthersWhenRotatedFaceDown'
 import { hideTokenToOthersWhenRotatedFaceDown } from './material/HideTokenToOthersWhenRotatedFaceDown'
 import { LocationType } from './material/LocationType'
+import { MaterialRotation } from './material/MaterialRotation'
 import { MaterialType } from './material/MaterialType'
 import { Memory } from './Memory'
 import { PlayerColor } from './PlayerColor'
@@ -127,5 +131,24 @@ export class AllStarDraftRules
   restoreTransientState(previousState: MaterialGame<PlayerColor, MaterialType, LocationType>) {
     super.restoreTransientState(previousState)
     this.memorize(Memory.SortMedal, previousState.memory[Memory.SortMedal])
+  }
+
+  public keepMoveSecret(move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): boolean {
+    if (this.game.rule?.id === RuleId.PlayoffSubstitutePlayers && !(this.rulesStep as PlayoffSubstitutePlayersRule).isFirstPlayOffRound()) {
+      if (
+        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) ||
+        isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)
+      ) {
+        const cards = this.material(MaterialType.HockeyPlayerCard)
+        const playersNotEliminated = this.game.players.filter((player) => cards.player(player).length > 0)
+        const teamCards = cards.location(LocationType.PlayerHockeyPlayerTeamSpot)
+        return playersNotEliminated.some((player) => teamCards.player(player).rotation(MaterialRotation.FaceUp).length !== 5)
+      }
+    }
+    return false
+  }
+
+  isUnpredictableMove(move: MaterialMove<PlayerColor, MaterialType, LocationType>, player: PlayerColor): boolean {
+    return (isStartSimultaneousRule(move) && move.id === RuleId.PlayoffRoundPhaseTeamReveal) || super.isUnpredictableMove(move, player)
   }
 }
