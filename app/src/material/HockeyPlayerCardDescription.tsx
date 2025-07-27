@@ -417,23 +417,32 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode => {
+    const hockeyCardMoves = legalMoves.filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
     const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
     const newTeamLocationId = roundNumber === 0 ? 2 : roundNumber
-    const moveToPreviousTeam = legalMoves
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
-      .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id < roundNumber)
-    const moveToNewTeam = legalMoves
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
-      .find(
-        (move) =>
-          move.itemIndex === itemIndex &&
-          move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
-          move.location.id === newTeamLocationId &&
-          move.location.x === undefined
-      )
+    const moveToPreviousTeam = hockeyCardMoves.find(
+      (move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id < roundNumber
+    )
+    const moveToNewTeam = hockeyCardMoves.find(
+      (move) =>
+        move.itemIndex === itemIndex &&
+        move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+        move.location.id === newTeamLocationId &&
+        move.location.x === undefined
+    )
     const discardThisCardMove = legalMoves
       .filter(isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === itemIndex)
+    const playOffSwapMove =
+      roundNumber === 0
+        ? hockeyCardMoves.find(
+            (move) =>
+              move.itemIndex === itemIndex &&
+              move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
+              move.location.id === 2 &&
+              move.location.x !== undefined
+          )
+        : undefined
     const itemRotateAngle = context.locators[LocationType.PlayerHockeyPlayerHandSpot]?.getItemRotateZ(item, context) ?? 0
     const teamMove = moveToNewTeam ?? moveToPreviousTeam
     if (teamMove !== undefined) {
@@ -473,6 +482,12 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
           })}
         </>
       )
+    } else if (playOffSwapMove !== undefined) {
+      return this.getHelpButton(item, context, {
+        radius: 2,
+        angle: -135 + itemRotateAngle,
+        label: ''
+      })
     }
     return undefined
   }

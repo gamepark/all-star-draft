@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, Material, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, isShuffleItemType, isShuffleRandomized, ItemMove, Material, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { difference, range } from 'lodash'
 import { getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
@@ -10,7 +10,13 @@ import { PlayerColor } from '../PlayerColor'
 import { RuleId } from './RuleId'
 
 export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
-  getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    return this.game.players.map((player) =>
+      this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).shuffle()
+    )
+  }
+
+  public getActivePlayerLegalMoves(player: PlayerColor): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     const playerHandCards = this.material(MaterialType.HockeyPlayerCard).player(player).location(LocationType.PlayerHockeyPlayerHandSpot)
     if (this.is2PlayersGameAndNeedToDiscardACard(player, roundNumber)) {
@@ -73,25 +79,47 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     return []
   }
 
-  afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+  public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     if (
       isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
       move.location.type === LocationType.PlayerBusTokenTeamSpot &&
       move.location.player !== undefined
     ) {
-      const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
       if (this.material(MaterialType.BusToken).player(move.location.player).location(LocationType.PlayerBusTokenTeamSpot).length === roundNumber) {
         return [this.endPlayerTurn<PlayerColor>(move.location.player)]
+      }
+    }
+    if (
+      this.game.players.length === 2 &&
+      isShuffleItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      isShuffleRandomized<PlayerColor, MaterialType, LocationType>(move) &&
+      move.indexes.length === 6 + roundNumber
+    ) {
+      const firstShuffledItem = this.material(MaterialType.HockeyPlayerCard).index(move.newIndexes[0]).getItem()!
+      if (firstShuffledItem.location.type === LocationType.PlayerHockeyPlayerHandSpot) {
+        const player = firstShuffledItem.location.player!
+        this.memorize<number[]>(
+          Memory.PreviousRoundCards,
+          (indexes) =>
+            indexes.map((materialIndex) => {
+              const indexOfMaterialIndex = move.indexes.indexOf(materialIndex)
+              return indexOfMaterialIndex === -1 ? materialIndex : move.newIndexes[indexOfMaterialIndex]
+            }),
+          player
+        )
       }
     }
     return []
   }
 
-  getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    if (this.game.players.length === 2) {
-      this.forget(Memory.PreviousRoundCards)
-    }
+  public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     return [this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseTeamReveal)]
+  }
+
+  public onRuleEnd(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
+    this.forget(Memory.PreviousRoundCards)
+    return []
   }
 
   public is2PlayersGameAndNeedToDiscardACard(player: PlayerColor, roundNumber: number): boolean {
