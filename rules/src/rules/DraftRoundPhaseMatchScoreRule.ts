@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, Material, MaterialItem, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemTypeAtOnce, ItemMove, Material, MaterialItem, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { range } from 'lodash'
 import { ArenaCard, arenaIrregularAttribute } from '../material/ArenaCard'
 import { getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
@@ -67,7 +67,7 @@ export class DraftRoundPhaseMatchScoreRule extends SimultaneousRule<PlayerColor,
 
   public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
+      isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
       move.location.type === LocationType.PlayerBusTokenReserveSpot &&
       move.location.player !== undefined
     ) {
