@@ -30,7 +30,7 @@ export const HandSortButtons = ({ xMin, yMin }: Props) => {
           key={medal}
           label={t(`sort.${medal === 1 ? 'equipment' : (medal === 2 && players < 5) || (medal === 3 && players > 4) ? 'number' : 'species'}`)}
           labelPosition="left"
-          css={[position(xMin, yMin), transformCss(...transforms, `translateY(${medal * 3 - 7}em)`)]}
+          css={[position(xMin, yMin), transformCss(...transforms, `translateY(${medal * 3 - 7}em)`, 'translateZ(2em)')]}
           move={context.rules.customMove(CustomMoveType.SortHand, medal)}
           options={{ transient: true }}
         >
