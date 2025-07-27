@@ -64,7 +64,7 @@ export class PlayoffRoundPhaseScoreRule extends SimultaneousRule<PlayerColor, Ma
     } else {
       const shootoutCards = this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(3)
       if (shootoutCards.length > 0) {
-        moves.push(shootoutCards.deleteItem())
+        moves.push(shootoutCards.deleteItemsAtOnce())
       }
       const playersToEliminate = activePlayers.filter(
         (player) => this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).length < 2
