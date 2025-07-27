@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, Location, MaterialMove, PlayMoveContext, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, Location, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialRotation } from '../material/MaterialRotation'
@@ -38,22 +38,6 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
       }
     }
     return []
-  }
-
-  public afterItemMove(
-    move: ItemMove<PlayerColor, MaterialType, LocationType>,
-    _context?: PlayMoveContext
-  ): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
-    if (
-      this.is2playersClashGame() &&
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
-      move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
-      move.location.player !== undefined &&
-      this.activePlayers.length === 0
-    ) {
-      return [this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(move.location.player).shuffle()]
-    }
-    return super.afterItemMove(move, _context)
   }
 
   public getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
