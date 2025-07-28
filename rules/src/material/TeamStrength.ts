@@ -17,7 +17,7 @@ export type TeamStrength = {
   irregularsAttributes?: IrregularAttribute[]
 }
 
-type Attribute =
+export type Attribute =
   | {
       kind: AttributeKind.Species
       value: HockeyPlayerCardSpeciesType

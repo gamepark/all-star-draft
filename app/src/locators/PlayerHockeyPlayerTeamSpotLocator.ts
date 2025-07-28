@@ -1,5 +1,5 @@
 import { DragEndEvent, DragMoveEvent } from '@dnd-kit/core'
-import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
+import { hasAttribute, HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
@@ -8,6 +8,7 @@ import { DropAreaDescription, getRelativePlayerIndex, ItemContext, ListLocator, 
 import { Coordinates, isMoveItemType, Location, MaterialItem, MaterialMove, MoveItem, MoveItemsAtOnce } from '@gamepark/rules-api'
 import { HockeyPlayerTeamHelp } from '../components/help/HockeyPlayerTeamHelp'
 import { hockeyPlayerCardDescription } from '../material/HockeyPlayerCardDescription'
+import { getTeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
 
 const getTeamCoordinates = (playerCount: number, index: number, teamNumber: number): Partial<Coordinates> => {
   const teamSpread = (index === 0 ? 2.2 : 1.2) * 5 // Total width of a team
@@ -111,13 +112,26 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
   getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
     const { rules } = context
     const roundNumber = rules.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
+    const teamAttribute = getTeamStrength(
+      rules
+        .material(MaterialType.HockeyPlayerCard)
+        .location(LocationType.PlayerHockeyPlayerTeamSpot)
+        .locationId(item.location.id)
+        .player(item.location.player)
+        .getItems<HockeyPlayerCard>()
+        .map((item) => item.id),
+      rules.players.length
+    ).attribute
     if (item.id !== undefined) {
       const hockeyPlayerCards = rules
         .material(MaterialType.HockeyPlayerCard)
         .location(LocationType.PlayerHockeyPlayerTeamSpot)
         .locationId(item.location.id)
         .player(item.location.player)
-        .sort((item) => item.id as number)
+        .sort((item) => {
+          const cardId = item.id as HockeyPlayerCard
+          return hasAttribute(cardId, teamAttribute) ? cardId + HockeyPlayerCard.PolarBear9 : cardId // PolarBear9 is the greater enum value
+        })
         .getItems<HockeyPlayerCard>()
       return hockeyPlayerCards.findIndex((card) => card.id === item.id)
     } else {

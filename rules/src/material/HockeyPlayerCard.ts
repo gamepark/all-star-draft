@@ -1,6 +1,7 @@
 import { getEnumValues } from '@gamepark/rules-api'
 import { TFunction } from 'i18next'
 import { sampleSize } from 'lodash'
+import { Attribute, AttributeKind } from './TeamStrength'
 
 export enum HockeyPlayerCard {
   Rabbit1 = 111,
@@ -215,5 +216,18 @@ export const getSymbolTranslationKey = (symbol: HockeyPlayerCardSymbolsType, t: 
 
     default:
       throw new Error('Invalid HockeyPlayerCardType')
+  }
+}
+
+export const hasAttribute = (cardId: HockeyPlayerCard, attribute: Attribute) => {
+  switch (attribute.kind) {
+    case AttributeKind.Number:
+      return getHockeyPlayerCardValue(cardId) === attribute.value
+    case AttributeKind.Species:
+      return getHockeyPlayerCardSpecie(cardId) === attribute.value
+    case AttributeKind.Symbol:
+      return getHockeyPlayerCardSymbol(cardId) === attribute.value
+    default:
+      throw new Error('Invalid AttributeKind')
   }
 }
