@@ -19,6 +19,7 @@ import { busStationBoardDescription } from '../material/BusStationBoardDescripti
 import { playoffPointCardDescription } from '../material/PlayoffPointCardDescription'
 import { tieBreakerCardDrescription } from '../material/TieBreakerCardDescription'
 import { AllStarDraftTutorialSetup, me, opponent1, opponent2 } from './AllStarDraftTutorialSetup'
+import { getTeamStrength, TeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
 
 export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, MaterialType, LocationType> {
   version = 4
@@ -810,7 +811,8 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       .map(
         (): TutorialStep => ({
           move: {
-            player: opponent1
+            player: opponent1,
+            filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game) && !this.isMoveGoingToTie(move, game)
           }
         })
       ),
@@ -819,7 +821,8 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       .map(
         (): TutorialStep => ({
           move: {
-            player: opponent2
+            player: opponent2,
+            filter: (move, game) => this.isMoveForHockeyPlayerCard(move, game) && !this.isMoveGoingToTie(move, game)
           }
         })
       ),
@@ -858,7 +861,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
     move: MaterialMove<number, MaterialType, LocationType>,
     game: MaterialGame<number, MaterialType, LocationType>,
     cardId?: HockeyPlayerCard
-  ): move is MoveItem<PlayerColor, MaterialType, LocationType> {
+  ): move is MoveItem<PlayerColor, MaterialType.HockeyPlayerCard, LocationType> {
     if (cardId === undefined) {
       return isMoveItemType<number, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)
     }
@@ -866,5 +869,26 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       isMoveItemType<number, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
       this.material(game, MaterialType.HockeyPlayerCard).getItem<HockeyPlayerCard>(move.itemIndex).id === cardId
     )
+  }
+
+  private isMoveGoingToTie(
+    move: MoveItem<PlayerColor, MaterialType.HockeyPlayerCard, LocationType>,
+    game: MaterialGame<PlayerColor, MaterialType, LocationType>
+  ): boolean {
+    const activePlayer = move.location.player!
+    const activePlayerTeamStrength = this.getPlayOffTeamStrength(activePlayer, game, move.itemIndex)
+    return game.players
+      .filter((player) => player !== activePlayer)
+      .some((otherPlayer) => {
+        const otherTeamStrength = this.getPlayOffTeamStrength(otherPlayer, game)
+        return otherTeamStrength === activePlayerTeamStrength
+      })
+  }
+
+  private getPlayOffTeamStrength(player: PlayerColor, game: MaterialGame<PlayerColor, MaterialType, LocationType>, cardId?: HockeyPlayerCard): TeamStrength {
+    const team: HockeyPlayerCard[] = game.items[MaterialType.HockeyPlayerCard]!.filter(
+      (card) => card.location.type === LocationType.PlayerHockeyPlayerTeamSpot && card.location.id === 2 && card.location.player === player
+    ).map((card) => card.id as HockeyPlayerCard)
+    return getTeamStrength(cardId ? [...team, cardId] : team, game.players.length)
   }
 }
