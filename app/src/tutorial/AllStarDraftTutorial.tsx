@@ -22,7 +22,7 @@ import { AllStarDraftTutorialSetup, me, opponent1, opponent2 } from './AllStarDr
 import { getTeamStrength, TeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
 
 export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, MaterialType, LocationType> {
-  version = 4
+  version = 5
   options = {
     players: [
       {

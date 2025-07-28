@@ -45,7 +45,7 @@ export const HockeyPlayerCardHelp: FC<MaterialHelpProps<PlayerColor, MaterialTyp
                 }
               />
             ),
-            valueComponent: getSpeciesValueComponent(getHockeyPlayerCardSpecie(hockeyPlayerId))!
+            valueComponent: getSpeciesValueComponent(getHockeyPlayerCardSpecie(hockeyPlayerId))
           }}
           values={{ specie: translatedSpecie }}
         />
