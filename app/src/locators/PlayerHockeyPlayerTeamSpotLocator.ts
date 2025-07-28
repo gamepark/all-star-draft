@@ -128,12 +128,13 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
         .location(LocationType.PlayerHockeyPlayerTeamSpot)
         .locationId(item.location.id)
         .player(item.location.player)
-        .sort((item) => {
-          const cardId = item.id as HockeyPlayerCard
-          return hasAttribute(cardId, teamAttribute) ? cardId + HockeyPlayerCard.PolarBear9 : cardId // PolarBear9 is the greater enum value
-        })
+        .sort(
+          (item) => (hasAttribute(item.id as HockeyPlayerCard, teamAttribute) ? 1 : 0),
+          (item) => item.id as number
+        )
         .getItems<HockeyPlayerCard>()
-      return hockeyPlayerCards.findIndex((card) => card.id === item.id)
+        .map((card) => card.id)
+      return hockeyPlayerCards.indexOf(item.id as HockeyPlayerCard)
     } else {
       if (roundNumber > 0) {
         return item.location.id < roundNumber ? 4 : item.location.x!

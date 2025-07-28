@@ -19,7 +19,7 @@ import { busStationBoardDescription } from '../material/BusStationBoardDescripti
 import { playoffPointCardDescription } from '../material/PlayoffPointCardDescription'
 import { tieBreakerCardDrescription } from '../material/TieBreakerCardDescription'
 import { AllStarDraftTutorialSetup, me, opponent1, opponent2 } from './AllStarDraftTutorialSetup'
-import { getTeamStrength, TeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
+import { compareTeam, getTeamStrength, TeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
 
 export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, MaterialType, LocationType> {
   version = 5
@@ -881,7 +881,7 @@ export class AllStarDraftTutorial extends MaterialTutorial<PlayerColor, Material
       .filter((player) => player !== activePlayer)
       .some((otherPlayer) => {
         const otherTeamStrength = this.getPlayOffTeamStrength(otherPlayer, game)
-        return otherTeamStrength === activePlayerTeamStrength
+        return compareTeam(otherTeamStrength, activePlayerTeamStrength, game.players.length) === 0
       })
   }
 
