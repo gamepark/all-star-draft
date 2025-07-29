@@ -256,14 +256,13 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
         if (context.rules.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
           const roundNumber = context.rules.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
           if (item.location.type === LocationType.PlayerHockeyPlayerHandSpot) {
-            const selectedPreviousTeamItemIndex = context.rules
+            const selectedPreviousTeamItem = context.rules
               .material(MaterialType.HockeyPlayerCard)
               .player(context.player)
               .location(LocationType.PlayerHockeyPlayerTeamSpot)
               .selected(true)
-              .getIndex()
-            const selectedPreviousTeamItem = context.rules.material(MaterialType.HockeyPlayerCard).index(selectedPreviousTeamItemIndex).getItem()
-            if (selectedPreviousTeamItem?.selected) {
+              .getItem()
+            if (selectedPreviousTeamItem) {
               return this.getSwapItemMenuForHandCard(selectedPreviousTeamItem, item, context, legalMoves)
             } else {
               return this.getItemMenuButtonForNewTeamMoveForHandCard(roundNumber, item, context, legalMoves)
