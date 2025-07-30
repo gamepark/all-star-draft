@@ -1,6 +1,5 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { minBy } from 'lodash'
-import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from '../Memory'
@@ -33,12 +32,6 @@ export class DraftRoundSetupDrawCardsRule extends PlayerTurnRule<PlayerColor, Ma
     }
 
     const draftHandSize = this.game.players.length === 2 ? 7 : 6
-    if (this.game.players.length === 2) {
-      for (const player of this.game.players) {
-        const indexes = this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).getIndexes()
-        this.memorize<HockeyPlayerCard[]>(Memory.PreviousRoundCards, indexes, player)
-      }
-    }
     moves.push(...this.game.players.map((player) => hockeyCardsDeck.dealAtOnce({ type: LocationType.HockeyPlayerDraftSpot, player: player }, draftHandSize)))
 
     moves.push(this.startSimultaneousRule<PlayerColor, RuleId>(RuleId.DraftRoundPhaseCardSelection))

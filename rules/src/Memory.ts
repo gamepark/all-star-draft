@@ -3,6 +3,5 @@ export enum Memory {
   GameMode,
   ScorePlayoff,
   ScoreTicket,
-  SortMedal,
-  PreviousRoundCards
+  SortMedal
 }
