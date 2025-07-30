@@ -63,18 +63,12 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
   getMovesAfterPlayersDone(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const moves: MaterialMove<PlayerColor, MaterialType, LocationType>[] = []
     const activePlayers = this.game.players.filter((player) => this.material(MaterialType.HockeyPlayerCard).player(player).length > 0)
-    const lastPlayers = this.game.players.filter(
-      (player) => this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerTeamSpot).locationId(3).player(player).length === 1
-    )
     moves.push(
-      ...lastPlayers.flatMap((player) => [
-        // Move and reveal card changed by the player between matchs
-        this.material(MaterialType.HockeyPlayerCard)
-          .location(LocationType.PlayerHockeyPlayerTeamSpot)
-          .player(player)
-          .locationId(3)
-          .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, id: 3, player: player, rotation: MaterialRotation.FaceUp })
-      ]),
+      // Move and reveal card changed by the player between matches
+      this.material(MaterialType.HockeyPlayerCard)
+        .location(LocationType.PlayerHockeyPlayerTeamSpot)
+        .locationId(3)
+        .moveItemsAtOnce({ rotation: MaterialRotation.FaceUp }),
       this.startSimultaneousRule(RuleId.PlayoffRoundPhaseScore, activePlayers)
     )
     return moves

@@ -99,7 +99,7 @@ export class AllStarDraftHistory
         return { Component: PlayOffsMatchStartComponent, css: rulesPanelBackground }
       }
       if (move.id === RuleId.PlayoffRoundPhaseTieMatch) {
-        return { Component: ShootOutPlayersComponent }
+        return { Component: ShootOutPlayersComponent, css: rulesPanelBackground }
       }
     }
     if (isStartMatchCustomMove(move)) {
