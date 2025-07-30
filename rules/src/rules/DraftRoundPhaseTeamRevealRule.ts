@@ -18,7 +18,7 @@ export class DraftRoundPhaseTeamRevealRule extends PlayerTurnRule<PlayerColor, M
             .player(player)
             .locationId(teamNumber)
             .rotation(MaterialRotation.FaceDown)
-            .moveItemsAtOnce({ rotation: MaterialRotation.FaceUp })
+            .moveItemsAtOnce({ player: player, id: teamNumber, rotation: MaterialRotation.FaceUp })
         })
       )
     }

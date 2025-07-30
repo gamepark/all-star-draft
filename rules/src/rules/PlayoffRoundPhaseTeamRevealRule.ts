@@ -15,7 +15,7 @@ export class PlayoffRoundPhaseTeamRevealRule extends SimultaneousRule<PlayerColo
           .player(player)
           .locationId(2)
           .rotation(MaterialRotation.FaceDown)
-          .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerTeamSpot, id: 2, player: player, rotation: MaterialRotation.FaceUp })
+          .moveItemsAtOnce({ player: player, id: 2, rotation: MaterialRotation.FaceUp })
       ])
     )
     moves.push(this.startSimultaneousRule(RuleId.PlayoffRoundPhaseMainMatch, this.activePlayers))
