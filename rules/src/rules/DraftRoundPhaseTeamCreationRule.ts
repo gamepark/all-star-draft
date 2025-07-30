@@ -11,12 +11,18 @@ import { RuleId } from './RuleId'
 export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColor, MaterialType, LocationType, RuleId> {
   public onRuleStart(): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
-    return this.game.players.map((player) =>
+    return this.game.players.flatMap((player) =>
       this.is2PlayersGameAndNeedToDiscardACard(player, roundNumber)
-        ? this.material(MaterialType.HockeyPlayerCard)
-            .location((location) => location.type === LocationType.PlayerHockeyPlayerHandSpot && location.x! >= roundNumber - 1)
-            .player(player)
-            .shuffle()
+        ? [
+            this.material(MaterialType.HockeyPlayerCard)
+              .location((location) => location.type === LocationType.PlayerHockeyPlayerHandSpot && location.x! >= roundNumber - 1)
+              .player(player)
+              .shuffle(),
+            this.material(MaterialType.HockeyPlayerCard)
+              .location((location) => location.type === LocationType.PlayerHockeyPlayerHandSpot && location.x! < roundNumber - 1)
+              .player(player)
+              .moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerHandSpot, player: player, y: -1 })
+          ]
         : this.material(MaterialType.HockeyPlayerCard).location(LocationType.PlayerHockeyPlayerHandSpot).player(player).shuffle()
     )
   }
@@ -25,11 +31,10 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     const playerHandCards = this.material(MaterialType.HockeyPlayerCard).player(player).location(LocationType.PlayerHockeyPlayerHandSpot)
     if (this.is2PlayersGameAndNeedToDiscardACard(player, roundNumber)) {
-      const previousRoundCards = this.material(MaterialType.HockeyPlayerCard)
-        .location((location) => location.type === LocationType.PlayerHockeyPlayerHandSpot && location.x! < roundNumber - 1)
+      return this.material(MaterialType.HockeyPlayerCard)
+        .location((location) => location.type === LocationType.PlayerHockeyPlayerHandSpot && location.y !== -1)
         .player(player)
-        .getIndexes()
-      return playerHandCards.index((index) => !previousRoundCards.includes(index)).deleteItems()
+        .deleteItems()
     }
     const numberOfAlreadyAssembledTeams = roundNumber - 1
     const teamWithPlayerReturnedToBench = Array(numberOfAlreadyAssembledTeams)
@@ -86,13 +91,11 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
     }
     if (this.game.players.length === 2 && isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
       const player = this.game.items[MaterialType.HockeyPlayerCard]![move.itemIndex].location.player!
-      return [
-        this.material(MaterialType.HockeyPlayerCard)
-          .location(LocationType.PlayerHockeyPlayerHandSpot)
-          .player(player)
-          .id((id) => id !== this.game.items[MaterialType.HockeyPlayerCard]![move.itemIndex].id)
-          .shuffle()
-      ]
+      const cardLefts = this.material(MaterialType.HockeyPlayerCard)
+        .location(LocationType.PlayerHockeyPlayerHandSpot)
+        .player(player)
+        .id((id) => id !== this.game.items[MaterialType.HockeyPlayerCard]![move.itemIndex].id)
+      return [cardLefts.shuffle(), cardLefts.moveItemsAtOnce({ type: LocationType.PlayerHockeyPlayerHandSpot, player: player })]
     }
     return []
   }

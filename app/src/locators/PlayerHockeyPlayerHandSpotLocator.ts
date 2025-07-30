@@ -80,6 +80,7 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
       const medalSort = context.rules.remind<number | undefined>(Memory.SortMedal)
       const sorted = hockeyPlayerCards
         .sort(
+          (card) => card.location.y ?? 0,
           (card) => {
             const cardId = card.id as HockeyPlayerCard
             if (medalSort === 1) {
@@ -120,6 +121,15 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     } else {
       return new Round3PlayerHockeyPlayerHandSpotDescription()
     }
+  }
+
+  placeItem(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): string[] {
+    const { player } = context
+    const placeItem = super.placeItem(item, context)
+    if (item.location.player === player && item.location.y === -1) {
+      placeItem.push('translateY(1em)')
+    }
+    return placeItem
   }
 }
 
