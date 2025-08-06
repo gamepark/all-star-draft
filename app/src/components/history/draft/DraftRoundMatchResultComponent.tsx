@@ -77,8 +77,7 @@ export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<
     .map((item) => item.id)
   const teamStrength = getTeamStrength(team, playerNumber)
   const arena = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.ArenaCard, gameContext.game.items[MaterialType.ArenaCard])
-    .location(LocationType.CurrentArenasRowSpot)
-    .location((l) => l.x === matchNumber - 1)
+    .index(moveToArenaLadderForBus.location.parent)
     .getItem<ArenaCard>()!
   const arenaId = arena.id
   const playerName = usePlayerName(busId.back)
