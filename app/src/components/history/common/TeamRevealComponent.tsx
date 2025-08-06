@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
-import { KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
+import { getBusTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -51,11 +51,12 @@ export const TeamRevealComponent: FC<MoveComponentProps<MaterialMove<PlayerColor
     .location(LocationType.PlayerBusTokenTeamSpot)
     .locationId(move.location.id)
     .getItem<KnownBusTokenId>()
+  const busNumber = bus === undefined ? undefined : getBusTokenValue(bus.id.front)
   const arena =
     bus === undefined
       ? undefined
       : new Material<PlayerColor, MaterialType, LocationType>(MaterialType.ArenaCard, gameContext.game.items[MaterialType.ArenaCard])
-          .location((l) => l.type === LocationType.CurrentArenasRowSpot && l.x === move.location.id - 1)
+          .location((l) => l.type === LocationType.CurrentArenasRowSpot && l.x === busNumber! - 1)
           .getItem<ArenaCard>()
   const playerNumber = gameContext.game.players.length
   const teamStrength = getTeamStrength(team, playerNumber)
@@ -66,7 +67,7 @@ export const TeamRevealComponent: FC<MoveComponentProps<MaterialMove<PlayerColor
       values={{
         name: playerName,
         teamNumber: move.location.id,
-        arenaNumber: move.location.id,
+        arenaNumber: bus === undefined ? move.location.id : getBusTokenValue(bus.id.front),
         arena: arena === undefined ? undefined : t(`arena.${ArenaCard[arena.id]}`)
       }}
       components={{
