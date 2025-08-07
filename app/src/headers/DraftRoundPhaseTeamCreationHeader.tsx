@@ -48,7 +48,7 @@ export const DraftRoundPhaseTeamCreationHeader: FC = () => {
   const hockeyPlayerCardsMaterial = rules?.material(MaterialType.HockeyPlayerCard)
   const hockeyPlayerCardsInHandsMaterial = hockeyPlayerCardsMaterial?.location(LocationType.PlayerHockeyPlayerHandSpot)
   const hockeyPlayerCardsInTeamsMaterial = hockeyPlayerCardsMaterial?.location(LocationType.PlayerHockeyPlayerTeamSpot)
-  if (activePlayer !== undefined) {
+  if (activePlayer !== undefined && rules?.game.rule?.players?.includes(activePlayer)) {
     if (teamCreationRules?.is2PlayersGameAndNeedToDiscardACard(activePlayer, roundNumber)) {
       return <Trans defaults="header.draft.discard.you" />
     }
