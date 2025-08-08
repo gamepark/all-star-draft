@@ -128,6 +128,7 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
         .location(LocationType.PlayerHockeyPlayerTeamSpot)
         .locationId(item.location.id)
         .player(item.location.player)
+        .id<HockeyPlayerCard | undefined>((id) => id !== undefined)
         .sort(
           (item) => (hasAttribute(item.id as HockeyPlayerCard, teamAttribute) ? 1 : 0),
           (item) => item.id as number
