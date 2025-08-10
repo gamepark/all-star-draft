@@ -9,6 +9,7 @@ import { Coordinates, isMoveItemType, Location, MaterialItem, MaterialMove, Move
 import { HockeyPlayerTeamHelp } from '../components/help/HockeyPlayerTeamHelp'
 import { hockeyPlayerCardDescription } from '../material/HockeyPlayerCardDescription'
 import { getTeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
+import { NO_TEAM_AND_HAND_HOVER_STEP_INDEXES } from '../tutorial/AllStarDraftTutorial'
 
 const getTeamCoordinates = (playerCount: number, index: number, teamNumber: number): Partial<Coordinates> => {
   const teamSpread = (index === 0 ? 2.2 : 1.2) * 5 // Total width of a team
@@ -153,8 +154,11 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
     }
   }
 
-  getHoverTransform() {
-    return ['translateZ(10em)', 'scale(3)']
+  public getHoverTransform(_item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): string[] {
+    if (context.rules.game.tutorial === undefined || !NO_TEAM_AND_HAND_HOVER_STEP_INDEXES.includes(context.rules.game.tutorial.step)) {
+      return ['translateZ(10em)', 'scale(3)']
+    }
+    return []
   }
 
   getLocationDescription(
