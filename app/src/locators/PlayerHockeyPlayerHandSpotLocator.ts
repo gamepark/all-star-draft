@@ -12,6 +12,7 @@ import { DropAreaDescription, getRelativePlayerIndex, HandLocator, ItemContext, 
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { PlayerHandHelp } from '../components/help/PlayerHandHelp'
 import { hockeyPlayerCardDescription } from '../material/HockeyPlayerCardDescription'
+import { NO_TEAM_AND_HAND_HOVER_STEP_INDEXES } from '../tutorial/AllStarDraftTutorial'
 
 const baseAngleMap: Record<number, number[]> = {
   6: [0, 90, 90, 180, 270, 270],
@@ -100,10 +101,12 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     return item.location.x!
   }
 
-  getHoverTransform(item: MaterialItem, context: ItemContext) {
+  getHoverTransform(item: MaterialItem, context: ItemContext<PlayerColor, MaterialType, LocationType>) {
     const hoverTransform = super.getHoverTransform(item, context)
     hoverTransform.pop()
-    hoverTransform.push('translateY(-7em)', 'scale(3)')
+    if (context.rules.game.tutorial === undefined || !NO_TEAM_AND_HAND_HOVER_STEP_INDEXES.includes(context.rules.game.tutorial.step)) {
+      hoverTransform.push('translateY(-7em)', 'scale(3)')
+    }
     return hoverTransform
   }
 

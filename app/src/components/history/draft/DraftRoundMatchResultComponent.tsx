@@ -60,13 +60,16 @@ export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<
   const busTokenMoveToArenaLadderConsequences = gameContext.action.consequences
     .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken))
     .filter((move) => move.location.type === LocationType.BusSpotOnArenaCardLadder)
-  const moveToArenaLadderForBus = busTokenMoveToArenaLadderConsequences.find((m) => m.itemIndex === move.itemIndex)!
-  const isTied = busTokenMoveToArenaLadderConsequences.some(
-    (m) =>
-      m.location.id === moveToArenaLadderForBus.location.id &&
-      m.location.parent === moveToArenaLadderForBus.location.parent &&
-      m.itemIndex !== moveToArenaLadderForBus.itemIndex
-  )
+  const moveToArenaLadderForBus = busTokenMoveToArenaLadderConsequences.find((m) => m.itemIndex === move.itemIndex)
+  const isTied =
+    moveToArenaLadderForBus !== undefined
+      ? busTokenMoveToArenaLadderConsequences.some(
+          (m) =>
+            m.location.id === moveToArenaLadderForBus.location.id &&
+            m.location.parent === moveToArenaLadderForBus.location.parent &&
+            m.itemIndex !== moveToArenaLadderForBus.itemIndex
+        )
+      : false
   const rank = getRankFromConsequences(moveToArenaLadderForBus, gameContext, move)
   const teamNumber = busItem.location.id as number
   const team = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard, gameContext.game.items[MaterialType.HockeyPlayerCard])
@@ -76,9 +79,15 @@ export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<
     .getItems<HockeyPlayerCard>()
     .map((item) => item.id)
   const teamStrength = getTeamStrength(team, playerNumber)
-  const arena = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.ArenaCard, gameContext.game.items[MaterialType.ArenaCard])
-    .index(moveToArenaLadderForBus.location.parent)
-    .getItem<ArenaCard>()!
+  const arenaCardsMaterial = new Material<PlayerColor, MaterialType, LocationType>(
+    MaterialType.ArenaCard,
+    gameContext.game.items[MaterialType.ArenaCard]
+  ).location(LocationType.CurrentArenasRowSpot)
+  const arena = (
+    moveToArenaLadderForBus !== undefined
+      ? arenaCardsMaterial.index(moveToArenaLadderForBus.location.parent)
+      : arenaCardsMaterial.location((l) => l.x === matchNumber - 1)
+  ).getItem<ArenaCard>()!
   const arenaId = arena.id
   const playerName = usePlayerName(busId.back)
   return (
