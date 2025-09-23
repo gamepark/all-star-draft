@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/all-star-draft",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "The rules of All-Star Draft adapted for Game Park",
   "type": "module",
   "sideEffects": false,
