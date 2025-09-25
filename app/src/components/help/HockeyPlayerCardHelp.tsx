@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import {
   getHockeyPlayerCardSpecie,
@@ -33,7 +32,7 @@ export const HockeyPlayerCardHelp: FC<MaterialHelpProps<PlayerColor, MaterialTyp
     const speciesComponent = (
       <p>
         <Trans
-          defaults={'help.hockeyPlayerCard.specie'}
+          i18nKey={'help.hockeyPlayerCard.specie'}
           components={{
             bold: boldComponent,
             medalComponent: (
@@ -54,7 +53,7 @@ export const HockeyPlayerCardHelp: FC<MaterialHelpProps<PlayerColor, MaterialTyp
     const numberComponent = (
       <p>
         <Trans
-          defaults={'help.hockeyPlayerCard.number'}
+          i18nKey={'help.hockeyPlayerCard.number'}
           components={{
             bold: boldComponent,
             medalComponent: (
@@ -81,7 +80,7 @@ export const HockeyPlayerCardHelp: FC<MaterialHelpProps<PlayerColor, MaterialTyp
         {getHockeyPlayerCardSymbol(hockeyPlayerId) !== HockeyPlayerCardSymbolsType.None && (
           <p>
             <Trans
-              defaults={'help.hockeyPlayerCard.symbol'}
+              i18nKey={'help.hockeyPlayerCard.symbol'}
               components={{
                 bold: boldComponent,
                 medalComponent: <MedalIconComponent medalNumber={1} />,

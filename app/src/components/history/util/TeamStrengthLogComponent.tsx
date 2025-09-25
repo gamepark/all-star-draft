@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { AttributeKind, getAttributeKindPriority, IrregularAttribute, TeamStrength } from '@gamepark/all-star-draft/material/TeamStrength'
 import { FC } from 'react'
 import { MedalIconComponent } from '../../symbols/MedalIconComponent'

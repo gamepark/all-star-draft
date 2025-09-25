@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { MaterialHelpProps } from '@gamepark/react-game'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'

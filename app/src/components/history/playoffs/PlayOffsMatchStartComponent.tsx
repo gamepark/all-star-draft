@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
@@ -19,5 +18,5 @@ export const PlayOffsMatchStartComponent: FC<MoveComponentProps<MaterialMove<Pla
     MaterialGame<PlayerColor, MaterialType, LocationType, RuleId>
   >
   const roundNumber = getPlayOffsRoundNumber(gameContext)
-  return <Trans defaults="history.playOffsPhase.matchStart" values={{ roundNumber: roundNumber }} components={{ sup: <sup></sup> }} />
+  return <Trans i18nKey="history.playOffsPhase.matchStart" values={{ roundNumber: roundNumber }} components={{ sup: <sup></sup> }} />
 }

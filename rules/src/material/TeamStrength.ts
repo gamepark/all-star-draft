@@ -1,4 +1,4 @@
-import { union, maxBy, intersection } from 'lodash'
+import { union, maxBy, intersection } from 'es-toolkit/compat'
 import {
   getHockeyPlayerCardSpecie,
   getHockeyPlayerCardSymbol,

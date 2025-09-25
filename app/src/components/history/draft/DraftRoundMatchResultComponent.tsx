@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { ArenaCard, arenaIrregularAttribute, arenasFanPoints } from '@gamepark/all-star-draft/material/ArenaCard'
 import { getBusTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
@@ -92,7 +91,7 @@ export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<
   const playerName = usePlayerName(busId.back)
   return (
     <Trans
-      defaults={isTied ? 'history.draftPhase.matchResultTied' : 'history.draftPhase.matchResult'}
+      i18nKey={isTied ? 'history.draftPhase.matchResultTied' : 'history.draftPhase.matchResult'}
       values={{
         name: playerName,
         rank: rank,

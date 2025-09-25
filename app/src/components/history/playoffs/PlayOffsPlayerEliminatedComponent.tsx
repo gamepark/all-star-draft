@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -56,7 +55,7 @@ export const PlayOffsPlayerEliminatedComponent: FC<MoveComponentProps<MaterialMo
   const playerName = usePlayerName(player)
   return (
     <Trans
-      defaults={getTranslationKey(isShootOut, playerNumber)}
+      i18nKey={getTranslationKey(isShootOut, playerNumber)}
       values={{ name: playerName, fanPoints: fanPoints }}
       components={{
         supporterIcon: <SupportersIconComponent contour={COLORS_NEEDING_CONTOUR.includes(player)} />,

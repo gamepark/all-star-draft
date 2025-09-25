@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
@@ -14,7 +13,7 @@ import {
 } from '@gamepark/all-star-draft/material/TeamStrength'
 import { LocationHelpProps, MaterialComponent, Picture, pointerCursorCss, usePlay, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
-import { sortBy } from 'lodash'
+import { sortBy } from 'es-toolkit/compat'
 import { Fragment } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { MedalIconComponent } from '../symbols/MedalIconComponent'
@@ -75,14 +74,14 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
         <div>
           <p>
             <Trans
-              defaults={'help.hockeyPlayerTeam.strength'}
+              i18nKey={'help.hockeyPlayerTeam.strength'}
               components={{ ...components, strengthSymbol: <TeamStrengthIconComponent strength={teamStrength.strength} /> }}
               values={{ strength: teamStrength.strength }}
             />
           </p>
           <p>
             <Trans
-              defaults={'help.hockeyPlayerTeam.attribute'}
+              i18nKey={'help.hockeyPlayerTeam.attribute'}
               components={{
                 ...components,
                 medalIcon: <MedalIconComponent medalNumber={getAttributeKindPriority(numberOfPlayers).reverse().indexOf(teamStrength.attribute.kind) + 1} />
@@ -92,7 +91,7 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
           </p>
           <p>
             <Trans
-              defaults={'help.hockeyPlayerTeam.value'}
+              i18nKey={'help.hockeyPlayerTeam.value'}
               components={valueComponent === undefined ? components : { ...components, ...valueComponent }}
               values={{ value: getTeamStrengthAttributeTranslationKey(teamStrength, t).attributeValue }}
             />
@@ -100,7 +99,7 @@ export const HockeyPlayerTeamHelp = ({ location }: LocationHelpProps) => {
           {teamStrength.irregularsAttributes !== undefined && teamStrength.irregularsAttributes.length > 0 && (
             <p style={{ verticalAlign: 'middle' }}>
               <Trans
-                defaults={'help.hockeyPlayerTeam.additionalAttribute'}
+                i18nKey={'help.hockeyPlayerTeam.additionalAttribute'}
                 components={{
                   ...components,
                   additionalAttributeListComponent: (

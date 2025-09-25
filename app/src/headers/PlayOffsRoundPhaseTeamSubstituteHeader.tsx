@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { PlayoffSubstitutePlayersRule } from '@gamepark/all-star-draft/rules/PlayoffSubstitutePlayersRule'

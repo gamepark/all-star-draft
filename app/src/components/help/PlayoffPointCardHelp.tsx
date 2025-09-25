@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { MaterialHelpProps, useRules } from '@gamepark/react-game'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
@@ -26,7 +25,7 @@ export const PlayoffPointCardHelp: FC<MaterialHelpProps<number, MaterialType, Lo
               .fill(1)
               .map((_, index) => (
                 <td style={{ border: '1px solid black', textAlign: 'center', fontWeight: 'bold' }} key={`rank-index-${index}`}>
-                  <Trans defaults="help.arenaCard.rankOrdinal" values={{ rank: index + 1, ordinal: true }} components={{ sup: <sup></sup> }} />
+                  <Trans i18nKey="help.arenaCard.rankOrdinal" values={{ rank: index + 1, ordinal: true }} components={{ sup: <sup></sup> }} />
                 </td>
               ))}
           </tr>
@@ -46,7 +45,7 @@ export const PlayoffPointCardHelp: FC<MaterialHelpProps<number, MaterialType, Lo
         ''
       ) : (
         <p>
-          <Trans defaults="help.playoffCard.description2" values={{ ticketNumber: playerCount === 3 ? 1 : playerCount === 2 ? 2 : undefined }} />
+          <Trans i18nKey="help.playoffCard.description2" values={{ ticketNumber: playerCount === 3 ? 1 : playerCount === 2 ? 2 : undefined }} />
         </p>
       )}
     </>

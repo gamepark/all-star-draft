@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { CSSProperties, FC } from 'react'
 
 type TeamStrengthIconComponentProps = {

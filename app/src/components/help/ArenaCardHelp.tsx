@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import {
   ArenaCard,
   arenaIrregularAttribute,
@@ -53,7 +52,7 @@ export const ArenaCardHelp: FC<MaterialHelpProps<number, MaterialType, LocationT
                 .fill(1)
                 .map((_, index) => (
                   <td style={{ border: '1px solid black', textAlign: 'center', fontWeight: 'bold' }} key={`rank-index-${index}`}>
-                    <Trans defaults="help.arenaCard.rankOrdinal" values={{ rank: index + 1, ordinal: true }} components={{ sup: <sup></sup> }} />
+                    <Trans i18nKey="help.arenaCard.rankOrdinal" values={{ rank: index + 1, ordinal: true }} components={{ sup: <sup></sup> }} />
                   </td>
                 ))}
             </tr>

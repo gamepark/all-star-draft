@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -28,7 +27,7 @@ export const TeamMemberAddedFromBench: FC<MoveComponentProps<MaterialMove<Player
   const playerName = usePlayerName(move.location.player)
   return (
     <Trans
-      defaults={
+      i18nKey={
         gameContext.game.rule?.id === RuleId.PlayoffSubstitutePlayers ? 'history.playOffsPhase.addToTeamFromBench' : 'history.draftPhase.addToTeamFromBench'
       }
       values={{ name: playerName, teamNumber: teamNumber }}

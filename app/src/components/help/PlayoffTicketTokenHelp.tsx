@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { MaterialHelpProps, useRules } from '@gamepark/react-game'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -16,7 +15,7 @@ export const PlayoffTicketTokenHelp: FC<MaterialHelpProps<number, MaterialType, 
       <h2>{t('help.playoffTicket.title')}</h2>
       <p>{t('help.playoffTicket.description')}</p>
       <p>
-        <Trans defaults="help.playoffTicket.description2" values={{ fanPoints: playerCount }} components={{ supportersIcon: <SupportersIconComponent /> }} />
+        <Trans i18nKey="help.playoffTicket.description2" values={{ fanPoints: playerCount }} components={{ supportersIcon: <SupportersIconComponent /> }} />
       </p>
     </>
   )

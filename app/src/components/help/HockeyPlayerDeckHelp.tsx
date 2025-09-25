@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -17,7 +16,7 @@ export const HockeyPlayerDeckHelp = ({ location }: LocationHelpProps) => {
     <div>
       <h2 style={{ padding: '0em 2em' }}>{t('help.hockeyPlayerDeck.title', { teamNumber: location.id ?? 0 })}</h2>
       <p>
-        <Trans defaults={'help.hockeyPlayerDeck.cardsLefts'} components={components} values={{ cardsLeft }} />
+        <Trans i18nKey={'help.hockeyPlayerDeck.cardsLefts'} components={components} values={{ cardsLeft }} />
       </p>
     </div>
   )

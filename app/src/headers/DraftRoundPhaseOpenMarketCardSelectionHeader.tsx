@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
@@ -10,8 +9,8 @@ export const DraftRoundPhaseOpenMarketCardSelectionHeader = () => {
   const activePlayer = rules.activePlayer
   const name = usePlayerName(activePlayer)
   if (me === activePlayer) {
-    return <Trans defaults={`header.draft.select.you`} />
+    return <Trans i18nKey={`header.draft.select.you`} />
   } else {
-    return <Trans defaults={`header.draft.select.player`} values={{ name }} />
+    return <Trans i18nKey={`header.draft.select.player`} values={{ name }} />
   }
 }

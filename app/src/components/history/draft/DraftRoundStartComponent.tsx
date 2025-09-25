@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
@@ -26,7 +25,7 @@ export const DraftRoundStartComponent: FC<MoveComponentProps<MaterialMove<Player
     ).length + 1
   return (
     <h4>
-      <Trans defaults="history.draftPhase.roundStart" values={{ roundNumber: roundNumber }} components={{ sup: <sup></sup> }} />
+      <Trans i18nKey="history.draftPhase.roundStart" values={{ roundNumber: roundNumber }} components={{ sup: <sup></sup> }} />
     </h4>
   )
 }

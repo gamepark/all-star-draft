@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { fa1, fa2, fa3 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
@@ -70,6 +69,7 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
     [PlayerColor.Red]: RedBack,
     [PlayerColor.Yellow]: YellowBack
   }
+  transparency = true
 
   help = BusTokenHelp
 
@@ -78,7 +78,6 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode {
-    const { t } = useTranslation()
     if (
       context.player !== undefined &&
       context.rules.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation &&
@@ -107,8 +106,8 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
                   move={move}
                   label={
                     <Trans
-                      defaults="bus.button.sendTeamToArena"
-                      values={{ teamNumber: move.location.id, arena: t(`arena.${ArenaCard[arena.id]}`), arenaNumber: arenaNumber }}
+                      i18nKey="bus.button.sendTeamToArena"
+                      values={{ teamNumber: move.location.id, arena: <Trans i18nKey={`arena.${ArenaCard[arena.id]}`}/>, arenaNumber: arenaNumber }}
                       components={{ sup: <sup></sup> }}
                     />
                   }

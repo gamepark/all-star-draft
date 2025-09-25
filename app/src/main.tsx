@@ -1,22 +1,21 @@
-/** @jsxImportSource @emotion/react */
 import { AllStarDraftOptionsSpec } from '@gamepark/all-star-draft/AllStarDraftOptions'
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { AllStarDraftSetup } from '@gamepark/all-star-draft/AllStarDraftSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { gameAnimations } from './animations/GameAnimations'
-import App from './App'
-import { AllStarDraftHistory } from './history/AllStarDraftHistory'
+import { App } from './App'
+import { AllStarDraftHistory } from './history/AllStarDraftHistory.ts'
 import { Locators } from './locators/Locators'
 import { Material } from './material/Material'
+import { AllStarDraftScoringDescription } from './scoring/AllStarDraftScoringDescription.tsx'
 import translations from './translations.json'
-import { AllStarDraftScoringDescription } from './scoring/AllStarDraftScoringDescription'
-import { AllStarDraftTutorial } from './tutorial/AllStarDraftTutorial'
+import { AllStarDraftTutorial } from './tutorial/AllStarDraftTutorial.tsx'
 
 setupTranslation(translations, { debug: false })
 
-ReactDOM.render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GameProvider
       game="all-star-draft"
@@ -32,6 +31,5 @@ ReactDOM.render(
     >
       <App />
     </GameProvider>
-  </StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 )

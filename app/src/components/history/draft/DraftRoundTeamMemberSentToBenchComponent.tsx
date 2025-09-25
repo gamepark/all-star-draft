@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -31,7 +30,7 @@ export const DraftRoundTeamMemberSentToBenchComponent: FC<MoveComponentProps<Mat
   const teamNumber = hockeyCardItem.location.id
   return (
     <Trans
-      defaults="history.draftPhase.teamBackToBench"
+      i18nKey="history.draftPhase.teamBackToBench"
       values={{ name: playerName, teamNumber: teamNumber }}
       components={{ sup: <sup></sup>, card: <CardValueLogComponent cardId={hockeyCard} /> }}
     />

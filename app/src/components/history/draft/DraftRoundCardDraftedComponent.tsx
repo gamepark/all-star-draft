@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -28,7 +27,7 @@ export const DraftRoundCardDraftedComponent: FC<MoveComponentProps<MaterialMove<
   const playerName = usePlayerName(move.location.player)
   return (
     <Trans
-      defaults="history.draftPhase.cardDrafted"
+      i18nKey="history.draftPhase.cardDrafted"
       values={{ name: playerName }}
       components={{ card: <CardValueLogComponent cardId={draftedCard === undefined ? undefined : draftedCard.id} /> }}
     />

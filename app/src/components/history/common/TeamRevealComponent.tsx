@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
 import { getBusTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
@@ -63,7 +62,7 @@ export const TeamRevealComponent: FC<MoveComponentProps<MaterialMove<PlayerColor
   const playerName = usePlayerName(move.location.player)
   return (
     <Trans
-      defaults={gameContext.game.rule?.id === RuleId.DraftRoundPhaseTeamReveal ? 'history.draftPhase.revealTeam' : 'history.playOffsPhase.revealTeam'}
+      i18nKey={gameContext.game.rule?.id === RuleId.DraftRoundPhaseTeamReveal ? 'history.draftPhase.revealTeam' : 'history.playOffsPhase.revealTeam'}
       values={{
         name: playerName,
         teamNumber: move.location.id,

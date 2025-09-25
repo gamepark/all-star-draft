@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { Memory } from '@gamepark/all-star-draft/Memory'
@@ -27,26 +26,26 @@ export class AllStarDraftScoringDescription implements ScoringDescription<Player
       case ScoringKeys.DraftRound:
         return (
           <div css={headerCss}>
-            <Trans defaults="scoring.draft" />
+            <Trans i18nKey="scoring.draft" />
           </div>
         )
       case ScoringKeys.PlayoffRound:
         return (
           <div css={headerCss}>
-            <Trans defaults="scoring.playoff" />
+            <Trans i18nKey="scoring.playoff" />
           </div>
         )
       case ScoringKeys.PlayoffTicketTokens:
         return (
           <div css={flexHeaderCss}>
             <Picture src={playOffTicker} width={75} />
-            <Trans defaults="scoring.ticketTokens" />
+            <Trans i18nKey="scoring.ticketTokens" />
           </div>
         )
       case ScoringKeys.Total:
         return (
           <div css={[headerCss, bold]}>
-            <Trans defaults="scoring.total" />
+            <Trans i18nKey="scoring.total" />
           </div>
         )
     }

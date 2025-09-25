@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { CustomMoveType } from '@gamepark/all-star-draft/material/CustomMoveType'
 import { PlayerColor } from '@gamepark/all-star-draft/PlayerColor'
@@ -25,14 +24,14 @@ export const SimultaneousRuleHeaderComponent: FC<SimultaneousRuleHeaderComponent
   if (playerId !== undefined && activePlayers.includes(playerId)) {
     return (
       <Trans
-        defaults={translationGroupKey + '.you'}
+        i18nKey={translationGroupKey + '.you'}
         values={{ ...interpolations }}
         components={
           pass
             ? {
                 pass: (
                   <PlayMoveButton move={passMove}>
-                    <Trans defaults="header.pass" />
+                    <Trans i18nKey="header.pass" />
                   </PlayMoveButton>
                 )
               }
@@ -41,10 +40,10 @@ export const SimultaneousRuleHeaderComponent: FC<SimultaneousRuleHeaderComponent
       />
     )
   } else if (activePlayers.length === 1) {
-    return <Trans defaults={translationGroupKey + '.player'} values={{ ...interpolations, name: player }} />
+    return <Trans i18nKey={translationGroupKey + '.player'} values={{ ...interpolations, name: player }} />
   } else if (activePlayers.length === 0) {
     return <></>
   } else {
-    return <Trans defaults={translationGroupKey + '.players'} values={{ ...interpolations }} />
+    return <Trans i18nKey={translationGroupKey + '.players'} values={{ ...interpolations }} />
   }
 }

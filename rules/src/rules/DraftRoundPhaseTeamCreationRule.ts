@@ -1,5 +1,5 @@
 import { isDeleteItemType, isMoveItemType, ItemMove, Material, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
-import { difference, range } from 'lodash'
+import { difference, range } from 'es-toolkit/compat'
 import { getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { HockeyPlayerCard } from '../material/HockeyPlayerCard'
 import { LocationType } from '../material/LocationType'

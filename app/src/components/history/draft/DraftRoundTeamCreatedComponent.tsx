@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -54,7 +53,7 @@ export const DraftRoundTeamCreatedComponent: FC<MoveComponentProps<MaterialMove<
     : undefined
   return (
     <Trans
-      defaults={getTranslationKey(gameContext, teamStrength)}
+      i18nKey={getTranslationKey(gameContext, teamStrength)}
       values={{ name: playerName, teamNumber: teamNumber }}
       components={{
         sup: <sup></sup>,

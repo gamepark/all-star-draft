@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -34,7 +33,7 @@ export const RevealShootOutCardComponent: FC<MoveComponentProps<MaterialMove<Pla
   const playerName = usePlayerName(move.location.player)
   return (
     <Trans
-      defaults="history.playOffsPhase.revealShootOutCard"
+      i18nKey="history.playOffsPhase.revealShootOutCard"
       values={{ name: playerName }}
       components={{
         card: <CardValueLogComponent cardId={card} />,

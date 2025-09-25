@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -25,7 +24,7 @@ export const CardDiscardedComponent: FC<MoveComponentProps<MaterialMove<PlayerCo
   const playerName = usePlayerName(discardedCard!.location.player)
   return (
     <Trans
-      defaults="history.draftPhase.cardDiscarded"
+      i18nKey="history.draftPhase.cardDiscarded"
       values={{ name: playerName }}
       components={{ card: <CardValueLogComponent cardId={discardedCard === undefined ? undefined : discardedCard.id} /> }}
     />

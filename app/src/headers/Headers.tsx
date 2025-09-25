@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { ComponentType } from 'react'
 import { DraftRoundPhaseCardSelectionHeader } from './DraftRoundPhaseCardSelectionHeader'

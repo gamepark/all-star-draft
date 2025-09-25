@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { CSSProperties, FC } from 'react'
 
 const SUPPORTER_STYLE: CSSProperties = { fill: '#fddd10', fillOpacity: 1, fillRule: 'nonzero', stroke: 'none' }

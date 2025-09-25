@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { AllStarDraftRules } from '@gamepark/all-star-draft/AllStarDraftRules'
 import { Memory } from '@gamepark/all-star-draft/Memory'

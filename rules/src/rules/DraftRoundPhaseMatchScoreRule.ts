@@ -1,5 +1,5 @@
 import { isMoveItemTypeAtOnce, ItemMove, Material, MaterialItem, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
-import { range } from 'lodash'
+import { range } from 'es-toolkit/compat'
 import { ArenaCard, arenaIrregularAttribute } from '../material/ArenaCard'
 import { getBusTokenValue, KnownBusTokenId } from '../material/BusToken'
 import { CustomMoveType } from '../material/CustomMoveType'

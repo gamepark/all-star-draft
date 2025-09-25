@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -31,7 +30,7 @@ export const ShootOutPlayersComponent: FC<MoveComponentProps<MaterialMove<Player
   const teamStrength = getTeamStrength(team, playersCount)
   return (
     <Trans
-      defaults="history.playOffsPhase.shootOutStart"
+      i18nKey="history.playOffsPhase.shootOutStart"
       values={{ playerCount: gameContext.game.rule!.players!.length, names: playerNames }}
       components={{ strength: <TeamStrengthLogComponent teamStrength={teamStrength} playerNumber={playersCount} /> }}
     />

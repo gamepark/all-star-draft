@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -23,6 +22,6 @@ export const TeamMemberRemovedComponent: FC<MoveComponentProps<MaterialMove<Play
   const cardId = card.id
   const playerName = usePlayerName(card.location.player)
   return (
-    <Trans defaults="history.playOffsPhase.removeFromTeam" values={{ name: playerName }} components={{ card: <CardValueLogComponent cardId={cardId} /> }} />
+    <Trans i18nKey="history.playOffsPhase.removeFromTeam" values={{ name: playerName }} components={{ card: <CardValueLogComponent cardId={cardId} /> }} />
   )
 }

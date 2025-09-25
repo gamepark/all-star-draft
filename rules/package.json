@@ -1,9 +1,9 @@
 {
   "name": "@gamepark/all-star-draft",
-  "version": "1.5.0",
+  "version": "0.0.0",
   "description": "The rules of All-Star Draft adapted for Game Park",
-  "type": "module",
   "sideEffects": false,
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -18,22 +18,14 @@
     "build": "tsc",
     "prepublishOnly": "tsc",
     "publish": "lerna publish",
-    "lint": "eslint --fix",
-    "ci-lint": "eslint",
-    "ci-format-check": "prettier --check **/*.{js,ts,tsx}",
-    "test": "jest --passWithNoTests"
+    "lint": "eslint --fix"
   },
   "peerDependencies": {
-    "@gamepark/rules-api": ">=6.37.1",
-    "lodash": ">=4.17"
+    "@gamepark/rules-api": ">=7",
+    "es-toolkit": "^1.39.10"
   },
   "devDependencies": {
-    "@gamepark/rules-api": "~6.37.8",
-    "@types/jest": "27.5.2",
-    "@types/lodash": "^4.17.7",
-    "i18next": "^22.0.3",
-    "lodash": "^4.17.21",
-    "ts-jest": "27.1.5",
-    "ts-node": "^10.9.2"
+    "@gamepark/rules-api": "~7.0.0",
+    "es-toolkit": "^1.39.10"
   }
 }

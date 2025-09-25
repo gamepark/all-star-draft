@@ -1,6 +1,6 @@
 import { getEnumValues } from '@gamepark/rules-api'
 import { TFunction } from 'i18next'
-import { sampleSize } from 'lodash'
+import { sampleSize } from 'es-toolkit/compat'
 import { Attribute, AttributeKind } from './TeamStrength'
 
 export enum HockeyPlayerCard {

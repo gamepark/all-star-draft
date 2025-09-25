@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { faHandPointer, faRightLeft, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
@@ -357,7 +356,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
           move={moveToBenchForThisCard}
           angle={-45 + itemRotateAngle}
           radius={2}
-          label={<Trans defaults={moveToBenchForThisCard.location.player !== item.location.player ? 'card.button.giveToOpponent' : 'card.button.addToBench'} />}
+          label={<Trans i18nKey={moveToBenchForThisCard.location.player !== item.location.player ? 'card.button.giveToOpponent' : 'card.button.addToBench'} />}
         >
           <FontAwesomeIcon icon={faHandPointer} size="lg" />
         </ItemMenuButton>
@@ -397,7 +396,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
           move={moveFromThisItemToSelected}
           angle={-45 + itemRotateAngle}
           radius={2}
-          label={locatorItemIndex === numberOfCardsInHand - 1 ? <Trans defaults="card.button.swap" /> : undefined}
+          label={locatorItemIndex === numberOfCardsInHand - 1 ? <Trans i18nKey="card.button.swap" /> : undefined}
         >
           <FontAwesomeIcon icon={faRightLeft} size="lg" />
         </ItemMenuButton>
@@ -453,7 +452,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
             angle={-45 + itemRotateAngle}
             label={
               <Trans
-                defaults={context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers ? 'card.button.addToPlayOffsTeam' : 'card.button.addToNewTeam'}
+                i18nKey={context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers ? 'card.button.addToPlayOffsTeam' : 'card.button.addToNewTeam'}
                 values={{ teamNumber: teamMove.location.id }}
                 components={{ sup: <sup></sup> }}
               />
@@ -471,7 +470,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     } else if (discardThisCardMove !== undefined) {
       return (
         <>
-          <ItemMenuButton move={discardThisCardMove} radius={2} angle={-45 + itemRotateAngle} label={<Trans defaults="card.button.discard" />}>
+          <ItemMenuButton move={discardThisCardMove} radius={2} angle={-45 + itemRotateAngle} label={<Trans i18nKey="card.button.discard" />}>
             <FontAwesomeIcon icon={faTrashCan} size="lg" />
           </ItemMenuButton>
           {this.getHelpButton(item, context, {
@@ -508,7 +507,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
           move={moveToConsideredItem}
           angle={-45}
           radius={2.5}
-          label={locatorItemIndex === numberOfItemsInLocation - 1 ? <Trans defaults="card.button.swap" /> : undefined}
+          label={locatorItemIndex === numberOfItemsInLocation - 1 ? <Trans i18nKey="card.button.swap" /> : undefined}
         >
           <FontAwesomeIcon icon={faRightLeft} size="lg" />
         </ItemMenuButton>
@@ -535,7 +534,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
       .find((move) => move.itemIndex === itemIndex)
     return moveToHand !== undefined ? (
       <>
-        <ItemMenuButton move={moveToHand} angle={-45} radius={2.5} label={<Trans defaults="card.button.returnToHand" />}>
+        <ItemMenuButton move={moveToHand} angle={-45} radius={2.5} label={<Trans i18nKey="card.button.returnToHand" />}>
           <FontAwesomeIcon icon={faHandPointer} size="lg" />
         </ItemMenuButton>
         {this.getHelpButton(item, context, {
@@ -546,7 +545,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
       </>
     ) : discardMove !== undefined ? (
       <>
-        <ItemMenuButton move={discardMove} angle={-45} radius={2.5} label={<Trans defaults="card.button.discard" />}>
+        <ItemMenuButton move={discardMove} angle={-45} radius={2.5} label={<Trans i18nKey="card.button.discard" />}>
           <FontAwesomeIcon icon={faHandPointer} size="lg" />
         </ItemMenuButton>
         {this.getHelpButton(item, context, {

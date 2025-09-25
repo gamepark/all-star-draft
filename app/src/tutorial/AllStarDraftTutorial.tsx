@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
 import { getBusTokenValue, KnownBusTokenId } from '@gamepark/all-star-draft/material/BusToken'
 import { getHockeyPlayerCardSymbol, HockeyPlayerCard, HockeyPlayerCardSymbolsType } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
@@ -11,7 +10,7 @@ import SkinColor from '@gamepark/avataaars/dist/avatar/SkinColor'
 import HairColorName from '@gamepark/avataaars/dist/avatar/top/HairColorName'
 import { MaterialTutorial, Picture, TutorialStep } from '@gamepark/react-game'
 import { isMoveItemType, isMoveItemTypeAtOnce, Material, MaterialGame, MaterialMove, MoveItem } from '@gamepark/rules-api'
-import { range } from 'lodash'
+import { range } from 'es-toolkit/compat'
 import { Trans } from 'react-i18next'
 import { SupportersIconComponent } from '../components/symbols/SupportersIconComponent'
 import { TeamStrengthIconComponent } from '../components/symbols/TeamStrengthIconComponent'
@@ -25,7 +24,7 @@ import { AllStarDraftTutorialSetup, me, opponent1, opponent2 } from './AllStarDr
 const noDraftHoverSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   {
     popup: {
-      text: () => <Trans defaults="tuto.hand" />,
+      text: () => <Trans i18nKey="tuto.hand" />,
       position: { x: 0, y: -25 }
     },
     focus: (game) => ({
@@ -39,7 +38,7 @@ const noDraftHoverSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[]
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.recruitFirst" components={{ bold: <strong /> }} />,
+      text: () => <Trans i18nKey="tuto.recruitFirst" components={{ bold: <strong /> }} />,
       position: { y: -20 }
     },
     focus: (game) => ({
@@ -66,7 +65,7 @@ const noDraftHoverSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[]
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.attributes" components={{ bold: <strong /> }} />,
+      text: () => <Trans i18nKey="tuto.attributes" components={{ bold: <strong /> }} />,
       position: { x: 20 }
     },
     focus: (game) => ({
@@ -85,7 +84,7 @@ const noArenaHoverSteps: Record<1 | 2 | 3, TutorialStep<PlayerColor, MaterialTyp
   1: [
     {
       popup: {
-        text: () => <Trans defaults="tuto.arenaIntro" components={{ bold: <strong /> }} />,
+        text: () => <Trans i18nKey="tuto.arenaIntro" components={{ bold: <strong /> }} />,
         position: { y: 30 }
       },
       focus: (game) => ({
@@ -96,7 +95,7 @@ const noArenaHoverSteps: Record<1 | 2 | 3, TutorialStep<PlayerColor, MaterialTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.busPlacement" components={{ bold: <strong /> }} />,
+        text: () => <Trans i18nKey="tuto.busPlacement" components={{ bold: <strong /> }} />,
         position: { x: 35 }
       },
       focus: (game, context) => ({
@@ -114,7 +113,7 @@ const noArenaHoverSteps: Record<1 | 2 | 3, TutorialStep<PlayerColor, MaterialTyp
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.round2Explanation" components={{ bold: <strong />, italic: <em />, whistle: <Picture src={whistle} width={50} /> }} />
+          <Trans i18nKey="tuto.round2Explanation" components={{ bold: <strong />, italic: <em />, whistle: <Picture src={whistle} width={50} /> }} />
         ),
         position: { x: 45 }
       },
@@ -131,7 +130,7 @@ const noArenaHoverSteps: Record<1 | 2 | 3, TutorialStep<PlayerColor, MaterialTyp
   3: [
     {
       popup: {
-        text: () => <Trans defaults="tuto.round3Intro" components={{ bold: <strong /> }} />,
+        text: () => <Trans i18nKey="tuto.round3Intro" components={{ bold: <strong /> }} />,
         position: { x: 35 }
       },
       focus: (game) => ({
@@ -145,7 +144,7 @@ const noArenaHoverSteps: Record<1 | 2 | 3, TutorialStep<PlayerColor, MaterialTyp
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.arenaSpecialIcon" components={{ bold: <strong />, icon: <Picture src={allGear} width={150} /> }} />,
+        text: () => <Trans i18nKey="tuto.arenaSpecialIcon" components={{ bold: <strong />, icon: <Picture src={allGear} width={150} /> }} />,
         position: { x: 35 }
       },
       focus: (game) => ({
@@ -162,7 +161,7 @@ const noArenaHoverSteps: Record<1 | 2 | 3, TutorialStep<PlayerColor, MaterialTyp
 
 const noTieBreakerHoverStep: TutorialStep<PlayerColor, MaterialType, LocationType> = {
   popup: {
-    text: () => <Trans defaults="tuto.tieBreakers" components={{ bold: <strong />, italic: <em /> }} />
+    text: () => <Trans i18nKey="tuto.tieBreakers" components={{ bold: <strong />, italic: <em /> }} />
   },
   focus: (_game, context) => ({
     staticItems: { [MaterialType.TieBreakerCard]: tieBreakerCardDrescription.getStaticItems(context) },
@@ -174,7 +173,7 @@ const noTeamAndHandHoverSteps: Record<2 | 3, TutorialStep<PlayerColor, MaterialT
   2: [
     {
       popup: {
-        text: () => <Trans defaults="tuto.swapPlayer" />,
+        text: () => <Trans i18nKey="tuto.swapPlayer" />,
         position: { x: 40, y: -15 }
       },
       focus: (game) => ({
@@ -197,7 +196,7 @@ const noTeamAndHandHoverSteps: Record<2 | 3, TutorialStep<PlayerColor, MaterialT
   3: [
     {
       popup: {
-        text: () => <Trans defaults="tuto.playoffElimination" components={{ bold: <strong /> }} />,
+        text: () => <Trans i18nKey="tuto.playoffElimination" components={{ bold: <strong /> }} />,
         position: { y: 20 }
       },
       focus: (game) => {
@@ -224,7 +223,7 @@ const noTeamAndHandHoverSteps: Record<2 | 3, TutorialStep<PlayerColor, MaterialT
 const noPlayOffsPointsCardsHoverMoves: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   {
     popup: {
-      text: () => <Trans defaults="tuto.playoffsIntro" components={{ bold: <strong /> }} />,
+      text: () => <Trans i18nKey="tuto.playoffsIntro" components={{ bold: <strong /> }} />,
       position: { x: 10 }
     },
     focus: (_game, context) => ({
@@ -236,41 +235,41 @@ const noPlayOffsPointsCardsHoverMoves: TutorialStep<PlayerColor, MaterialType, L
 const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   {
     popup: {
-      text: () => <Trans defaults="tuto.welcome" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.welcome" components={{ bold: <strong /> }} />
     }
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.role" />
+      text: () => <Trans i18nKey="tuto.role" />
     }
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.goal" components={{ bold: <strong />, supporterIcon: <SupportersIconComponent /> }} />
+      text: () => <Trans i18nKey="tuto.goal" components={{ bold: <strong />, supporterIcon: <SupportersIconComponent /> }} />
     }
   },
   ...noDraftHoverSteps,
   {
     popup: {
-      text: () => <Trans defaults="tuto.teamObjective" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.teamObjective" components={{ bold: <strong /> }} />
     }
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.opponents" />
+      text: () => <Trans i18nKey="tuto.opponents" />
     }
   },
   { move: { player: opponent1 } },
   { move: { player: opponent2, interrupt: (move) => isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) } },
   {
     popup: {
-      text: () => <Trans defaults="tuto.draftDefinition" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.draftDefinition" components={{ bold: <strong /> }} />
     },
     move: {}
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.recruitSecond" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.recruitSecond" components={{ bold: <strong /> }} />
     },
     move: {
       filter: (move, game) => isMoveForHockeyPlayerCard(move, game)
@@ -288,7 +287,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.continueDraft" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.continueDraft" components={{ bold: <strong /> }} />
     },
     move: {
       filter: (move, game) => isMoveForHockeyPlayerCard(move, game)
@@ -336,7 +335,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.endDraft" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.endDraft" components={{ bold: <strong /> }} />
     }
   },
   noArenaHoverSteps[1][0],
@@ -344,7 +343,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
     popup: {
       text: () => (
         <Trans
-          defaults="tuto.powerExplanation"
+          i18nKey="tuto.powerExplanation"
           components={{
             bold: <strong />,
             strengthSymbolMin: <TeamStrengthIconComponent strength={1} />,
@@ -356,7 +355,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.buildTeam" />
+      text: () => <Trans i18nKey="tuto.buildTeam" />
     },
     move: {
       filter: (move, game) => isMoveForHockeyPlayerCard(move, game)
@@ -391,7 +390,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
     ),
   {
     popup: {
-      text: () => <Trans defaults="tuto.busExplanation" components={{ bold: <strong /> }} />,
+      text: () => <Trans i18nKey="tuto.busExplanation" components={{ bold: <strong /> }} />,
       position: { x: 30 }
     },
     move: {
@@ -419,19 +418,19 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   noTieBreakerHoverStep,
   {
     popup: {
-      text: () => <Trans defaults="tuto.startRound2" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.startRound2" components={{ bold: <strong /> }} />
     },
     move: {}
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.round2Intro" />
+      text: () => <Trans i18nKey="tuto.round2Intro" />
     }
   },
   noArenaHoverSteps[2][0],
   {
     popup: {
-      text: () => <Trans defaults="tuto.recruitingGoalRound2" components={{ bold: <strong />, italic: <em /> }} />
+      text: () => <Trans i18nKey="tuto.recruitingGoalRound2" components={{ bold: <strong />, italic: <em /> }} />
     },
     move: {
       filter: (move, game) => isMoveForHockeyPlayerCard(move, game)
@@ -441,13 +440,13 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   { move: { player: opponent2, interrupt: (move) => isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) } },
   {
     popup: {
-      text: () => <Trans defaults="tuto.passDirection2" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.passDirection2" components={{ bold: <strong /> }} />
     },
     move: {}
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.recruitRound2" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.recruitRound2" components={{ bold: <strong /> }} />
     },
     move: {
       filter: (move, game) => isMoveForHockeyPlayerCard(move, game)
@@ -510,7 +509,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.endDraft2" />
+      text: () => <Trans i18nKey="tuto.endDraft2" />
     }
   },
   noTeamAndHandHoverSteps[2][0],
@@ -533,7 +532,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.buildTeam2" />
+      text: () => <Trans i18nKey="tuto.buildTeam2" />
     },
     move: {
       filter: (move, game) => isMoveForHockeyPlayerCard(move, game)
@@ -568,7 +567,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
     ),
   {
     popup: {
-      text: () => <Trans defaults="tuto.sendBuses" />
+      text: () => <Trans i18nKey="tuto.sendBuses" />
     },
     move: {
       player: me
@@ -603,19 +602,19 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.resolveArenas2" />
+      text: () => <Trans i18nKey="tuto.resolveArenas2" />
     },
     move: {}
   },
   ...noArenaHoverSteps[3],
   {
     popup: {
-      text: () => <Trans defaults="tuto.otherIcons" />
+      text: () => <Trans i18nKey="tuto.otherIcons" />
     }
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.recruitRound3" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.recruitRound3" components={{ bold: <strong /> }} />
     },
     move: {
       player: me
@@ -652,7 +651,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
     ]),
   {
     popup: {
-      text: () => <Trans defaults="tuto.swapEachTeam" />
+      text: () => <Trans i18nKey="tuto.swapEachTeam" />
     },
     move: {
       player: me,
@@ -723,7 +722,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.buildTeam3" />
+      text: () => <Trans i18nKey="tuto.buildTeam3" />
     },
     move: {
       player: me
@@ -758,7 +757,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
     ),
   {
     popup: {
-      text: () => <Trans defaults="tuto.sendFinalBuses" />
+      text: () => <Trans i18nKey="tuto.sendFinalBuses" />
     },
     move: {
       player: me
@@ -809,14 +808,14 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.resolveArenas3" />
+      text: () => <Trans i18nKey="tuto.resolveArenas3" />
     },
     move: {}
   },
   ...noPlayOffsPointsCardsHoverMoves,
   {
     popup: {
-      text: () => <Trans defaults="tuto.playoffTickets" components={{ bold: <strong /> }} />,
+      text: () => <Trans i18nKey="tuto.playoffTickets" components={{ bold: <strong /> }} />,
       position: { x: -20 }
     },
     focus: (game) => ({
@@ -829,7 +828,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.playoffExplanation" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.playoffExplanation" components={{ bold: <strong /> }} />
     },
     move: { player: me }
   },
@@ -865,17 +864,17 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
   ...noTeamAndHandHoverSteps[3],
   {
     popup: {
-      text: () => <Trans defaults="tuto.mandatoryChanges" components={{ bold: <strong />, italic: <em /> }} />
+      text: () => <Trans i18nKey="tuto.mandatoryChanges" components={{ bold: <strong />, italic: <em /> }} />
     }
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.playoffsLoop" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.playoffsLoop" components={{ bold: <strong /> }} />
     }
   },
   {
     popup: {
-      text: () => <Trans defaults="tuto.playoffsEnd" components={{ bold: <strong /> }} />
+      text: () => <Trans i18nKey="tuto.playoffsEnd" components={{ bold: <strong /> }} />
     }
   }
 ]

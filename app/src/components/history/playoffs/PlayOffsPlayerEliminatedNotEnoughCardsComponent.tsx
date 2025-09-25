@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { Memory } from '@gamepark/all-star-draft/Memory'
@@ -27,7 +26,7 @@ export const PlayOffsPlayerEliminatedNotEnoughCardsComponent: FC<MoveComponentPr
   const playerName = usePlayerName(player)
   return (
     <Trans
-      defaults="history.playOffsPhase.playerEliminatedNotEnoughCards"
+      i18nKey="history.playOffsPhase.playerEliminatedNotEnoughCards"
       values={{ name: playerName, fanPoints: fanPoints }}
       components={{ supportersIcon: <SupportersIconComponent /> }}
     />

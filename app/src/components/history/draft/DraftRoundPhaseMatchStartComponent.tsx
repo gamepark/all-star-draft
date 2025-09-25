@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { ArenaCard } from '@gamepark/all-star-draft/material/ArenaCard'
 import { isStartMatchCustomMove } from '@gamepark/all-star-draft/material/CustomMoveType'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
@@ -31,7 +30,7 @@ export const DraftRoundPhaseMatchStartComponent: FC<MoveComponentProps<MaterialM
   const arena = arenaMaterial.location((l) => l.x === matchNumber - 1).getItem<ArenaCard>()!
   return (
     <Trans
-      defaults="history.draftPhase.matchResultStart"
+      i18nKey="history.draftPhase.matchResultStart"
       values={{ roundNumber: roundNumber, matchNumber: matchNumber, arena: t(`arena.${ArenaCard[arena.id]}`) }}
       components={{ sup: <sup></sup> }}
     />

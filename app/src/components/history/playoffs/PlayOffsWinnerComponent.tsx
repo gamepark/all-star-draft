@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { playoffFanPoint } from '@gamepark/all-star-draft/material/PlayoffPointCard'
@@ -30,7 +29,7 @@ export const PlayOffsWinnerComponent: FC<MoveComponentProps<MaterialMove<PlayerC
   const fanPoints = playoffFanPoint[gameContext.game.players.length][0]
   return (
     <Trans
-      defaults="history.playOffsPhase.winner"
+      i18nKey="history.playOffsPhase.winner"
       values={{ name: winningPlayerName, fanPoints: fanPoints }}
       components={{ supporterIcon: <SupportersIconComponent contour={COLORS_NEEDING_CONTOUR.includes(winningPlayer)} /> }}
     />

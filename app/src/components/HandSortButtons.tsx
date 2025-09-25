@@ -1,9 +1,8 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { CustomMoveType } from '@gamepark/all-star-draft/material/CustomMoveType'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { ItemMenuButton, transformCss, useMaterialContext } from '@gamepark/react-game'
-import { range } from 'lodash'
+import { range } from 'es-toolkit/compat'
 import { useTranslation } from 'react-i18next'
 import { playerHockeyPlayerHandSpotLocator } from '../locators/PlayerHockeyPlayerHandSpotLocator'
 import { MedalIconComponent } from './symbols/MedalIconComponent'

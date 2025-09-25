@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { HockeyPlayerCard } from '@gamepark/all-star-draft/material/HockeyPlayerCard'
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
@@ -52,7 +51,7 @@ export const PlayOffTicketLostComponent: FC<MoveComponentProps<MaterialMove<Play
   const teamStrength = getTeamStrength(team, playerNumber)
   return (
     <Trans
-      defaults={getTranslationKey(isShootOut, isLastPlayOffTicket)}
+      i18nKey={getTranslationKey(isShootOut, isLastPlayOffTicket)}
       values={{ name: playerName }}
       components={{
         ticket: <Picture src={playoffTicketTokenDescription.image} style={{ height: '2.5em' }} />,

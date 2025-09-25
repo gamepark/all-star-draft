@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/all-star-draft/material/LocationType'
 import { MaterialType } from '@gamepark/all-star-draft/material/MaterialType'
 import { MaterialHelpProps, Picture } from '@gamepark/react-game'
@@ -17,13 +16,13 @@ export const BusStationBoardHelp: FC<MaterialHelpProps<number, MaterialType, Loc
       <h2>{t('help.busStationBoard.title')}</h2>
       <p>
         <Trans
-          defaults={'help.busStationBoard.description'}
+          i18nKey={'help.busStationBoard.description'}
           components={{ strengthSymbolMin: <TeamStrengthIconComponent strength={1} />, strengthSymbolMax: <TeamStrengthIconComponent strength={5} /> }}
         />
       </p>
       <p>
         <Trans
-          defaults={'help.busStationBoard.description2'}
+          i18nKey={'help.busStationBoard.description2'}
           components={{
             additionalAttributeListComponent: (
               <>
