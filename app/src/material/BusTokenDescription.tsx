@@ -9,7 +9,7 @@ import { RuleId } from '@gamepark/all-star-draft/rules/RuleId'
 import { ItemContext, ItemMenuButton, TokenDescription } from '@gamepark/react-game'
 import { isMoveItemType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { ReactNode } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 import { BusTokenHelp } from '../components/help/BusTokenHelp'
 import Black1 from '../images/Tokens/Bus/Black1.png'
 import Black2 from '../images/Tokens/Bus/Black2.png'
@@ -107,7 +107,7 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
                   label={
                     <Trans
                       i18nKey="bus.button.sendTeamToArena"
-                      values={{ teamNumber: move.location.id, arena: <Trans i18nKey={`arena.${ArenaCard[arena.id]}`}/>, arenaNumber: arenaNumber }}
+                      values={{ teamNumber: move.location.id, arena: <Trans i18nKey={`arena.${ArenaCard[arena.id]}`} />, arenaNumber: arenaNumber }}
                       components={{ sup: <sup></sup> }}
                     />
                   }
