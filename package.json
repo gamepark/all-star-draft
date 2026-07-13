@@ -7,25 +7,26 @@
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
   "license": "ISC",
   "devDependencies": {
-    "@eslint/js": "^9.35.0",
-    "eslint": "^9.35.0",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "globals": "^16.4.0",
-    "lerna": "^8.2.4",
-    "prettier": "3.6.2",
-    "typescript": "^5.9.2",
-    "typescript-eslint": "^8.44.0"
+    "eslint-plugin-prettier": "^5.5.6",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.4",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.63.0",
+    "vitest": "^4.1.10"
   },
   "scripts": {
     "dev": "yarn workspace @gamepark/all-star-draft-app run dev",
+    "test": "yarn workspace @gamepark/all-star-draft run test && yarn workspace @gamepark/all-star-draft-app run test",
     "preview": "yarn workspace @gamepark/all-star-draft-app run preview",
     "build": "yarn workspace @gamepark/all-star-draft-app run build",
     "deploy": "yarn workspace @gamepark/all-star-draft-app run deploy",
-    "publish": "lerna publish",
+    "publish": "yarn workspace @gamepark/all-star-draft run publish",
     "lint": "yarn workspace @gamepark/all-star-draft run lint && yarn workspace @gamepark/all-star-draft-app run lint",
-    "linkgp": "yarn link ../rules-api ../react-client ../react-game -r",
-    "unlinkgp": "yarn unlink ../react-game ../react-client ../rules-api"
+    "linkgp": "yarn link ../rules-api ../react-client ../react-game -r && git update-index --skip-worktree package.json yarn.lock",
+    "unlinkgp": "git update-index --no-skip-worktree package.json yarn.lock && yarn unlink ../react-game ../react-client ../rules-api"
   },
   "packageManager": "yarn@4.9.4"
 }

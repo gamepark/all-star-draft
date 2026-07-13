@@ -10,7 +10,7 @@ import { Trans } from 'react-i18next'
 import { CardValueLogComponent } from '../util/CardValueLogComponent'
 
 export const CardDiscardedComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
-  if (!isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+  if (!isDeleteItemType(MaterialType.HockeyPlayerCard)(move)) {
     return <></>
   }
   const gameContext = context as MoveComponentContext<

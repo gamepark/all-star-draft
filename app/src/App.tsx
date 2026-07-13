@@ -24,13 +24,7 @@ export function App() {
   return (
     <>
       {!!game && <GameDisplay players={game.players.length} />}
-      <LoadingScreen
-        display={loading}
-        author="Marco Schaub"
-        artist={['Malte Zirbel', 'Armand Teixier']}
-        publisher="Palladis Games"
-        developer={['Isilud', 'SwHawk']}
-      />
+      <LoadingScreen display={loading} />
       {!loading && <LiveLogContainer css={liveLogCss} />}
       <MaterialHeader rulesStepsHeaders={Headers} loading={loading} />
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />

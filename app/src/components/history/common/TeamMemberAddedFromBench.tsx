@@ -11,7 +11,7 @@ import { CardValueLogComponent } from '../util/CardValueLogComponent'
 
 export const TeamMemberAddedFromBench: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
   if (
-    !isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) ||
+    !isMoveItemType(MaterialType.HockeyPlayerCard)(move) ||
     move.location.type !== LocationType.PlayerHockeyPlayerTeamSpot
   ) {
     return <></>

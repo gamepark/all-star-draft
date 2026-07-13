@@ -107,7 +107,7 @@ export class AllStarDraftHistory
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseCardSelection || context.game.rule?.id === RuleId.DraftRoundPhaseOpenMarketCardSelection) {
       if (
-        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+        isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
         move.location.type === LocationType.PlayerHockeyPlayerHandSpot
       ) {
         if (
@@ -137,11 +137,11 @@ export class AllStarDraftHistory
       }
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.game.rule?.id === RuleId.PlayoffRoundSetupPhase) {
-      if (isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+      if (isDeleteItemType(MaterialType.HockeyPlayerCard)(move)) {
         const deletedCard = context.game.items[MaterialType.HockeyPlayerCard]![move.itemIndex]
         return { Component: CardDiscardedComponent, player: deletedCard.location.player, css: panelBackground(playerColorCode[deletedCard.location.player!]) }
       }
-      if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+      if (isMoveItemType(MaterialType.HockeyPlayerCard)(move)) {
         if (move.location.type === LocationType.PlayerHockeyPlayerTeamSpot) {
           const roundNumber = new Material<PlayerColor, MaterialType, LocationType>(
             MaterialType.ArenaCard,
@@ -169,13 +169,13 @@ export class AllStarDraftHistory
       }
     }
     if (REVEAL_RULE_IDS.includes(context.game.rule?.id ?? RuleId.DraftRoundPhaseMatchScore)) {
-      if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+      if (isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move)) {
         return { Component: TeamRevealComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]), depth: 1 }
       }
     }
     if (context.game.rule?.id === RuleId.DraftRoundPhaseMatchScore) {
       if (
-        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
+        isMoveItemType(MaterialType.BusToken)(move) &&
         move.location.type === LocationType.BusTokenSpotBelowBusStationBoard
       ) {
         const busTokenMaterial = new Material<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken, context.game.items[MaterialType.BusToken])
@@ -184,7 +184,7 @@ export class AllStarDraftHistory
           context.consequenceIndex ===
           context.action.consequences.findIndex(
             (m) =>
-              isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(m) &&
+              isMoveItemType(MaterialType.BusToken)(m) &&
               m.location.type === LocationType.BusTokenSpotBelowBusStationBoard &&
               getBusTokenValue(busTokenMaterial.index(m.itemIndex).getItem<KnownBusTokenId>()!.id.front) === matchNumber
           )
@@ -200,12 +200,12 @@ export class AllStarDraftHistory
       }
     }
     if (context.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
-      if (isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+      if (isMoveItemType(MaterialType.HockeyPlayerCard)(move)) {
         if (move.location.type === LocationType.PlayerHockeyPlayerTeamSpot) {
           return { Component: TeamMemberAddedFromBench, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
         }
       }
-      if (isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+      if (isDeleteItemType(MaterialType.HockeyPlayerCard)(move)) {
         const deletedCard = context.game.items[MaterialType.HockeyPlayerCard]![move.itemIndex]
         if (deletedCard.location.type === LocationType.PlayerHockeyPlayerTeamSpot) {
           return {
@@ -217,18 +217,18 @@ export class AllStarDraftHistory
       }
     }
     if (context.game.rule?.id === RuleId.PlayoffRoundPhaseScore) {
-      if (isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.PlayoffTicketToken)(move)) {
+      if (isDeleteItemType(MaterialType.PlayoffTicketToken)(move)) {
         const player = context.game.items[MaterialType.PlayoffTicketToken]![move.itemIndex].location.player!
         return { Component: PlayOffTicketLostComponent, player: player, css: panelBackground(playerColorCode[player]) }
       }
       if (
-        isDeleteItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+        isDeleteItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) &&
         move.indexes.length > 0 &&
         context.game.items[MaterialType.HockeyPlayerCard]![move.indexes[0]].location.id !== 3
       ) {
         const player = context.game.items[MaterialType.HockeyPlayerCard]![move.indexes[0]].location.player!
         const eliminationMovesForThisAction = context.action.consequences
-          .filter(isDeleteItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+          .filter(isDeleteItemTypeAtOnce(MaterialType.HockeyPlayerCard))
           .filter((m) => m.indexes.length > 0)
         if (eliminationMovesForThisAction.findIndex((m) => m === move) > 0) {
           return { Component: PlayOffsPlayerEliminatedNotEnoughCardsComponent, player: player, css: panelBackground(playerColorCode[player]) }
@@ -237,7 +237,7 @@ export class AllStarDraftHistory
       }
     }
     if (context.game.rule?.id === RuleId.PlayoffRoundPhaseTieMatch) {
-      if (isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) && move.location.id === 3) {
+      if (isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) && move.location.id === 3) {
         return { Component: RevealShootOutCardComponent, player: move.location.player, css: panelBackground(playerColorCode[move.location.player!]) }
       }
     }

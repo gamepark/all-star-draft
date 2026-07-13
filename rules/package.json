@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/all-star-draft",
-  "version": "0.0.0",
+  "version": "1.5.0",
   "description": "The rules of All-Star Draft adapted for Game Park",
   "sideEffects": false,
   "type": "module",
@@ -15,17 +15,19 @@
     "access": "public"
   },
   "scripts": {
+    "test": "vitest",
     "build": "tsc",
-    "prepublishOnly": "tsc",
-    "publish": "lerna publish",
+    "prepack": "yarn build",
+    "publish": "yarn version ${0:-patch} && yarn npm publish && git commit -am v$(node -p \"require('./package.json').version\") && git tag v$(node -p \"require('./package.json').version\") && git push --follow-tags",
     "lint": "eslint --fix"
   },
   "peerDependencies": {
     "@gamepark/rules-api": ">=7",
-    "es-toolkit": "^1.39.10"
+    "es-toolkit": "^1.45.1"
   },
   "devDependencies": {
-    "@gamepark/rules-api": "~7.0.0",
-    "es-toolkit": "^1.39.10"
+    "@gamepark/rules-api": "~7.6.4",
+    "es-toolkit": "^1.49.0",
+    "vitest": "^4.1.10"
   }
 }

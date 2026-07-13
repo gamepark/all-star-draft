@@ -9,7 +9,15 @@ export default tseslint.config([
     globalIgnores(['dist']),
     {
         files: ['**/*.{ts,tsx}'],
-        extends: [js.configs.recommended, tseslint.configs.recommended, reactHooks.configs['recommended-latest'], reactRefresh.configs.vite],
+        extends: [js.configs.recommended, tseslint.configs.recommended, reactRefresh.configs.vite],
+        plugins: {
+            'react-hooks': reactHooks
+        },
+        rules: {
+            ...reactHooks.configs['recommended-latest'].rules,
+            '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+            'react-refresh/only-export-components': ['warn', { allowConstantExport: true }]
+        },
         languageOptions: {
             ecmaVersion: 2020,
             globals: globals.browser

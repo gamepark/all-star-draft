@@ -67,7 +67,7 @@ export class DraftRoundPhaseMatchScoreRule extends SimultaneousRule<PlayerColor,
 
   public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (
-      isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
+      isMoveItemTypeAtOnce(MaterialType.BusToken)(move) &&
       move.location.type === LocationType.PlayerBusTokenReserveSpot &&
       move.location.player !== undefined
     ) {

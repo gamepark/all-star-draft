@@ -14,7 +14,7 @@ export const DraftRoundTeamMemberSentToBenchComponent: FC<MoveComponentProps<Mat
   context
 }) => {
   if (
-    !isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) ||
+    !isMoveItemType(MaterialType.HockeyPlayerCard)(move) ||
     move.location.type !== LocationType.PlayerHockeyPlayerHandSpot
   ) {
     return <></>

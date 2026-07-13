@@ -27,7 +27,7 @@ export const PlayOffsPlayerEliminatedComponent: FC<MoveComponentProps<MaterialMo
   move,
   context
 }) => {
-  if (!isDeleteItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+  if (!isDeleteItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move)) {
     return <></>
   }
   const gameContext = context as MoveComponentContext<

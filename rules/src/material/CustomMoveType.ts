@@ -23,7 +23,7 @@ export type CustomPassMove = Omit<CustomMove, 'data'> & {
 }
 
 export const isPassCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is CustomPassMove =>
-  isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.Pass)(move)
+  isCustomMoveType(CustomMoveType.Pass)(move)
 
 export const isStartMatchCustomMove = (move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): move is CustomStartMatchMove =>
-  isCustomMoveType<CustomMoveType, PlayerColor, MaterialType, LocationType>(CustomMoveType.StartMatch)(move)
+  isCustomMoveType(CustomMoveType.StartMatch)(move)

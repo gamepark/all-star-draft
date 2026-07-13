@@ -394,7 +394,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
       position: { x: 30 }
     },
     move: {
-      filter: (move) => isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move)
+      filter: (move) => isMoveItemType(MaterialType.BusToken)(move)
     },
     focus: (game) => ({
       materials: [
@@ -411,7 +411,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
     move: {
       player: opponent2,
       interrupt: (move) =>
-        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) && move.location.type === LocationType.BusSpotOnArenaCardLadder
+        isMoveItemType(MaterialType.BusToken)(move) && move.location.type === LocationType.BusSpotOnArenaCardLadder
     }
   },
   noArenaHoverSteps[1][1],
@@ -597,7 +597,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
     move: {
       player: opponent2,
       interrupt: (move) =>
-        isMoveItemType<number, MaterialType, LocationType>(MaterialType.BusToken)(move) && move.location.type === LocationType.BusTokenSpotBelowBusStationBoard
+        isMoveItemType(MaterialType.BusToken)(move) && move.location.type === LocationType.BusTokenSpotBelowBusStationBoard
     }
   },
   {
@@ -802,7 +802,7 @@ const tutorialSteps: TutorialStep<PlayerColor, MaterialType, LocationType>[] = [
     move: {
       player: opponent2,
       interrupt: (move) =>
-        isMoveItemTypeAtOnce<number, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+        isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) &&
         move.location.type === LocationType.PlayerHockeyPlayerHandSpot
     }
   },
@@ -906,10 +906,10 @@ const isMoveForHockeyPlayerCard = (
   cardId?: HockeyPlayerCard
 ): move is MoveItem<PlayerColor, MaterialType.HockeyPlayerCard, LocationType> => {
   if (cardId === undefined) {
-    return isMoveItemType<number, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)
+    return isMoveItemType(MaterialType.HockeyPlayerCard)(move)
   }
   return (
-    isMoveItemType<number, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+    isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
     new Material<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard, game.items[MaterialType.HockeyPlayerCard]).getItem<HockeyPlayerCard>(
       move.itemIndex
     ).id === cardId

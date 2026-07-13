@@ -136,8 +136,8 @@ export class AllStarDraftRules
   public keepMoveSecret(move: MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>): boolean {
     if (this.game.rule?.id === RuleId.PlayoffSubstitutePlayers && !(this.rulesStep as PlayoffSubstitutePlayersRule).isFirstPlayOffRound()) {
       if (
-        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) ||
-        isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)
+        isMoveItemType(MaterialType.HockeyPlayerCard)(move) ||
+        isDeleteItemType(MaterialType.HockeyPlayerCard)(move)
       ) {
         const cards = this.material(MaterialType.HockeyPlayerCard)
         const playersNotEliminated = this.game.players.filter((player) => cards.player(player).length > 0)

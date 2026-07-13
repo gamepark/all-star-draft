@@ -13,7 +13,7 @@ import { TeamStrengthLogComponent } from '../util/TeamStrengthLogComponent'
 
 export const RevealShootOutCardComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
   if (
-    !isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) ||
+    !isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move) ||
     move.location.type !== LocationType.PlayerHockeyPlayerTeamSpot ||
     move.location.id !== 3
   ) {

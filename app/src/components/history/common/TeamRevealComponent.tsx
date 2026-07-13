@@ -36,7 +36,7 @@ const getTeam = (
 
 export const TeamRevealComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
   const { t } = useTranslation()
-  if (!isMoveItemTypeAtOnce<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+  if (!isMoveItemTypeAtOnce(MaterialType.HockeyPlayerCard)(move)) {
     return <></>
   }
   const gameContext = context as MoveComponentContext<

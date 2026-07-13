@@ -13,7 +13,7 @@ export const DraftRoundPlayerReceivedCardComponent: FC<MoveComponentProps<Materi
   move,
   context
 }) => {
-  if (!isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+  if (!isMoveItemType(MaterialType.HockeyPlayerCard)(move)) {
     return <></>
   }
   const gameContext = context as MoveComponentContext<

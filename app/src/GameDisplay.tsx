@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { GameTable, GameTableNavigation } from '@gamepark/react-game'
+import { DevToolsHub, GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { HandSortButtons } from './components/HandSortButtons'
 import { PlayerPanels } from './panels/PlayerPanels'
 
@@ -19,6 +19,7 @@ export function GameDisplay({ players }: GameDisplayProps) {
         <GameTableNavigation css={navigationCss(players)} />
         <PlayerPanels />
         <HandSortButtons xMin={xMin} yMin={yMin} />
+        {process.env.NODE_ENV === 'development' && <DevToolsHub fabBottom="calc(5em)" />}
       </GameTable>
     </>
   )

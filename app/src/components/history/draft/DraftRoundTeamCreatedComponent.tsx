@@ -28,7 +28,7 @@ export const DraftRoundTeamCreatedComponent: FC<MoveComponentProps<MaterialMove<
   move,
   context
 }) => {
-  if (!isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+  if (!isMoveItemType(MaterialType.HockeyPlayerCard)(move)) {
     return <></>
   }
   const gameContext = context as MoveComponentContext<

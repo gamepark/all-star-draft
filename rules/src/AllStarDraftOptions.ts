@@ -1,5 +1,4 @@
 import { getEnumValues, OptionsSpec } from '@gamepark/rules-api'
-import { TFunction } from 'i18next'
 import { PlayerColor, playerColors } from './PlayerColor'
 import { TwoPlayersMode } from './TwoPlayersMode'
 
@@ -30,7 +29,7 @@ export const AllStarDraftOptionsSpec: OptionsSpec<AllStarDraftOptions> = {
     }
   },
   gameMode: {
-    label: (t: TFunction) => t('option.mode'),
+    label: (t) => t('option.mode'),
     values: getEnumValues(TwoPlayersMode),
     valueSpec: (mode: TwoPlayersMode) => ({
       label: (t) => t(`option.mode.${mode}.label`),

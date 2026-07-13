@@ -78,6 +78,11 @@ class HockeyPlayerDraftSpotLocator extends HandLocator<PlayerColor, MaterialType
     return coordArray[index]
   }
 
+  getPositionDependencies(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): unknown {
+    // getCoordinates shifts the whole draft area when entering the PlayoffSubstitutePlayers rule
+    return { count: this.countItems(location, context), substitute: context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers }
+  }
+
   getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
     const { player, rules, index } = context
     if (item.location.player === player) {

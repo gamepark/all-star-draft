@@ -26,7 +26,7 @@ function getRankFromConsequences(
 ): number {
   if (moveToArenaLadderForBus === undefined) {
     const busMoves = gameContext.action.consequences
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken))
+      .filter(isMoveItemType(MaterialType.BusToken))
       .filter((m) => m.location.type === LocationType.BusTokenSpotBelowBusStationBoard)
     return busMoves.findIndex((m) => m === move) + 1
   } else {
@@ -40,7 +40,7 @@ export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<
 }) => {
   const { t } = useTranslation()
   if (
-    !isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) ||
+    !isMoveItemType(MaterialType.BusToken)(move) ||
     move.location.type !== LocationType.BusTokenSpotBelowBusStationBoard
   ) {
     return <></>
@@ -57,7 +57,7 @@ export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<
   const busId = busItem.id
   const matchNumber = getBusTokenValue(busId.front)
   const busTokenMoveToArenaLadderConsequences = gameContext.action.consequences
-    .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken))
+    .filter(isMoveItemType(MaterialType.BusToken))
     .filter((move) => move.location.type === LocationType.BusSpotOnArenaCardLadder)
   const moveToArenaLadderForBus = busTokenMoveToArenaLadderConsequences.find((m) => m.itemIndex === move.itemIndex)
   const isTied =
@@ -86,9 +86,12 @@ export const DraftRoundMatchResultComponent: FC<MoveComponentProps<MaterialMove<
     moveToArenaLadderForBus !== undefined
       ? arenaCardsMaterial.index(moveToArenaLadderForBus.location.parent)
       : arenaCardsMaterial.location((l) => l.x === matchNumber - 1)
-  ).getItem<ArenaCard>()!
-  const arenaId = arena.id
+  ).getItem<ArenaCard>()
   const playerName = usePlayerName(busId.back)
+  if (arena === undefined) {
+    return null
+  }
+  const arenaId = arena.id
   return (
     <Trans
       i18nKey={isTied ? 'history.draftPhase.matchResultTied' : 'history.draftPhase.matchResult'}

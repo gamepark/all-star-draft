@@ -75,13 +75,13 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
       return super
         .getDropLocations(
           moves
-            .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+            .filter(isMoveItemType(MaterialType.HockeyPlayerCard))
             .filter((move) => move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id === 2 && move.location.x === undefined),
           context
         )
         .concat(
           moves
-            .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+            .filter(isMoveItemType(MaterialType.HockeyPlayerCard))
             .filter((move) => move.location.type === LocationType.PlayerHockeyPlayerTeamSpot && move.location.id === 2 && move.location.x !== undefined)
             .map((move) => {
               const itemAtMoveDestination = context.rules
@@ -108,6 +108,12 @@ class PlayerHockeyPlayerTeamSpotLocator extends ListLocator<PlayerColor, Materia
     const playerCount = context.rules.players.length
     const teamNumber = location.id ?? 1
     return getTeamCoordinates(playerCount, index, teamNumber)
+  }
+
+  getPositionDependencies(): unknown {
+    // getItemIndex reorders team members from the team composition and its derived attribute, which can change
+    // without the item count changing (e.g. a card swap). Opt out of the optimization to always reposition.
+    return undefined
   }
 
   getItemIndex(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): number {
@@ -185,7 +191,7 @@ class PlayerHockeyPlayerTeamSpotDescription extends DropAreaDescription<PlayerCo
     context: MaterialContext<PlayerColor, MaterialType, LocationType>
   ): boolean {
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
       move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
       move.location.id === location.id &&
       move.location.x !== undefined
@@ -230,7 +236,7 @@ class PlayOffsHockeyPlayerTeamDescription extends DropAreaDescription<PlayerColo
     ) {
       const itemIndex = context.index
       const moveToTeam = moves
-        .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+        .filter(isMoveItemType(MaterialType.HockeyPlayerCard))
         .find((move) => move.itemIndex === itemIndex && move.location.x === undefined)
       return moveToTeam ?? super.getBestDropMove(moves, location, context, event)
     }

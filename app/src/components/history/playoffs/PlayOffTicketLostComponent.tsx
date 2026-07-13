@@ -20,7 +20,7 @@ const getTranslationKey = (isShootOut: boolean, isLastPlayOffTicket: boolean) =>
 }
 
 export const PlayOffTicketLostComponent: FC<MoveComponentProps<MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor>> = ({ move, context }) => {
-  if (!isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.PlayoffTicketToken)(move)) {
+  if (!isDeleteItemType(MaterialType.PlayoffTicketToken)(move)) {
     return <></>
   }
   const gameContext = context as MoveComponentContext<

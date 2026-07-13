@@ -101,6 +101,11 @@ class PlayerHockeyPlayerHandSpotLocator extends HandLocator<PlayerColor, Materia
     return item.location.x!
   }
 
+  getPositionDependencies(location: Location<number, LocationType, number, number>, context: MaterialContext<number, MaterialType, LocationType>): unknown {
+    // getItemIndex sorts the player's hand according to the currently selected sort (Memory.SortMedal)
+    return { count: this.countItems(location, context), sort: context.rules.remind<number | undefined>(Memory.SortMedal) }
+  }
+
   getHoverTransform(item: MaterialItem, context: ItemContext<PlayerColor, MaterialType, LocationType>) {
     const hoverTransform = super.getHoverTransform(item, context)
     hoverTransform.pop()

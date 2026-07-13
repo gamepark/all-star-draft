@@ -46,12 +46,12 @@ class ArenaCardDescription extends CardDescription<PlayerColor, MaterialType, Lo
 
   help = ArenaCardHelp
 
-  displayHelp(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>) {
+  displayHelp(item: MaterialItem<PlayerColor, LocationType, ArenaCard>, context: ItemContext<PlayerColor, MaterialType, LocationType>) {
     if (item.location.type === LocationType.ArenaDeckSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
     return super.displayHelp(item, context)
   }
 
-  public isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, _context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType, ArenaCard>>, _context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
     return item.location?.type === LocationType.ArenaDeckSpot
   }
 }

@@ -23,7 +23,7 @@ export class DraftRoundPhaseOpenMarketCardSelectionRule extends PlayerTurnRule<P
 
   afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
       move.location.type === LocationType.PlayerHockeyPlayerHandSpot &&
       move.location.player !== undefined
     ) {

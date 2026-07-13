@@ -87,7 +87,7 @@ class BusTokenDescription extends TokenDescription<PlayerColor, MaterialType, Lo
     ) {
       const currentItemIndex = context.rules.material(MaterialType.BusToken).id(item.id).getIndex()
       const movesForThisItem = legalMoves
-        .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken))
+        .filter(isMoveItemType(MaterialType.BusToken))
         .filter((move) => move.itemIndex === currentItemIndex)
       if (movesForThisItem.length > 0) {
         const arenaNumber = getBusTokenValue(item.id.front)

@@ -243,7 +243,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   help = HockeyPlayerCardHelp
 
   getItemMenu(
-    item: MaterialItem<PlayerColor, LocationType>,
+    item: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode {
@@ -260,7 +260,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
               .player(context.player)
               .location(LocationType.PlayerHockeyPlayerTeamSpot)
               .selected(true)
-              .getItem()
+              .getItem<HockeyPlayerCard>()
             if (selectedPreviousTeamItem) {
               return this.getSwapItemMenuForHandCard(selectedPreviousTeamItem, item, context, legalMoves)
             } else {
@@ -295,7 +295,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     return undefined
   }
 
-  public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
+  public isMenuAlwaysVisible(item: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>, context: ItemContext<PlayerColor, MaterialType, LocationType>): boolean {
     if (context.player !== undefined) {
       const roundNumber = context.rules.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
       if (context.rules.game.rule?.id === RuleId.DraftRoundPhaseTeamCreation || context.rules.game.rule?.id === RuleId.PlayoffSubstitutePlayers) {
@@ -319,7 +319,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     return super.isMenuAlwaysVisible(item, context)
   }
 
-  displayHelp(item: MaterialItem<PlayerColor, LocationType>, context: ItemContext<PlayerColor, MaterialType, LocationType>) {
+  displayHelp(item: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>, context: ItemContext<PlayerColor, MaterialType, LocationType>) {
     if (item.location.type === LocationType.PlayerHockeyPlayerTeamSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
     if (item.location.type === LocationType.HockeyPlayerDeckSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
     if (item.id === undefined && item.location.type === LocationType.HockeyPlayerDraftSpot) return MaterialMoveBuilder.displayLocationHelp(item.location)
@@ -327,7 +327,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     return super.displayHelp(item, context)
   }
 
-  isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType>>, _context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
+  isFlippedOnTable(item: Partial<MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>>, _context: MaterialContext<PlayerColor, MaterialType, LocationType>): boolean {
     if (item.location?.type === LocationType.HockeyPlayerDeckSpot) {
       return true
     }
@@ -341,13 +341,13 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   private getItemMenuForHockeyPlayerCardInDraft = (
-    item: MaterialItem<PlayerColor, LocationType>,
+    item: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ) => {
     const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
     const moveToBenchForThisCard = legalMoves
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .filter(isMoveItemType(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerHandSpot)
     const itemRotateAngle = context.locators[LocationType.HockeyPlayerDraftSpot]?.getItemRotateZ(item, context) ?? 0
     return moveToBenchForThisCard !== undefined ? (
@@ -369,14 +369,14 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
     ) : undefined
   }
   private getSwapItemMenuForHandCard = (
-    selectedItem: MaterialItem<PlayerColor, LocationType>,
-    item: MaterialItem<PlayerColor, LocationType>,
+    selectedItem: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>,
+    item: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode => {
     const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
     const moveFromThisItemToSelected = legalMoves
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .filter(isMoveItemType(MaterialType.HockeyPlayerCard))
       .find(
         (move) =>
           move.itemIndex === itemIndex &&
@@ -411,11 +411,11 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
 
   private getItemMenuButtonForNewTeamMoveForHandCard = (
     roundNumber: number,
-    item: MaterialItem<PlayerColor, LocationType>,
+    item: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode => {
-    const hockeyCardMoves = legalMoves.filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+    const hockeyCardMoves = legalMoves.filter(isMoveItemType(MaterialType.HockeyPlayerCard))
     const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
     const newTeamLocationId = roundNumber === 0 ? 2 : roundNumber
     const moveToPreviousTeam = hockeyCardMoves.find(
@@ -429,7 +429,7 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
         move.location.x === undefined
     )
     const discardThisCardMove = legalMoves
-      .filter(isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .filter(isDeleteItemType(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === itemIndex)
     const playOffSwapMove =
       roundNumber === 0
@@ -492,12 +492,12 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
 
   private getSwapItemMenuForPreviousTeamCard = (
     selectedItemIndex: number,
-    item: MaterialItem<PlayerColor, LocationType>,
+    item: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode => {
     const moveToConsideredItem = legalMoves
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .filter(isMoveItemType(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === selectedItemIndex && move.location.id === item.location.id && move.location.x === item.location.x)
     const locatorItemIndex = context.locators[LocationType.PlayerHockeyPlayerTeamSpot]?.getItemIndex(item, context) ?? 0
     const numberOfItemsInLocation = context.locators[LocationType.PlayerHockeyPlayerTeamSpot]?.countItems(item.location, context) ?? 0
@@ -521,16 +521,16 @@ class HockeyPlayerCardDescription extends CardDescription<PlayerColor, MaterialT
   }
 
   private getItemMenuForSelectedCardInPreviousTeam = (
-    item: MaterialItem<PlayerColor, LocationType>,
+    item: MaterialItem<PlayerColor, LocationType, HockeyPlayerCard>,
     context: ItemContext<PlayerColor, MaterialType, LocationType>,
     legalMoves: MaterialMove<PlayerColor, MaterialType, LocationType>[]
   ): ReactNode => {
     const itemIndex = context.rules.material(MaterialType.HockeyPlayerCard).id(item.id).getIndex()
     const moveToHand = legalMoves
-      .filter(isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .filter(isMoveItemType(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === itemIndex && move.location.type === LocationType.PlayerHockeyPlayerHandSpot)
     const discardMove = legalMoves
-      .filter(isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard))
+      .filter(isDeleteItemType(MaterialType.HockeyPlayerCard))
       .find((move) => move.itemIndex === itemIndex)
     return moveToHand !== undefined ? (
       <>

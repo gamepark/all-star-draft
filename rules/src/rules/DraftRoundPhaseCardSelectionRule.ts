@@ -26,7 +26,7 @@ export class DraftRoundPhaseCardSelectionRule extends SimultaneousRule<PlayerCol
 
   public beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
       move.location.type === LocationType.PlayerHockeyPlayerHandSpot
     ) {
       const movedCard = this.material(MaterialType.HockeyPlayerCard).index(move.itemIndex).getItem<HockeyPlayerCard>()!

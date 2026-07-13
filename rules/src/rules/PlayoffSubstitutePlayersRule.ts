@@ -47,7 +47,7 @@ export class PlayoffSubstitutePlayersRule extends SimultaneousRule<PlayerColor, 
 
   public beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType>[] {
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
       move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
       move.location.id === 2 &&
       move.location.x !== undefined
@@ -67,7 +67,7 @@ export class PlayoffSubstitutePlayersRule extends SimultaneousRule<PlayerColor, 
   public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (this.isFirstPlayOffRound()) {
       if (
-        isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+        isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
         move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
         move.location.id === 2 &&
         move.location.rotation === MaterialRotation.FaceDown &&

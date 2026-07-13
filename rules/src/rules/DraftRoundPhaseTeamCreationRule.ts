@@ -71,7 +71,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
   public beforeItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const numberOfAlreadyAssembledTeams = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length - 1
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
       move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
       move.location.rotation === MaterialRotation.FaceDown &&
       move.location.id <= numberOfAlreadyAssembledTeams
@@ -89,7 +89,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
         ]
       }
     }
-    if (this.game.players.length === 2 && isDeleteItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move)) {
+    if (this.game.players.length === 2 && isDeleteItemType(MaterialType.HockeyPlayerCard)(move)) {
       const cardMoved = this.material(MaterialType.HockeyPlayerCard).index(move.itemIndex).getItem<HockeyPlayerCard>()!
       const player = cardMoved.location.player!
       const cardLefts = this.material(MaterialType.HockeyPlayerCard)
@@ -104,7 +104,7 @@ export class DraftRoundPhaseTeamCreationRule extends SimultaneousRule<PlayerColo
   public afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     const roundNumber = this.material(MaterialType.ArenaCard).location(LocationType.CurrentArenasRowSpot).length
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.BusToken)(move) &&
+      isMoveItemType(MaterialType.BusToken)(move) &&
       move.location.type === LocationType.PlayerBusTokenTeamSpot &&
       move.location.player !== undefined
     ) {

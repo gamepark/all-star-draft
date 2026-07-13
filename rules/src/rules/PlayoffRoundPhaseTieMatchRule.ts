@@ -48,7 +48,7 @@ export class PlayoffRoundPhaseTieMatchRule extends SimultaneousRule<PlayerColor,
 
   afterItemMove(move: ItemMove<PlayerColor, MaterialType, LocationType>): MaterialMove<PlayerColor, MaterialType, LocationType, RuleId>[] {
     if (
-      isMoveItemType<PlayerColor, MaterialType, LocationType>(MaterialType.HockeyPlayerCard)(move) &&
+      isMoveItemType(MaterialType.HockeyPlayerCard)(move) &&
       move.location.id === 3 &&
       move.location.type === LocationType.PlayerHockeyPlayerTeamSpot &&
       move.location.player !== undefined &&

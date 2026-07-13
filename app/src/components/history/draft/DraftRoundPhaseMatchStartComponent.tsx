@@ -27,11 +27,11 @@ export const DraftRoundPhaseMatchStartComponent: FC<MoveComponentProps<MaterialM
   )
   const roundNumber = arenaMaterial.length
   const matchNumber = move.data
-  const arena = arenaMaterial.location((l) => l.x === matchNumber - 1).getItem<ArenaCard>()!
+  const arena = arenaMaterial.location((l) => l.x === matchNumber - 1).getItem<ArenaCard>()
   return (
     <Trans
       i18nKey="history.draftPhase.matchResultStart"
-      values={{ roundNumber: roundNumber, matchNumber: matchNumber, arena: t(`arena.${ArenaCard[arena.id]}`) }}
+      values={{ roundNumber: roundNumber, matchNumber: matchNumber, arena: arena === undefined ? undefined : t(`arena.${ArenaCard[arena.id]}`) }}
       components={{ sup: <sup></sup> }}
     />
   )
