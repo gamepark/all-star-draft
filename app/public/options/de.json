@@ -1,0 +1,16 @@
+{
+  "identities": "Spielerfarbe",
+  "identities.1": "Schwarz",
+  "identities.2": "Blau",
+  "identities.3": "Grün",
+  "identities.4": "Lila",
+  "identities.5": "Rot",
+  "identities.6": "Gelb",
+  "option.gameMode": "2-Spieler-Modus",
+  "option.gameMode.1": "Tradition",
+  "option.gameMode.1.help": "Während des Drafts wählen die Spieler 7 Karten und werfen eine ab",
+  "option.gameMode.2": "Duell",
+  "option.gameMode.2.help": "Während des Drafts wählt jeder Spieler eine Karte für sich und eine für seinen Gegner",
+  "option.gameMode.3": "Freier Markt",
+  "option.gameMode.3.help": "Während des Drafts wählen die Spieler jede Draft-Karte aus einem Pool von 3 Karten"
+}

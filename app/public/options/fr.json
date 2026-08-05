@@ -1,0 +1,16 @@
+{
+  "identities": "Couleur du joueur",
+  "identities.1": "Noir",
+  "identities.2": "Bleu",
+  "identities.3": "Vert",
+  "identities.4": "Violet",
+  "identities.5": "Rouge",
+  "identities.6": "Jaune",
+  "option.gameMode": "Mode 2 joueurs",
+  "option.gameMode.1": "Héritage",
+  "option.gameMode.1.help": "Pendant la phase de draft, les joueurs choisissent 7 cartes puis en défaussent une",
+  "option.gameMode.2": "Duel",
+  "option.gameMode.2.help": "Pendant la phase de draft, chaque joueur sélectionne une carte pour lui et une pour son adversaire",
+  "option.gameMode.3": "Open Market",
+  "option.gameMode.3.help": "Pendant la phase de draft, les joueurs choisissent leur carte parmi 3"
+}

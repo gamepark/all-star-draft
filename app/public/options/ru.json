@@ -1,0 +1,16 @@
+{
+  "identities": "Цвет игрока",
+  "identities.1": "Чёрный",
+  "identities.2": "Синий",
+  "identities.3": "Зелёный",
+  "identities.4": "Фиолетовый",
+  "identities.5": "Красный",
+  "identities.6": "Жёлтый",
+  "option.gameMode": "Режим для 2 игроков",
+  "option.gameMode.1": "Наследие",
+  "option.gameMode.1.help": "Во время драфта игроки выбирают 7 карт и сбрасывают одну",
+  "option.gameMode.2": "Дуэль",
+  "option.gameMode.2.help": "Во время драфта каждый игрок выбирает карту для себя и для соперника",
+  "option.gameMode.3": "Свободный рынок",
+  "option.gameMode.3.help": "Во время драфта игроки выбирают каждую карту драфта из набора в 3 карты"
+}

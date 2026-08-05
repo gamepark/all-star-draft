@@ -1,0 +1,16 @@
+{
+  "identities": "Color del jugador",
+  "identities.1": "Negro",
+  "identities.2": "Azul",
+  "identities.3": "Verde",
+  "identities.4": "Morado",
+  "identities.5": "Rojo",
+  "identities.6": "Amarillo",
+  "option.gameMode": "Modo 2 jugadores",
+  "option.gameMode.1": "Herencia",
+  "option.gameMode.1.help": "Durante el draft, los jugadores seleccionan 7 cartas y descartan una",
+  "option.gameMode.2": "Duelo",
+  "option.gameMode.2.help": "Durante el draft, cada jugador selecciona una carta para sí mismo y otra para su adversario",
+  "option.gameMode.3": "Mercado libre",
+  "option.gameMode.3.help": "Durante el draft, los jugadores eligen cada carta de un grupo de 3 cartas"
+}

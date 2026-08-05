@@ -1,0 +1,16 @@
+{
+  "identities": "Player color",
+  "identities.1": "Black",
+  "identities.2": "Blue",
+  "identities.3": "Green",
+  "identities.4": "Purple",
+  "identities.5": "Red",
+  "identities.6": "Yellow",
+  "option.gameMode": "2 players mode",
+  "option.gameMode.1": "Heritage",
+  "option.gameMode.1.help": "During draft, players select 7 cards and discard one",
+  "option.gameMode.2": "Clash",
+  "option.gameMode.2.help": "During draft, each player selects a card for themselves and for their adversary",
+  "option.gameMode.3": "Free Agency",
+  "option.gameMode.3.help": "During draft, players select each draft card from a pool of 3 cards"
+}
