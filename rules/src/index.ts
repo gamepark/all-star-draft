@@ -1,3 +1,3 @@
 export { AllStarDraftRules } from './AllStarDraftRules'
-export { AllStarDraftOptionsSpec } from './AllStarDraftOptions'
+export { AllStarDraftOptionsSpecV2 } from './AllStarDraftOptions'
 export { AllStarDraftSetup } from './AllStarDraftSetup'

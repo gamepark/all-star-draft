@@ -1,4 +1,4 @@
-import { getEnumValues, OptionsSpec } from '@gamepark/rules-api'
+import { getEnumValues, OptionsSpecV2 } from '@gamepark/rules-api'
 import { PlayerColor, playerColors } from './PlayerColor'
 import { TwoPlayersMode } from './TwoPlayersMode'
 
@@ -17,25 +17,17 @@ export type AllStarDraftOptions = {
 }
 
 /**
- * This object describes all the options a game can have, and will be used by GamePark website to create automatically forms for you game
- * (forms for friendly games, or forms for matchmaking preferences, for instance).
+ * The option space of all-star-draft: structure only.
+ *
+ * Labels live in the game's presentation document, published beside its translations at
+ * `/options/<locale>.json` and keyed by convention. Subscription and competitive gates live in
+ * the platform database, so they can change without releasing the game again.
  */
-export const AllStarDraftOptionsSpec: OptionsSpec<AllStarDraftOptions> = {
-  players: {
-    id: {
-      label: (t) => t('player.id'),
-      values: playerColors,
-      valueSpec: (id) => ({ label: (t) => t(`player.${id}`) })
-    }
-  },
-  gameMode: {
-    label: (t) => t('option.mode'),
-    values: getEnumValues(TwoPlayersMode),
-    valueSpec: (mode: TwoPlayersMode) => ({
-      label: (t) => t(`option.mode.${mode}.label`),
-      help: (t) => t(`option.mode.${mode}.help`)
-    }),
-    hide: (players) => players > 2,
-    competitiveValue: TwoPlayersMode.Clash
+export const AllStarDraftOptionsSpecV2: OptionsSpecV2 = {
+  specVersion: 2,
+  players: { min: 2, max: 6 },
+  identities: { values: playerColors },
+  options: {
+    gameMode: { kind: 'enum', playerCount: { max: 2 }, values: getEnumValues(TwoPlayersMode) }
   }
 }
